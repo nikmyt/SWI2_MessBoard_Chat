@@ -16,4 +16,14 @@ public class MainController
         this.authService = authservice;
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "<html><head><style>" +
+                "body { display: flex; justify-content: center; align-items: center; height: 100%; }" +
+                "h1 { text-align: center; color: blue; font-family: Comic Sans MS, cursive, sans-serif; }" +
+                "</style></head><body>" +
+                "<h1>MessBoard, for times when you are just bored</h1>" +
+                "</body></html>";
+    }
+
 }
