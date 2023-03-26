@@ -1,0 +1,164 @@
+/* Colors:
+dark p bg: 362f46
+white: dedbe3
+black: 221c24
+dusk purple: 5d536c
+blush purple: 8a6f91
+*/
+
+
+/* Set background color and font family */
+body {
+    background-color: #362f46; /*2c3e50*/
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+
+/* Style header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #362f46; /*1a2533*/
+}
+
+.logo img {
+    width: 75px;
+    height: 75px;
+    /*border-radius: 50%;*/
+}
+
+.title{
+    float: left;
+    color: #dedbe3;
+}
+
+.search input {
+    border-radius: 20px;
+    padding: 10px;
+    background-color: #5d536c; /*34495e*/
+    border: none;
+    color: white;
+}
+
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger-menu span {
+    display: block;
+    width: 30px;
+    height: 3px;
+    margin: 5px 0;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    /*grid-template-columns: repeat(3, 1fr);*/
+    grid-template-areas:
+    'logo search search search search hamburger-menu'
+    'sidebar-left main main main main sidebar-right'
+    'sidebar-left footer footer footer footer sidebar-right';
+    /*id like hamburger to be */
+    /*grid-gap: 20px;*/
+    gap: 10px;
+    background-color: #5d536c;
+    padding: 10px;
+
+}
+
+/* Style sidebar on the left */
+.sidebar-left, .sidebar-right {
+    background-color: #362f46;
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+
+.sidebar-left h2 {
+    margin-top: 0;
+}
+
+.sidebar-left ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-left li {
+    margin-bottom: 10px;
+}
+
+.sidebar-left a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Style main content */
+.main-content {
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.main-content h1 {
+    margin-top: 0;
+}
+
+/* Style sidebar on the right */
+.sidebar-right h2 {
+    margin-top: 0;
+}
+
+.sidebar-right p {
+    margin-bottom: 0;
+}
+
+.footer{
+    color: #dedbe3;
+    flex: 1;
+    padding: 10pt;
+    margin: 10pt;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    header {
+        flex-wrap: wrap;
+    }
+
+    /*unround this*/
+    .logo, .search {
+        flex: 1 0 auto;
+        margin-bottom: 20px;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    .sidebar-left, .main-content, .sidebar-right {
+        margin-right: 0;
+        margin-bottom: 20px;
+        border-radius: 0;
+    }
+
+    .sidebar-left {
+        flex: 1;
+    }
+
+    .main-content {
+        flex: auto;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-right {
+        flex: 1;
+    }
+}
