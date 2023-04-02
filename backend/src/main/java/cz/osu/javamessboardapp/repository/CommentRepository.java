@@ -8,13 +8,12 @@ import java.util.List;
 
 public interface CommentRepository extends CrudeRepositoryInterface<BoardComment, Integer>
 {
-    BoardComment saveBComment(BoardComment comment);
-    List<BoardComment> fetchBComment();
+    BoardComment save(BoardComment comment);
+    List<BoardComment> findAll();
 
     List<BoardComment> fetchBCommentsByBPost(Integer bPostID);
 
     List<BoardComment> fetchBCommentsByBUser(Integer bUserID);
-    BoardComment updateBComment(BoardComment comment, Long bCommentID);
+    BoardComment updateBComment(BoardComment comment, Integer bCommentID);
 
-    void deleteBComment(Long bCommentID);
 }

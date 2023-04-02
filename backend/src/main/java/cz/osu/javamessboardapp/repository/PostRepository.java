@@ -7,15 +7,17 @@ import java.util.List;
 
 public interface PostRepository extends CrudeRepositoryInterface<BoardPost, Integer>
 {
-    BoardPost saveBPost(BoardPost post);
-    List<BoardPost> fetchBPosts();
+    BoardPost save(BoardPost post);
+    List<BoardPost> findAll();
 
     List<BoardPost> fetchBPostsByBUser(Integer bUserID);
 
-    List<BoardPost> fetchBPostsByTag(Integer bUserID);
-    BoardPost updateBPost(BoardPost post, Long bPostID);
 
-    void deleteBPost(Long bPostID);
+    BoardPost updateBPost(BoardPost post, Integer bPostID);
 
+
+    void delete(BoardPost bPost);
+
+    List<BoardPost> findByTag(String tag);
 
 }
