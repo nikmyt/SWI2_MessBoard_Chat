@@ -1,4 +1,4 @@
-package cz.osu.javamessboardapp.Form;
+package cz.osu.java.messboardapp.Form;
 
 import lombok.Getter;
 

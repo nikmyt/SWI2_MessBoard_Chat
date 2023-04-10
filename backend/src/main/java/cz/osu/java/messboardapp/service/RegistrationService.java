@@ -1,9 +1,9 @@
-package cz.osu.javamessboardapp.service;
+package cz.osu.java.messboardapp.service;
 
 
-import cz.osu.javamessboardapp.model.BoardUser;
-import cz.osu.javamessboardapp.Form.RegistrationForm;
-import cz.osu.javamessboardapp.repository.AppUserRepository;
+import cz.osu.java.messboardapp.model.BoardUser;
+import cz.osu.java.messboardapp.Form.RegistrationForm;
+import cz.osu.java.messboardapp.repository.AppUserRepository;
 
 
 import lombok.AllArgsConstructor;

@@ -1,9 +1,9 @@
-package cz.osu.javamessboardapp.service;
+package cz.osu.java.messboardapp.service;
 
-import cz.osu.javamessboardapp.Form.AuthForm;
-import cz.osu.javamessboardapp.model.BoardUser;
-import cz.osu.javamessboardapp.json.UserToken;
-import cz.osu.javamessboardapp.repository.AppUserRepository;
+import cz.osu.java.messboardapp.Form.AuthForm;
+import cz.osu.java.messboardapp.json.UserToken;
+import cz.osu.java.messboardapp.model.BoardUser;
+import cz.osu.java.messboardapp.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

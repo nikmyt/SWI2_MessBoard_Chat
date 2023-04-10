@@ -1,12 +1,14 @@
-package cz.osu.javamessboardapp.model;
+package cz.osu.java.messboardapp.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
+@Table(name = "board_user")
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+
 public class BoardUser //BOARDUSER / boarduser
 {
     @Id

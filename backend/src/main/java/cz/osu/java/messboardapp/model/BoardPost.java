@@ -1,5 +1,6 @@
-package cz.osu.javamessboardapp.model;
+package cz.osu.java.messboardapp.model;
 import jakarta.persistence.*;
+import jdk.jfr.BooleanFlag;
 import lombok.*;
 
 import java.util.Date;
@@ -8,18 +9,13 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-public class BoardComment
+public class BoardPost
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="comment_id", nullable = false)
-    private Integer comment_id;
+    @Column(name="post_id", nullable = false)
+    private Integer postId;
 
-
-
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="post_id", referencedColumnName = "post_id")
-    private BoardPost postId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private BoardUser user;
@@ -27,9 +23,15 @@ public class BoardComment
     @Column(nullable = false, length=300)
     private String text;
 
+    @Column(nullable = false, length=300)
+    private String title;
+    @Column(nullable = false, length=15)
+    private String tag;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     private Date createdAt;
 
-
+    @BooleanFlag
+    @Column(name = "temporary")
+    private boolean temp;
 }

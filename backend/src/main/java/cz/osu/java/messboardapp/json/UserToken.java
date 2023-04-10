@@ -1,4 +1,4 @@
-package cz.osu.javamessboardapp.json;
+package cz.osu.java.messboardapp.json;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
