@@ -32,9 +32,15 @@ public class MainController
     }
 
 
-    @PostMapping("/posts") // /new
+    @PostMapping("/new_post") // /new
     public BoardPost create(@Valid @RequestBody BoardPost newPost){
         return postService.save(newPost);
+    }
+
+    @PostMapping("/posts")
+    public Iterable<BoardPost> run()
+    {
+        return postService.findAll();
     }
 
     @GetMapping("/")
