@@ -16,7 +16,7 @@ public class BoardPost
     @Column(name="post_id", nullable = false)
     private Integer postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private BoardUser user;
 

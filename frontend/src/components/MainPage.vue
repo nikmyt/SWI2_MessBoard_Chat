@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:8080/bands/')
+    axios.get('http://localhost:8080/posts/')
         .then(response => {
           this.posts = response.data
         })
