@@ -5,6 +5,12 @@
       <p class="post__description">Time: {{ post.createdAt }}</p>
       <p class="post__user">UserID: {{post.user ? post.user.userId : ''}}</p>
       <p class="post__username">Username: {{post.user ? post.user.username : ''}}</p>
+      <h2 class="post__title">{{ post.title }}</h2>
+      <p class="post__description">{{ post.createdAt }}</p>
+      <!--p v-if="post.user" class="post__user">{{post.user.userId}}</p-->
+      <p v-if="post.user" class="post__username">{{post.user.username}}</p>
+      <p class="post__text">{{ post.text }}</p>
+      <!-- interesting, if theres user-->
     </div>
   </div>
 </template>
