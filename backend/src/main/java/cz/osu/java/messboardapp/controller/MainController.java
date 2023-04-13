@@ -47,9 +47,11 @@ public class MainController
         return postService.findAll(); //?
     }
 
-    @GetMapping("/posts/{id}")
-    public Optional<BoardPost> get(@PathVariable("id") Integer id){
-        return postService.findByPostId(id);
+    @GetMapping("/{id}")
+    public BoardPost get(@PathVariable("id") Integer id){
+        BoardPost bPost = postService.findByPostId(id).orElse(null);
+
+        return bPost;
 
     }
 

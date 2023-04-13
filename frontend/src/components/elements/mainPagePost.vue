@@ -1,12 +1,10 @@
 <template>
   <div class="post">
-    <!--div class="post__rating">{{ post.rating }}</div>
-    <div-- class="post__emoji">{{ post.emoji }}</div-->
     <div class="post__content">
-      <h2 class="post__title">{{ post.title }}</h2>
-      <p class="post__description">{{ post.createdAt }}</p>
-      <p class="post__user">{{post.user.userId}}</p>
-      <p class="post__username">{{post.user.username}}</p>
+      <h2 class="post__title">Title: {{ post.title }}</h2>
+      <p class="post__description">Time: {{ post.createdAt }}</p>
+      <p class="post__user">UserID: {{post.user ? post.user.userId : ''}}</p>
+      <p class="post__username">Username: {{post.user ? post.user.username : ''}}</p>
     </div>
   </div>
 </template>
@@ -14,7 +12,8 @@
 <script>
 export default {
   name: "mainPagePost.vue",
-  props: {
+  props:
+      {
     post: Object
   }
 }
