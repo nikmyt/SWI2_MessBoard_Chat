@@ -10,8 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/posts")
-//@RequestMapping("/comments")
+import java.util.Optional;
+
+@RequestMapping({"/posts"})
 //@RequestMapping("/users") ?
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -37,11 +38,7 @@ public class MainController
         return postService.save(newPost);
     }
 
-    @PostMapping("/posts")
-    public Iterable<BoardPost> run()
-    {
-        return postService.findAll();
-    }
+
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
@@ -51,18 +48,14 @@ public class MainController
     }
 
     @GetMapping("/posts/{id}")
-    public BoardPost get(@PathVariable("id") Integer id){
+    public Optional<BoardPost> get(@PathVariable("id") Integer id){
         return postService.findByPostId(id);
 
     }
 
     // %20 is a space in a url
     //possibly in the future: search?name=l&year=2005
-    @GetMapping("/posts/search/{name}") //TODO possibly incorrect
-    public Iterable<BoardPost> search(@PathVariable("name") String name){
-        return postService.findAll();
 
-    }
 }
 
 //To test:

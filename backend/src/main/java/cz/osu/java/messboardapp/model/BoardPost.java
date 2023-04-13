@@ -32,6 +32,6 @@ public class BoardPost
     private Date createdAt;
 
     @BooleanFlag
-    @Column(name = "temporary")
+    @Column(nullable = true, name = "temporary")
     private boolean temp;
 }

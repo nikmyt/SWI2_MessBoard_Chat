@@ -9,35 +9,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
-public class CommentService implements CommentRepository
+public class CommentService
 {
     public final CommentRepository commrep;
 
-    @Override
-    public BoardComment save(BoardComment comm)
+
+    public CommentService(CommentRepository commentRepository)
     {
-        commrep.save(comm);
-        return comm;
+        this.commrep=commentRepository;
     }
-
-
-
-    @Override
-    public Iterable<BoardComment> findAll() {
-        return null;
-    }
-
-    @Override
-    public Long count() {
-        return null;
-    }
-
-    @Override
-    public void delete(BoardComment entity) {
-
-    }
-
 
 
 }
