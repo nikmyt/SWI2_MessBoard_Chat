@@ -1,5 +1,6 @@
 <script setup>
 import MainPagePost from "@/components/elements/mainPagePost.vue";
+//import PostPage from "@/components/elements/PostPage.vue"; //backup postpage that doesn't work in script
 </script>
 
 <template>
@@ -9,8 +10,8 @@ import MainPagePost from "@/components/elements/mainPagePost.vue";
     <header>
       <!-- Logo and search bar -->
       <div class="logo">
-        <img src="/src/assets/logo.svg" alt="Logo">
-        <!--TODO make it clickable and everywhere-->
+        <img src="/src/assets/piggers.svg" alt="Logo">
+        <!--TODO make it clickable to get back to main page and everywhere-->
       </div>
       <h1 class="title">MessBoard</h1>
       <div class="search">
@@ -41,11 +42,12 @@ import MainPagePost from "@/components/elements/mainPagePost.vue";
           <h1>b/all</h1>
           <div class="posts">
             <!-- Load posts from database using Axios. TODO post pagination -->
-            <div v-for="post in posts" :key="post.id">
+            <div v-for="post in posts" :key="post.id" @click="goToPostPage(post)">
               <MainPagePost :post="post" />
             </div>
             <!--post v-for="post in posts" :post="post" :key="post.id"></post-->
           </div>
+        <!-- OR we put the single post here. <PostPage :post="post" and then load comments for it. -->
       </main>
       <aside class="sidebar-right">
         <h2>Board Description</h2>
@@ -63,12 +65,29 @@ import MainPagePost from "@/components/elements/mainPagePost.vue";
 
 <script>
 import axios from 'axios'
+import PostPage from "@/components/elements/PostPage.vue";
+
 export default {
   name: "MainPage",
+  components: {
+    PostPage
+  },
   data() {
     return {
       posts: []
     }
+  },
+  methods: {
+    async fetchPosts() {
+      // Make an API call to fetch the posts
+      //mounted();
+    },
+    goToPostPage(post) {
+      this.$router.push({ name: "PostPage", params: { postId: post.id } });
+    }
+  },
+  created() {
+    this.fetchPosts();
   },
   mounted() {
     axios.get('http://localhost:8080/posts')

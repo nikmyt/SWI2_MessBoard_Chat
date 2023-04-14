@@ -6,6 +6,22 @@ dusk purple: 5d536c
 blush purple: 8a6f91
 */
 
+@import url('https://fonts.googleapis.com/css?family=Lobster&display=swap'); /* fancy */
+@import url('https://fonts.googleapis.com/css?family=Freckle Face&display=swap'); /* blocky */
+@import url('https://fonts.googleapis.com/css?family=Cabin Sketch&display=swap'); /* sketchy */
+
+@import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap'); /* body */
+@import url('https://fonts.googleapis.com/css?family=Nunito Sans&display=swap'); /* body */
+
+h1 {
+    font-family: 'Freckle Face', cursive; /* freckle is great! */
+    font-size: xxx-large;
+}
+
+p {
+    font-family: 'Merriweather', cursive; /* got strange website vibes */
+}
+
 
 /* Set background color and font family */
 body {
@@ -17,15 +33,15 @@ body {
 /* Style header */
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     background-color: #362f46; /*1a2533*/
 }
 
 .logo img {
-    width: 75px;
-    height: 75px;
+    width: 90px;
+    height: 90px;
     /*border-radius: 50%;*/
 }
 
