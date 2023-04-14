@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('http://localhost:8080/posts/')
+    axios.get('http://localhost:8080/posts')
         .then(response =>
         {
           this.posts = response.data //for single post [response.data]

@@ -1,5 +1,6 @@
 package cz.osu.java.messboardapp.controller;
 
+import cz.osu.java.messboardapp.model.BoardComment;
 import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.repository.AppUserRepository;
 import cz.osu.java.messboardapp.service.AuthService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RequestMapping({"/posts"})
+@RequestMapping({"/"})
 //@RequestMapping("/users") ?
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -40,18 +41,26 @@ public class MainController
 
 
 
-    @GetMapping("/")
+    @GetMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
     public Iterable<BoardPost> getAll()
     {
         return postService.findAll(); //?
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/{id}")
     public BoardPost get(@PathVariable("id") Integer id){
         BoardPost bPost = postService.findByPostId(id).orElse(null);
 
         return bPost;
+
+    }
+
+    @GetMapping("/comment/{post_id}")
+    public BoardComment getByPostId(@PathVariable("id") Integer id){
+        BoardComment bComm = commentService.findCommentByPostId(id);
+
+        return bComm;
 
     }
 
