@@ -10,7 +10,7 @@ import java.util.Optional;
 public class PostService
 {
 
-    public final PostRepository postRepo;
+    private final PostRepository postRepo;
 
     public PostService(PostRepository postRepository)
     {
