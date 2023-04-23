@@ -1,6 +1,6 @@
 <script setup>
 import MainPagePost from "@/pages/mainpage/MainPagePost.vue";
-//import PostPage from "@/components/elements/PostPage.vue"; //backup postpage that doesn't work in script
+//import PostPage from "@/pages/post/PostPage.vue"; //backup postpage that doesn't work in script
 </script>
 
 <template>
@@ -65,7 +65,7 @@ import MainPagePost from "@/pages/mainpage/MainPagePost.vue";
 
 <script>
 import axios from 'axios'
-import PostPage from "@/components/elements/PostPage.vue";
+import PostPage from "@/pages/post/PostPage.vue";
 
 export default {
   name: "MainPage",
