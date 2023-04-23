@@ -2,10 +2,10 @@ import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from "vue-router"
 
 import App from './App.vue'
-import MainPage from "@/components/MainPage.vue";
-import error from "@/components/error.vue";
-import SearchResults from "@/components/SearchResults.vue";
-import PostPage from "@/components/elements/PostPage.vue";
+import MainPage from "@/pages/mainpage/MainPage.vue";
+import error from "@/pages/error/error.vue";
+import SearchResults from "@/pages/search/SearchResults.vue";
+import PostPage from "@/pages/post/PostPage.vue";
 
 import './assets/main.css'
 
