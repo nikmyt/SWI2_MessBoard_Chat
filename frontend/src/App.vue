@@ -6,7 +6,7 @@ import ErrorTester from "@/pages/error/ErrorTester.vue";
 <template>
   <!--You can put a page here but it's better to "route" it.-->
   <main>
-    <ErrorTester />
+    <MainPage />
     <!--MainPage, ErrorTester-->
   </main>
 </template>
