@@ -11,7 +11,7 @@ export class ApiClient{
     public static async getComments(postId: number): Promise<CommentModel[]> {
         //TODO: hook up to correct GET
         //TODO: actually use the method!
-        const response = await fetch(`http://localhost:8080/posts/${postId}/comments`);
+        const response = await fetch(`http://localhost:8080/comment/` + postId);
         if(response.ok){
             return await response.json();
         }

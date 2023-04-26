@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.service;
 
 import cz.osu.java.messboardapp.model.BoardComment;
+import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,9 @@ public class CommentService
         return commrep.findBoardCommentByPostId(postId);
     }
 
+    public Iterable<BoardComment> findCommentsByPostId(BoardPost bPost)
+    {
+        return commrep.findBoardCommentsByPostId(bPost);
+    }
 
 }

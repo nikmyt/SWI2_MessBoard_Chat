@@ -68,7 +68,7 @@ export default {
     async fetchComments() {
       try {
         let comments;
-        comments = await ApiClient.getComments(this.post.id);
+        comments = await ApiClient.getComments(this.post.postId);
         this.comments = comments;
       } catch (error) {
         console.error(error);
