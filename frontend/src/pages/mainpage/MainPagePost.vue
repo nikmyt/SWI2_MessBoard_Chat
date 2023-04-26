@@ -1,23 +1,33 @@
 <template>
   <div class="post">
-    <div class="post__content">
-      <h2 class="post__title">Title: {{ post.title }}</h2>
-      <p class="post__description">Time: {{ post.createdAt }}</p>
-      <p class="post__user">UserID: {{post.user ? post.user.userId : ''}}</p>
-      <p class="post__username">Username: {{post.user ? post.user.username : ''}}</p>
-
-      <!-- interesting, if theres user-->
-    </div>
+      <!-- @click="goToPostPage(post)" -->
+      <div class="post__content">
+        <router-link :to="{ name: 'PostPage',
+           params: { postId: post.postId,
+           //createdAt: post.createdAt, title: post.title, username: post.user.userId, text: post.text
+           } }" class="post-link">
+          <h2 class="post__title">Title: {{ post.title }}</h2>
+        </router-link>
+        <p class="post__description">Time: {{ post.createdAt }}</p>
+        <p class="post__username">Username: {{ post.user ? post.user.username : '' }}</p>
+        <p>{{post.text}}</p>
+      </div>
   </div>
 </template>
 
 <script>
+//great, so more null value not showing errors
+import PostPage from "../post/PostPage.vue"
 export default {
   name: "mainPagePost.vue",
   props:
       {
         post: Object
-      }
+      }, methods: {
+  goToPostPage(post) {
+    this.$router.push({ name: "PostPage", params: { postId: post.id } });
+  }
+  }
 }
 </script>
 
@@ -50,5 +60,6 @@ export default {
 .post-username {
   flex-grow: 1;
 }
+
 
 </style>

@@ -178,3 +178,9 @@ header {
         flex: 1;
     }
 }
+
+.post-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}

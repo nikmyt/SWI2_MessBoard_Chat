@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHistory, createWebHashHistory, RouterLink } from "vue-router"
+
 
 import App from './App.vue'
 import MainPage from "@/pages/mainpage/MainPage.vue";
@@ -11,24 +12,28 @@ import './assets/main.css'
 
 
 const routes = [
-    { path: '/', component: MainPage },
-    { path: '/about', component: MainPage },
+    { path: '/', name: "MainPage" || "Main", component: MainPage },
+    { path: '/about', component: error },
     { path: '/*', component: error },
     { path: '/search/:query', name: 'SearchResults', component: SearchResults },
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {
-                id: route.params.postId,
-                // You can pass any other post data you have as props here
+                postId: route.params.postId,
+                //title: route.params.title,
+                //text: route.params.text,
+                //createdAt: route.params.createdAt,
+                //username: route.params.username
+                //due to bad entries, doesn't show nulls, commented for demo purposes
             }
         })
     }
 ]
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes, // short for `routes: routes`
-    //mode: history
+    history: createWebHistory('/'),
+    mode: 'history',
+    routes // short for `routes: routes`
 })
 
 const app = createApp(App) //app?
