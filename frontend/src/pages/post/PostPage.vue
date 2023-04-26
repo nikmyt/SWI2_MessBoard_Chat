@@ -14,15 +14,15 @@
         <!-- Main content in the center -->
         <div class="post-page">
           <div class="post-page__content">
-            <h1>{{ post.title }}</h1>
-            <p>Posted by {{ post.user.username }} on {{ post.createdAt }}</p>
-            <p>{{ post.text }}</p>
+            <h1>{{ post.title || "" }}</h1>
+            <p>Posted by {{ post.user?.username || "" }} on {{ post.createdAt || "" }}</p>
+            <p>{{ post.text || "" }}</p>
           </div>
           <div class="post-page__comments">
             <h2>Comments:</h2>
             <div v-for="comment in comments" :key="comment.id">
               <p>{{ comment.text }}</p>
-              <p>Commented by {{ comment.user.username }} on {{ comment.createdAt }}</p>
+              <p>Commented by {{ comment.user?.username || "" }} on {{ comment.createdAt || "" }}</p>
             </div>
           </div>
         </div>
@@ -39,29 +39,40 @@
 import TopBar from "@/pages/pageElements/TopBar.vue";
 import LeftMenu from "@/pages/pageElements/LeftMenu.vue";
 import RightMenu from "@/pages/pageElements/RightMenu.vue";
+import Footer from "@/pages/pageElements/Footer.vue";
+import {ApiClient} from "@/client/ApiClient";
 
 export default {
   name: "PostPage",
-  components: {RightMenu, LeftMenu, TopBar},
+  components: {RightMenu, LeftMenu, TopBar, Footer},
   props: {
-    post: {
-      type: Object, //as PostModel, //sadly not PostModel. but post? sure. no?
-      required: true
-    }
   },
   data() {
     return {
+      post: {},
       comments: []
     };
   },
-  mounted() {
-    this.fetchComments();
+  async mounted() {
+    const postId = this.$route.params.postId;
+    try {
+      let post;
+      post = await ApiClient.getPost(postId);
+      this.post = post;
+      await this.fetchComments();
+    } catch (error) {
+      console.error(error);
+    }
   },
   methods: {
     async fetchComments() {
-      const response = await fetch(`/api/posts/${this.post.postId}/comments`);
-      const data = await response.json();
-      this.comments = data.comments;
+      try {
+        let comments;
+        comments = await ApiClient.getComments(this.post.id);
+        this.comments = comments;
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };

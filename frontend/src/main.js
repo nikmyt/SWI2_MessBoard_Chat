@@ -20,10 +20,14 @@ const routes = [
         props: route => ({
             post: {
                 postId: route.params.postId,
-                //title: route.params.title,
-                //text: route.params.text,
-                //createdAt: route.params.createdAt,
-                //username: route.params.username
+
+
+                title: route.params.title,
+                text: route.params.text,
+                createdAt: route.params.createdAt,
+                username: route.params.username
+
+
                 //due to bad entries, doesn't show nulls, commented for demo purposes
             }
         })
