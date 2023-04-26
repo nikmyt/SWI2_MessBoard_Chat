@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<BoardComment, Integer>
 {
-        public BoardComment findBoardCommentByPostId(int postId);
+        public Iterable<BoardComment> findBoardCommentByPostId(int postId);
 
 
 

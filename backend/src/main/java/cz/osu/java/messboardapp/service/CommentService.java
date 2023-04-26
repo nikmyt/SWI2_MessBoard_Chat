@@ -16,7 +16,7 @@ public class CommentService
         this.commrep=commentRepository;
     }
 
-    public BoardComment findCommentByPostId(int postId)
+    public Iterable<BoardComment> findCommentByPostId(int postId)
     {
         return commrep.findBoardCommentByPostId(postId);
     }

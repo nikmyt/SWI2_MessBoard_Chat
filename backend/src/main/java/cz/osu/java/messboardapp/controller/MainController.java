@@ -57,8 +57,8 @@ public class MainController
     }
 
     @GetMapping("/comment/{post_id}")
-    public BoardComment getByPostId(@PathVariable("id") Integer id){
-        BoardComment bComm = commentService.findCommentByPostId(id);
+    public Iterable<BoardComment> getByPostId(@PathVariable("id") Integer id){
+        Iterable<BoardComment> bComm = commentService.findCommentByPostId(id);
 
         return bComm;
 

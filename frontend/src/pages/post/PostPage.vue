@@ -1,6 +1,6 @@
 <template>
 
-  <link rel="stylesheet" href="src/assets/mainpage.css"> <!-- what do you mean 'head'? -->
+  <link rel="stylesheet" href="/src/assets/mainpage.css"> <!-- what do you mean 'head'? -->
 
   <div>
     <header>
