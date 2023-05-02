@@ -43,6 +43,7 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
 <script>
 import axios from 'axios'
 import PostPage from "@/pages/post/PostPage.vue";
+import {ApiClient} from "@/client/ApiClient";
 
 export default {
   name: "MainPage",
@@ -56,22 +57,11 @@ export default {
   },
   methods: {
     async fetchPosts() {
-      // Make an API call to fetch the posts
-      //mounted();
+      this.posts = await ApiClient.getPosts();
     }
   },
-  created() {
-    this.fetchPosts();
-  },
   mounted() {
-    axios.get('http://localhost:8080/posts')
-        .then(response =>
-        {
-          this.posts = response.data //for single post [response.data]
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    this.fetchPosts();
   }
 }
 </script>

@@ -38,12 +38,28 @@ export default {
           password: this.password
         });
         localStorage.setItem("token", response.token);
+        localStorage.setItem("user", this.username)
         console.log("Logged in!")
+        this.$router.push('/');
         // Redirect to homepage or a protected route
       } catch (error) {
         console.log("Sorry! Couldn't log in!")
         console.log(error);
         //Error popup: Sorry! Coulndn't log in!
+      }
+    },
+    async loginFake() {
+      const response = await ApiClient.authenticate({
+        username: this.username,
+        password: this.password
+      });
+      if (response.token) {
+        this.$store.commit('setUser', response.user);
+        this.$router.push('/');
+        console.log("Good login.")
+      } else {
+        console.log("Bad login.")
+        this.errorMessage = response.message;
       }
     }
   }
