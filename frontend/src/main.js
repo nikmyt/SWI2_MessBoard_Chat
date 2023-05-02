@@ -9,6 +9,7 @@ import SearchResults from "@/pages/search/SearchResults.vue";
 import PostPage from "@/pages/post/PostPage.vue";
 
 import './assets/main.css'
+import LoginPage from "@/pages/login/LoginPage.vue";
 
 
 const routes = [
@@ -16,6 +17,11 @@ const routes = [
     { path: '/about', component: error },
     { path: '/*', component: error },
     { path: '/search/:query', name: 'SearchResults', component: SearchResults },
+    //{ path: '/login/:credentials', name: 'LoginPage', component: LoginPage, props: route => ({
+    //        username: route.params.username,
+    //        password: route.params.password
+    //    }) },
+    { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {

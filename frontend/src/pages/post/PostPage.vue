@@ -6,23 +6,21 @@
     <header>
       <TopBar />
     </header>
-
     <div class="container">
       <LeftMenu />
-
       <main class="main-content">
         <!-- Main content in the center -->
         <div class="post-page">
           <div class="post-page__content">
-            <h1>{{ post.title || "" }}</h1>
-            <p>Posted by {{ post.user?.username || "" }} on {{ post.createdAt || "" }}</p>
+            <h2>{{ post.title || "" }}</h2>
+            <h6>Posted by {{ post.user?.username || "" }} on {{ post.createdAt || "" }}</h6>
             <p>{{ post.text || "" }}</p>
           </div>
           <div class="post-page__comments">
-            <h2>Comments:</h2>
+            <h3>Comments:</h3>
             <div v-for="comment in comments" :key="comment.id">
+              <h6>Commented by {{ comment.user?.username || "" }} on {{ comment.createdAt || "" }}</h6>
               <p>{{ comment.text }}</p>
-              <p>Commented by {{ comment.user?.username || "" }} on {{ comment.createdAt || "" }}</p>
             </div>
           </div>
         </div>

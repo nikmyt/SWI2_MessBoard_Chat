@@ -13,15 +13,26 @@ blush purple: 8a6f91
 @import url('https://fonts.googleapis.com/css?family=Merriweather&display=swap'); /* body */
 @import url('https://fonts.googleapis.com/css?family=Nunito Sans&display=swap'); /* body */
 
+@import url('https://fonts.googleapis.com/css?family=Oswald&display=swap'); /* */
+@import url('https://fonts.googleapis.com/css?family=Ysabeau&display=swap'); /* */
+
 h1 {
     font-family: 'Freckle Face', cursive; /* freckle is great! */
     font-size: xxx-large;
 }
 
-p {
-    font-family: 'Merriweather', cursive; /* got strange website vibes */
+h2 {
+    font-family: 'Oswald', cursive;
+    font-size: xx-large;
 }
 
+h6{
+    font-family: 'Merriweather', cursive;
+}
+
+p {
+    font-family: 'Ysabeau', cursive;
+}
 
 /* Set background color and font family */
 body {

@@ -11,11 +11,4 @@ public interface CommentRepository extends JpaRepository<BoardComment, Integer>
         Iterable<BoardComment> findBoardCommentByPostId(int postId);
 
         Iterable<BoardComment> findBoardCommentsByPostId(BoardPost bPost);
-
-
-
-
-
-
-
 }

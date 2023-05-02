@@ -11,7 +11,7 @@ export class ApiClient{
     public static async getComments(postId: number): Promise<CommentModel[]> {
         //TODO: hook up to correct GET
         //TODO: actually use the method!
-        const response = await fetch(`http://localhost:8080/comment/` + postId);
+        const response = await fetch('http://localhost:8080/comment/' + postId);
         if(response.ok){
             return await response.json();
         }
@@ -58,5 +58,17 @@ export class ApiClient{
         console.log("Couldn't post comment! Try again!");
     }
 
-    //get user? filter by?
+    public static async authenticate(credentials) {
+        const response = await fetch(`http://localhost:8080/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(credentials)
+        });
+        if (response.ok) {
+            return await response.json();
+        }
+        throw new Error(await response.json());
+    }
 }
