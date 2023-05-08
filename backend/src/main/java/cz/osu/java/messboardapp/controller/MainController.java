@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.controller;
 
 import cz.osu.java.messboardapp.Form.AuthForm;
+import cz.osu.java.messboardapp.Form.RegistrationForm;
 import cz.osu.java.messboardapp.json.UserToken;
 import cz.osu.java.messboardapp.model.BoardComment;
 import cz.osu.java.messboardapp.model.BoardPost;
@@ -23,11 +24,13 @@ import java.util.Optional;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MainController
 {
-    private final AppUserRepository userRepository; //i don't think this is correct bro
+    private final AppUserRepository userRepository; //I don't think this is correct bro
+    //Sure it is sis
     private final RegistrationService registrationService;
     private final AuthService authService;
     private final PostService postService;
     private final CommentService commentService;
+
 
     public MainController(AppUserRepository userRepository, RegistrationService registrationService, AuthService authService, PostService postService, CommentService commentService) {
         this.userRepository = userRepository;
@@ -35,6 +38,7 @@ public class MainController
         this.authService = authService;
         this.postService = postService;
         this.commentService = commentService;
+        //uToken = null;
     }
 
 
@@ -73,22 +77,35 @@ public class MainController
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> login(@RequestBody AuthForm authForm) {
-        BoardUser user = userRepository.findAppUserByUsername(authForm.getUsername());
-        if (user != null) {
-            if (user.getPassword().equals(authForm.getPassword())) {
-                UserToken userToken = new UserToken(user.getUserId(), user.getUsername());
-                return ResponseEntity.ok(userToken);
-            } else {
-                return ResponseEntity.badRequest().body("Incorrect password");
-            }
-        } else {
-            return ResponseEntity.badRequest().body("Incorrect username");
-        }
+
+        AuthService authService = new AuthService(userRepository);
+
+        ResponseEntity<Object> responseEntity = authService.authenticate(authForm);
+
+        return responseEntity;
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> register(@RequestBody RegistrationForm registrationForm)
+    {
+        RegistrationService rService = new RegistrationService(userRepository);
+        return rService.register(registrationForm);
+
+    }
+
+    @PostMapping("/deluser")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> delete(BoardUser user, UserToken uToken)
+    {
+        RegistrationService rService = new RegistrationService(userRepository);
+        return rService.delete(user, uToken);
+
     }
 
 }
 
-// %20 is a space in a url
+// %20 is a space in an url
 //possibly in the future: search?name=l&year=2005
 
 //To test:

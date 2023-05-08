@@ -45,7 +45,7 @@ export default {
       } catch (error) {
         console.log("Sorry! Couldn't log in!")
         console.log(error);
-        //Error popup: Sorry! Coulndn't log in!
+        //Error popup: Sorry! Couldn't log in!
       }
     },
     async loginFake() {

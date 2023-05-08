@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.service;
 
 
+import cz.osu.java.messboardapp.json.UserToken;
 import cz.osu.java.messboardapp.model.BoardUser;
 import cz.osu.java.messboardapp.Form.RegistrationForm;
 import cz.osu.java.messboardapp.repository.AppUserRepository;
@@ -37,5 +38,18 @@ public class RegistrationService
 
 
 
+    }
+
+    public ResponseEntity<String> delete(BoardUser bUser, UserToken uToken)
+    {
+        if(bUser.getUserId() == uToken.getUserId())
+        {
+            userRepository.delete(bUser);
+            return new ResponseEntity<>("Account was deleted", HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>("Account couldn't be deleted", HttpStatus.BAD_REQUEST);
+        }
     }
 }
