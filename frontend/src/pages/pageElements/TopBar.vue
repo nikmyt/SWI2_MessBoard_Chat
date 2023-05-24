@@ -1,9 +1,9 @@
 <template>
   <!-- Logo and search bar -->
-  <router-link :to="{ name: 'MainPage' }" class="post-link">
+  <router-link :to="{ name: 'MainPage' }" class="logo-link">
     <div class="logo">
       <img src="/src/assets/piggers.svg" alt="Logo">
-      <!--TODO make it clickable to get back to main page and everywhere-->
+      <!--TODONE make it clickable to get back to main page and everywhere-->
     </div>
   </router-link>
   <router-link :to="{ name: 'MainPage'}" >
@@ -22,7 +22,7 @@
   </div>
 
   <div class="user-info">
-    <p>Logged in as {{ username }}</p>
+    <p class="login-text">Logged in as {{ username }}</p>
     <button @click="login">Login or change user</button>
     <button @click="logout">Logout</button>
   </div>
@@ -65,5 +65,23 @@ export default {
 </script>
 
 <style scoped>
+
+.search input {
+  border-radius: 20px;
+  padding: 10px;
+  background-color: #5d536c; /*34495e*/
+  border: none;
+  color: white;
+}
+
+.login-text{
+  color: #dedbe3;
+}
+
+.logo-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 </style>

@@ -12,4 +12,11 @@ export default {
 
 <style scoped>
 
+.footer{
+  color: #dedbe3;
+  flex: 1;
+  padding: 10pt;
+  margin: 10pt;
+}
+
 </style>

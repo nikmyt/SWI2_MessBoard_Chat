@@ -1,4 +1,8 @@
 @import './base.css';
+
+small {
+    font-size: x-small;
+}
 /*
 #app {
   max-width: 1280px;

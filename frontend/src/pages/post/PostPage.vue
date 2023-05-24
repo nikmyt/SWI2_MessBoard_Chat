@@ -19,8 +19,10 @@
           <div class="post-page__comments">
             <h3>Comments:</h3>
             <div v-for="comment in comments" :key="comment.id">
+              <div class="comment">
               <h6>Commented by {{ comment.user?.username || "" }} on {{ comment.createdAt || "" }}</h6>
               <p>{{ comment.text }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -77,5 +79,14 @@ export default {
 </script>
 
 <style scoped>
+
+.comment {
+  width: 500pt; /*TODO make this work on other displays apart from 1080p*/
+  display: -ms-flexbox;
+  align-items: stretch;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid gray;
+}
 
 </style>

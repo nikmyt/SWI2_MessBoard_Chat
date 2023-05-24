@@ -8,9 +8,9 @@
            } }" class="post-link">
           <h2 class="post__title">Title: {{ post.title }}</h2>
         </router-link>
-        <p class="post__description">Time: {{ post.createdAt }}</p>
+        <p class="post__description">Time: {{ post.createdAt }}</p> <!-- TODO format time-->
         <p class="post__username">Username: {{ post.user ? post.user.username : '' }}</p>
-        <p>{{post.text}}</p>
+        <h4> {{post.text}}</h4>
       </div>
   </div>
 </template>
@@ -35,6 +35,12 @@ export default {
 
 .body {
   color: #dedbe3;
+}
+
+.post-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .post {

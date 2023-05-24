@@ -40,12 +40,13 @@ export class ApiClient{
     }
 
     public static async createPost(post: PostForm): Promise<PostModel> {
-        const token = localStorage.getItem('token'); // retrieve the token from localStorage
+        //const token = localStorage.getItem('token');
+        //could re-authenticate here but that's a little silly, no?
         const response = await fetch('http://localhost:8080/posts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // add the token to the request headers
+                //'Authorization': `Bearer ${token}` // cool idea. actually don't
             },
             body: JSON.stringify(post)
         });

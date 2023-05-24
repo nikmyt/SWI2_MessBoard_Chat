@@ -7,6 +7,7 @@ import MainPage from "@/pages/mainpage/MainPage.vue";
 import error from "@/pages/error/error.vue";
 import SearchResults from "@/pages/search/SearchResults.vue";
 import PostPage from "@/pages/post/PostPage.vue";
+import CreatePost from "@/pages/createPost/CreatePost.vue";
 
 import './assets/main.css'
 import LoginPage from "@/pages/login/LoginPage.vue";
@@ -17,11 +18,8 @@ const routes = [
     { path: '/about', component: error },
     { path: '/*', component: error },
     { path: '/search/:query', name: 'SearchResults', component: SearchResults },
-    //{ path: '/login/:credentials', name: 'LoginPage', component: LoginPage, props: route => ({
-    //        username: route.params.username,
-    //        password: route.params.password
-    //    }) },
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
+    { path: '/createPost', name: 'CreatePost', component: CreatePost},
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {

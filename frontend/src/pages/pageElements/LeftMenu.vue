@@ -1,13 +1,9 @@
 <template>
   <aside class="sidebar-left">
-    <!-- Sidebar on the left. not really. TODO -->
-    <h2>Other pages</h2>
-    <ul>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
-      <li><a href="#">Page 3</a></li>
-      <p>Some description</p>
-    </ul>
+    <!-- Sidebar on the left. What with it? Also, needs to be consistent size.-->
+    <h2>Welcome!</h2>
+    <p>This is a place to share insights and topics, in the form of posts and comments. We encourage discussion.</p>
+    <small>Please don't post illegal things. :( </small>
   </aside>
 </template>
 
@@ -18,5 +14,9 @@ export default {
 </script>
 
 <style scoped>
+
+.sidebar-left {
+  width: 200px;
+}
 
 </style>

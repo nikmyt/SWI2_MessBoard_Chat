@@ -61,14 +61,6 @@ header {
     color: #dedbe3;
 }
 
-.search input {
-    border-radius: 20px;
-    padding: 10px;
-    background-color: #5d536c; /*34495e*/
-    border: none;
-    color: white;
-}
-
 .hamburger-menu {
     display: none;
     cursor: pointer;
@@ -147,14 +139,7 @@ header {
     margin-bottom: 0;
 }
 
-.footer{
-    color: #dedbe3;
-    flex: 1;
-    padding: 10pt;
-    margin: 10pt;
-}
-
-/* Media queries for responsive design */
+/* "Media queries for responsive design" what does that mean? investigate */
 @media (max-width: 768px) {
     header {
         flex-wrap: wrap;
@@ -188,10 +173,4 @@ header {
     .sidebar-right {
         flex: 1;
     }
-}
-
-.post-link {
-    color: inherit;
-    text-decoration: none;
-    cursor: pointer;
 }

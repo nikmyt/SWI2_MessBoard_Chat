@@ -57,10 +57,10 @@ export default {
       } catch (error) {
         console.log("Sorry! Couldn't log in!")
         console.log(error);
-        //Error popup: Sorry! Couldn't log in!
+        //TODO: Error popup: Sorry! Couldn't log in!
       }
     },
-    async loginFake() {
+    async loginTrue() {
       const response = await ApiClient.authenticate({
         username: this.username,
         password: this.password
