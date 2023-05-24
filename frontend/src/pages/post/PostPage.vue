@@ -12,15 +12,15 @@
         <!-- Main content in the center -->
         <div class="post-page">
           <div class="post-page__content">
-            <h2>{{ post.title || "" }}</h2>
-            <h6>Posted by {{ post.user?.username || "" }} on {{ post.createdAt || "" }}</h6>
-            <p>{{ post.text || "" }}</p>
+            <h2>{{ post.title || 'Invalid title' }}</h2>
+            <h6>Posted by {{ post.user?.username || 'Invalid user' }} on {{ post.createdAt || 'Invalid time' }}</h6>
+            <h4>{{ post.text || 'Invalid content' }}</h4>
           </div>
           <div class="post-page__comments">
-            <h3>Comments:</h3>
+            <p>Comments:</p>
             <div v-for="comment in comments" :key="comment.id">
               <div class="comment">
-              <h6>Commented by {{ comment.user?.username || "" }} on {{ comment.createdAt || "" }}</h6>
+              <h6>Commented by {{ comment.user?.username || 'Invalid user' }} on {{ comment.createdAt || 'Invalid time' }}</h6>
               <p>{{ comment.text }}</p>
               </div>
             </div>
@@ -56,7 +56,7 @@ export default {
   async mounted() {
     const postId = this.$route.params.postId;
     try {
-      let post;
+      var post;
       post = await ApiClient.getPost(postId);
       this.post = post;
       await this.fetchComments();
@@ -67,7 +67,7 @@ export default {
   methods: {
     async fetchComments() {
       try {
-        let comments;
+        var comments;
         comments = await ApiClient.getComments(this.post.postId);
         this.comments = comments;
       } catch (error) {

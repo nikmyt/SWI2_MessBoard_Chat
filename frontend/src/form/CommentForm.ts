@@ -1,10 +1,11 @@
-export class PostForm {
+export class CommentForm {
+    //TODO!!! Comment form is not correct yet
     title: string;
     text: string;
     tag: string;
     user: string;
 
-    constructor(title: string, text: string, tag: string) {
+    constructor(title: string, text: string, tag: string, user: string) {
         this.title = title;
         this.text = text;
         this.tag = tag;

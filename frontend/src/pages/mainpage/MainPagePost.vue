@@ -6,11 +6,11 @@
            params: { postId: post.postId,
            //createdAt: post.createdAt, title: post.title, username: post.user.userId, text: post.text
            } }" class="post-link">
-          <h2 class="post__title">Title: {{ post.title }}</h2>
+          <h2 class="post__title">Title: {{ post.title ? post.title : 'Invalid title' }}</h2>
         </router-link>
-        <p class="post__description">Time: {{ post.createdAt }}</p> <!-- TODO format time-->
-        <p class="post__username">Username: {{ post.user ? post.user.username : '' }}</p>
-        <h4> {{post.text}}</h4>
+        <p class="post__description">Time: {{ post.createdAt ? post.createdAt : 'Ivalid time created' }}</p> <!-- TODO format time-->
+        <p class="post__username">Username: {{ post.user?.user ? post.user.user : 'Invalid user' }} </p> <!-- TODONE?: make bad users show error-->
+        <h4> {{post.text ? post.text : 'Invalid text'}}</h4>
       </div>
   </div>
 </template>

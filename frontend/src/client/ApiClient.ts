@@ -2,12 +2,12 @@ import {CommentModel} from "../model/CommentModel";
 import {PostModel} from "../model/PostModel";
 import {AuthForm} from "../form/AuthForm";
 import {PostForm} from "../form/PostForm";
+import {CommentForm} from "../form/CommentForm";
 
 declare var Promise: any;
 //TODO: add es2015 to your --lib option in your TypeScript configuration file (tsconfig.json) to include the Promise constructor in your project.
 
 export class ApiClient{
-    //well, this isn't axios 🥴
     //create, read, update, delete, (list)
 
     public static async getComments(postId: number): Promise<CommentModel[]> {
@@ -41,8 +41,8 @@ export class ApiClient{
 
     public static async createPost(post: PostForm): Promise<PostModel> {
         //const token = localStorage.getItem('token');
-        //could re-authenticate here but that's a little silly, no?
-        const response = await fetch('http://localhost:8080/posts', {
+        //could re-authenticate here but that's a little silly, no? it'd be extra safe tho.
+        const response = await fetch('http://localhost:8080/new_post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,6 +58,75 @@ export class ApiClient{
         }
     }
 
+    public static async deletePost(postId: number): Promise<void> {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8080/posts/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
+
+    public static async updatePost(postId: number, post: PostForm): Promise<PostModel> {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8080/posts/${postId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(post)
+        });
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
+
+    public static async deleteComment(commentId: number): Promise<void> {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8080/comments/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
+
+    public static async updateComment(commentId: number, comment: CommentForm): Promise<CommentModel> {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8080/comments/${commentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(comment)
+        });
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
 
     public static async authenticate(credentials: AuthForm): Promise<string> {
         const response = await fetch('http://localhost:8080/login', {

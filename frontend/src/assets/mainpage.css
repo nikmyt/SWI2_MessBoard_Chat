@@ -120,7 +120,6 @@ header {
     text-decoration: none;
 }
 
-/* Style main content */
 .main-content {
     background-color: #f2f2f2;
     padding: 20px;
@@ -130,7 +129,6 @@ header {
     margin-top: 0;
 }
 
-/* Style sidebar on the right */
 .sidebar-right h2 {
     margin-top: 0;
 }

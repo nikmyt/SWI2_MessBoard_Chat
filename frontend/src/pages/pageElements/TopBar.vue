@@ -22,9 +22,11 @@
   </div>
 
   <div class="user-info">
-    <p class="login-text">Logged in as {{ username }}</p>
+    <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
+    <p class="login-text" v-else> Not logged in.</p>
     <button @click="login">Login or change user</button>
     <button @click="logout">Logout</button>
+    <button @click="register">Register</button>
   </div>
 </template>
 
@@ -32,7 +34,8 @@
 export default {
   data() {
     return {
-      username: ''
+      username: '',
+      isLoggedIn: localStorage.getItem("user") !== null, //kind of hate how this is on every page
     };
   },
   mounted() {
@@ -40,7 +43,7 @@ export default {
     if (user) {
       this.username = user;
     } else {
-      this.username = "Not logged in."
+      this.username = null //okay, somehow my logout null checks worked despite me setting it as not-null.
     }
     /*const token = localStorage.getItem('token'); // retrieve the token from localStorage
     if (token) {
@@ -55,7 +58,6 @@ export default {
       localStorage.removeItem('token'); // remove the token from localStorage
       localStorage.removeItem("user");
       window.location.reload();
-      //this.$router.push('/login'); // navigate to the login page
     },
     login(){
       this.$router.push('/login');

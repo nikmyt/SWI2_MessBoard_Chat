@@ -8,7 +8,7 @@
     <LeftMenu />
 
     <main class="main-content">
-      <h1>Login</h1>
+      <h1>Login or change user</h1>
       <div class="login-form">
         <form @submit.prevent="login">
           <label for="username">Username:</label>

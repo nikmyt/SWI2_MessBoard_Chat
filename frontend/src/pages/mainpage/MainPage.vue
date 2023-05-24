@@ -21,7 +21,7 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
 
       <main class="main-content">
         <!-- Main content in the center -->
-        <h1>b/all</h1>
+        <h1>The Board:</h1>
         <div class="posts">
           <!-- Load posts from database using Axios. TODO post pagination -->
           <div v-for="post in posts" :key="post.postId">
