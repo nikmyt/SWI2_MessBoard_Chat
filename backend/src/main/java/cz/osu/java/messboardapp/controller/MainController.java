@@ -26,6 +26,8 @@ public class MainController
 {
     private final AppUserRepository userRepository; //I don't think this is correct bro
     //Sure it is sis
+    //sorry 🥺 but you commented it out yourself!
+
     private final RegistrationService registrationService;
     private final AuthService authService;
     private final PostService postService;

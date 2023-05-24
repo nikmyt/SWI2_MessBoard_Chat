@@ -6,7 +6,10 @@
       <!--TODO make it clickable to get back to main page and everywhere-->
     </div>
   </router-link>
-  <h1 class="title">MessBoard</h1>
+  <router-link :to="{ name: 'MainPage'}" >
+    <h1 class="title">MessBoard</h1>
+  </router-link>
+
   <div class="search">
     <input type="text" placeholder="Search for boards, users, terms...">
   </div>

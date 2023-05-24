@@ -9,7 +9,7 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
 </script>
 
 <template>
-  <link rel="stylesheet" href="src/assets/mainpage.css"> <!-- what do you mean 'head'? -->
+  <link rel="stylesheet" href="src/assets/mainpage.css">
 
   <div>
     <header>

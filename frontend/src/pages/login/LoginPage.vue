@@ -1,29 +1,41 @@
 <template>
   <header>
+    <link rel="stylesheet" href="src/assets/mainpage.css">
     <TopBar />
   </header>
 
-  <div class="login-form">
-    <form @submit.prevent="login">
-      <label for="username">Username:</label>
-      <input type="text" id="username" v-model="username">
-      <label for="password">Password:</label>
-      <input type="password" id="password" v-model="password">
-      <button type="submit">Login</button>
+  <div class="container">
+    <LeftMenu />
 
-    </form>
+    <main class="main-content">
+      <h1>Login</h1>
+      <div class="login-form">
+        <form @submit.prevent="login">
+          <label for="username">Username:</label>
+          <input type="text" id="username" v-model="username">
+          <label for="password">Password:</label>
+          <input type="password" id="password" v-model="password">
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </main>
+    <RightMenu />
   </div>
 
   <Footer />
+
 </template>
 
 <script>
 import {ApiClient} from "@/client/ApiClient";
 import Footer from "@/pages/pageElements/Footer.vue";
+import TopBar from "@/pages/pageElements/TopBar.vue";
+import RightMenu from "@/pages/pageElements/RightMenu.vue";
+import LeftMenu from "@/pages/pageElements/LeftMenu.vue";
 
 export default {
   name: "LoginPage",
-  components: {Footer, ApiClient},
+  components: {Footer, ApiClient, TopBar, LeftMenu, RightMenu},
   data() {
     return {
       username: "",
