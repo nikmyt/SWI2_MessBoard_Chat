@@ -8,6 +8,7 @@ import cz.osu.java.messboardapp.repository.PostRepository;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 @Getter
@@ -21,39 +22,53 @@ public class PostForm
 
     private String tag;
 
+    private String username;
+
     @Setter(AccessLevel.NONE)
     private boolean temp;
 
     @Setter(AccessLevel.NONE)
     private Date createdAt;
 
+    /*
     @Setter(AccessLevel.NONE)
     private Integer userId;
+    */
 
     @Setter(AccessLevel.NONE)
     private Integer postId;
 
-    public void setCreatedAt(java.sql.Timestamp createdAt) {
-        this.createdAt = new Date(createdAt.getTime());
-    }
+    //what?!
+    //public void setCreatedAt(java.sql.Timestamp createdAt) {
+    //    this.createdAt = new Date(createdAt.getTime());
+    //}
 
-    public void setUser(BoardUser user) {
-        this.userId = user.getUserId();
-    }
-
-    public void PostForm(boolean temp, String title, String text, String tag, BoardUser user)
+    public void PostForm(String title, String text, String tag, String username)
     {
+        this.title = title;
+        this.text = text;
+        this.tag = tag;
+        this.username = username;
+        this.createdAt = Calendar.getInstance().getTime();
+        this.temp = false;
 
+        //Explanation on why i changed everything: This works on the presumption we get a complete
+        //BoardUser back from frontend. However, front end should not be returning a user
+        //with email and PASSWORD attached!
+        /*
         BoardPost bPost = new BoardPost();
         bPost.setTag(tag);
         bPost.setText(text);
         bPost.setTitle(title);
         bPost.setTemp(false);
-        int find = (int) postRep.count();
-        bPost.setPostId(find+1);
         bPost.setUser(user);
-        bPost.setCreatedAt(new Date());
+        bPost.setCreatedAt(Calendar.getInstance().getTime());
+        */
 
-        postRep.save(bPost);
+        int find = (int) postRep.count();
+        this.postId = find+1;
+
+        //don't save it here!!! it creates duplis
+        //postRep.save(bPost);
     }
 }

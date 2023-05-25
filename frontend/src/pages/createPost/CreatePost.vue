@@ -21,7 +21,7 @@
             <option v-for="category in categories" :key="category">{{ category }}</option>
           </select-->
           <button @click="createPost" v-if=isLoggedIn type="submit"> Submit post </button>
-          <button v-else disabled> Log in to submit posts, ya cheeky bastard</button>
+          <button v-else disabled> Log in to submit posts, cheeky!</button>
         </form>
       </div>
     </main>
@@ -37,10 +37,11 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
 import LeftMenu from "@/pages/pageElements/LeftMenu.vue";
 import TopBar from "@/pages/pageElements/TopBar.vue";
 import {ApiClient} from "@/client/ApiClient";
+import Footer from "@/pages/pageElements/Footer.vue";
 
 export default {
   name: "CreatePost",
-  components: {LeftMenu, RightMenu, TopBar, ApiClient},
+  components: {LeftMenu, RightMenu, TopBar, ApiClient, Footer},
   data() {
     return {
       isLoggedIn: localStorage.getItem("user") !== null,
@@ -50,14 +51,20 @@ export default {
     }
   },methods: {
     async createPost() {
-      const post = {
-        title: this.newTitle,
-        text: this.newText,
-        tag: this.newTag,
-      };
-      await ApiClient.createPost(post);
-      //TODO: check if response good, then u can return. else throw error.
-      //this.$router.push('/');
+      if (this.newTitle, this.newText, this.newTag === ""){
+        console.log("Cannot create empty post!")
+        return;
+      } else {
+        const post = {
+          title: this.newTitle,
+          text: this.newText,
+          tag: this.newTag,
+          user: localStorage.getItem("user"),
+        };
+        await ApiClient.createPost(post);
+        //TODO: check if response good, then u can return. else throw error.
+        this.$router.push('/');
+      }
     },
   }
 }

@@ -9,6 +9,6 @@ export class PostForm {
         this.text = text;
         this.tag = tag;
         //this.user = user; //????
-        this.user = localStorage.getItem("user"); //TODO: well ok, but make it so you can't post if you aren't logged in
+        this.user = localStorage.getItem("user").toString(); //TODO: well ok, but make it so you can't post if you aren't logged in
     }
 }

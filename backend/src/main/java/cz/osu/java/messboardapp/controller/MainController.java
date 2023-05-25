@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.controller;
 
 import cz.osu.java.messboardapp.Form.AuthForm;
+import cz.osu.java.messboardapp.Form.PostForm;
 import cz.osu.java.messboardapp.Form.RegistrationForm;
 import cz.osu.java.messboardapp.json.UserToken;
 import cz.osu.java.messboardapp.model.BoardComment;
@@ -44,9 +45,10 @@ public class MainController
     }
 
 
-    @PostMapping("/new_post") // /new
-    public BoardPost create(@Valid @RequestBody BoardPost newPost){
-        return postService.save(newPost);
+    @PostMapping("/new_post") //sorry i made bad things here
+    public void create(@Valid @RequestBody PostForm newPost){
+        BoardUser user = userRepository.findAppUserByUsername(newPost.getUsername()); //urine
+        postService.save(newPost, user);
     }
 
 
