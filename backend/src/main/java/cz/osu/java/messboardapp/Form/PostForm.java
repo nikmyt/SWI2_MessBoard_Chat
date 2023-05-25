@@ -23,6 +23,7 @@ public class PostForm
     private String tag;
 
     private String username;
+    private int userId;
 
     @Setter(AccessLevel.NONE)
     private boolean temp;
@@ -43,7 +44,7 @@ public class PostForm
     //    this.createdAt = new Date(createdAt.getTime());
     //}
 
-    public void PostForm(String title, String text, String tag, String username)
+    public void PostForm(String title, String text, String tag, String username, int userId)
     {
         this.title = title;
         this.text = text;
@@ -52,23 +53,11 @@ public class PostForm
         this.createdAt = Calendar.getInstance().getTime();
         this.temp = false;
 
-        //Explanation on why i changed everything: This works on the presumption we get a complete
-        //BoardUser back from frontend. However, front end should not be returning a user
-        //with email and PASSWORD attached!
-        /*
-        BoardPost bPost = new BoardPost();
-        bPost.setTag(tag);
-        bPost.setText(text);
-        bPost.setTitle(title);
-        bPost.setTemp(false);
-        bPost.setUser(user);
-        bPost.setCreatedAt(Calendar.getInstance().getTime());
-        */
-
+        this.userId=userId;
         int find = (int) postRep.count();
         this.postId = find+1;
 
         //don't save it here!!! it creates duplis
-        //postRep.save(bPost);
+
     }
 }

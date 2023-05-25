@@ -16,6 +16,7 @@ public interface AppUserRepository extends CrudRepository<BoardUser, Integer>
     List<BoardUser> findAll();
     //BoardUser update(BoardUser user, Integer bUserID);
 
+    BoardUser findBoardUserByUserId(int userId);
     //void delete(Integer bUserID);
 
 

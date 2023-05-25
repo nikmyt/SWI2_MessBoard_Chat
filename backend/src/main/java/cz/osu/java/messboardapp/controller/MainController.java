@@ -47,7 +47,8 @@ public class MainController
 
     @PostMapping("/new_post") //sorry i made bad things here
     public void create(@Valid @RequestBody PostForm newPost){
-        BoardUser user = userRepository.findAppUserByUsername(newPost.getUsername()); //urine
+        //BoardUser user = userRepository.findAppUserByUsername(newPost.getUsername());
+        BoardUser user = userRepository.findBoardUserByUserId(newPost.getUserId());
         postService.save(newPost, user);
     }
 

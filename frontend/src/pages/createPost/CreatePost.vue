@@ -20,8 +20,8 @@
           <!--select v-model="newTaskCategory">
             <option v-for="category in categories" :key="category">{{ category }}</option>
           </select-->
-          <button @click="createPost" v-if=isLoggedIn type="submit"> Submit post </button>
-          <button v-else disabled> Log in to submit posts, cheeky!</button>
+          <button v-if="isLoggedIn" type="submit">Submit post</button>
+          <button v-else disabled>Log in to submit posts, cheeky!</button>
         </form>
       </div>
     </main>
@@ -44,13 +44,18 @@ export default {
   components: {LeftMenu, RightMenu, TopBar, ApiClient, Footer},
   data() {
     return {
-      isLoggedIn: localStorage.getItem("user") !== null,
+      isLoggedIn: localStorage.getItem('token') !== null,
       newTitle: "",
       newText: "",
       newTag: "",
+      newUser: "",
+      const: localStorage.getItem('token'),
+      createdAt: Date
     }
   },methods: {
+
     async createPost() {
+
       if (this.newTitle, this.newText, this.newTag === ""){
         console.log("Cannot create empty post!")
         return;
@@ -59,7 +64,9 @@ export default {
           title: this.newTitle,
           text: this.newText,
           tag: this.newTag,
-          user: localStorage.getItem("user"),
+          userId: this.const,
+          createdAt: new Date()
+
         };
         await ApiClient.createPost(post);
         //TODO: check if response good, then u can return. else throw error.

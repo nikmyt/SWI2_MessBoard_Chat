@@ -32,7 +32,7 @@ public class PostService
         post.setTag(newPost.getTag());
         post.setTemp(false); //temp temp
 
-        postRepo.save(post);
+        //postRepo.save(post);
         //return post; //please let this be fix of dupli issue
     }
 

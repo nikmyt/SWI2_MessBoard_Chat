@@ -49,7 +49,7 @@ export default {
           username: this.username,
           password: this.password
         });
-        localStorage.setItem("token", response.token);
+        //localStorage.setItem("token", response.token);
         localStorage.setItem("user", this.username)
         console.log("Logged in!")
         this.$router.push('/');

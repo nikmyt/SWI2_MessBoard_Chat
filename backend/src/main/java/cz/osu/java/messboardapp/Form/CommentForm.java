@@ -44,7 +44,7 @@ public class CommentForm
         BoardComment bC = new BoardComment();
         bC.setComment_id((int)comRep.count()+1);
         bC.setText(text);
-        bC.setUser(post.getUserId());
+        //bC.setUser(post.getUserId());
         bC.setPostId(post);
         bC.setCreatedAt(new Date());
         comRep.save(bC);
