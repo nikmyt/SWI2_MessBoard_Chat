@@ -1,6 +1,6 @@
 <template>
   <header>
-    <link rel="stylesheet" href="src/assets/mainpage.css">
+    <link rel="stylesheet" href="/src/assets/mainpage.css">
     <TopBar />
   </header>
 
@@ -8,13 +8,14 @@
     <LeftMenu />
 
     <main class="main-content">
-      <h1>Create a edit post</h1>
+      <h1>Edit post</h1>
       <div class="post-form">
         <form @submit.prevent="editPost">
           <label for="title">Title:</label>
           <input type="text" id="title" v-model="editTitle">
-          <label for="text">Text:</label>
-          <input type="text" id="text" v-model="editText">
+          <label for="text">Text</label>
+          <textarea id="text" v-model="editText" style="width: 375px; height: 200px; max-height: 800px; overflow-y: auto; resize: none;"></textarea>
+
           <label for="tag">Tag:</label>
           <input type="text" id="tag" v-model="editTag">
           <!--select v-model="editTaskCategory">
@@ -40,6 +41,7 @@ import {ApiClient} from "@/client/ApiClient";
 import Footer from "@/pages/pageElements/Footer.vue";
 
 export default {
+
   name: "CreatePost",
   components: {LeftMenu, RightMenu, TopBar, ApiClient, Footer},
   data() {
@@ -52,7 +54,21 @@ export default {
       const: localStorage.getItem('token'),
       createdAt: Date
     }
-  },methods: {
+  },
+  async mounted() {
+    // Assuming you have the post data available
+    const postId = this.$route.params.postId;
+    try {
+      const post = await ApiClient.getPost(postId);
+      this.post = post;
+    } catch (error) {
+      console.error(error);
+    }
+    this.editText = this.post.text;
+    this.editTag = this.post.tag;
+    this.editTitle = this.post.title;
+  },
+  methods: {
 
     async editPost() {
 

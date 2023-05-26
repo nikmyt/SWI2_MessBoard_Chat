@@ -13,6 +13,8 @@ import EditPost from "@/pages/editPost/EditPost.vue";
 
 import './assets/main.css'
 import LoginPage from "@/pages/login/LoginPage.vue";
+import { ApiClient } from "@/client/ApiClient";
+
 
 
 const routes = [
@@ -38,13 +40,18 @@ const routes = [
             }
         })
     },
-    { path: "/posts/:postId/edit", name: "EditPost", component: EditPost, beforeEnter: (to, from, next) => {
+
+    { path: "/edit/:postId", name: "EditPost", component: EditPost, beforeEnter: (to, from, next) => {
             const token = localStorage.getItem('token');
             const postId = to.params.postId;
 
             ApiClient.getPost(postId).then((post) => {
-                    if (post.userId == token.userId) {
+                const userId =JSON.stringify(post.user.userId);
+                    console.log("User id: " + userId + " token: " + token)
+                    if (userId === token)
+                    {
                         //TRY: == vs ===
+
                         next();
                     } else {
                         //next('/'); //just throw them back to the mainpage

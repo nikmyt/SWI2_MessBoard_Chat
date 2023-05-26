@@ -96,8 +96,9 @@ export default {
         console.error(error);
       }
     },
-    editPost(){
-      this.$router.push(this.$route.path + '/edit');
+    async editPost() {
+      const postId = this.post.postId;
+      this.$router.push({ name: 'EditPost', params: { postId } });
       //TODO: this should work but doesn't. If you go to /edit manually, it "kicks you off".
     },
   },

@@ -32,7 +32,9 @@ export class ApiClient{
 
     public static async getPost(postId: number): Promise<PostModel> {
         const response = await fetch(`http://localhost:8080/posts/` + postId); //or ${postId}
+
         if(response.ok){
+
             return await response.json();
         }
         console.log("Cannot load post!");
