@@ -8,10 +8,13 @@
         }"
           class="post-link"
       >
-        <h2 class="post__title">Title: {{ post.title ? post.title : 'Invalid title' }}</h2>
+        <h2 class="post-title">{{ post.title ? post.title : 'Invalid title' }}</h2>
       </router-link>
-      <p class="post__description">Time: {{ formatDate(post.createdAt) }}</p>
-      <p class="post__username">Username: {{ post.user?.username ? post.user.username : 'Invalid user' }}</p>
+      <div class="post-description">
+        <p>By: {{ post.user?.username ? post.user.username : 'Invalid user' }}</p>
+        <p>Posted at: {{ formatDate(post.createdAt) }}</p>
+        <p> Tagged as: {{post.tag ? post.tag : 'Invalid tag' }}</p>
+      </div>
       <h4>{{ post.text ? post.text : 'Invalid text' }}</h4>
     </div>
   </div>
@@ -57,7 +60,7 @@ export default {
 }
 
 .post {
-  width: 500pt; /*TODO make this work on other displays apart from 1080p*/
+  min-width: 450pt; /*TODONE make this work on other displays apart from 1080p*/
   display: -ms-flexbox;
   align-items: stretch;
   margin: 10px 0;
@@ -66,19 +69,18 @@ export default {
 }
 
 .post-title {
-  font-size: 1.5em;
   margin-right: 10px;
 }
 
 .post-description {
   flex-grow: 1;
-}
-.post-user {
-  flex-grow: 1;
-}
-.post-username {
-  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
+.post-description p {
+  flex: 1;
+  margin-right: 10px; /* Optional margin between the <p> elements */
+}
 
 </style>

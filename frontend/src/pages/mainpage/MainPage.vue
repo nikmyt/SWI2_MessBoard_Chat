@@ -60,7 +60,7 @@ export default {
     return {
       posts: [],
       filters: ["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],
-      selectedFilter: '',
+      selectedFilter: "Newest", //ahhh
     }
   },
   methods: {

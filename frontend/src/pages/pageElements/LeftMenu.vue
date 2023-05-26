@@ -14,9 +14,9 @@ export default {
 </script>
 
 <style scoped>
-
+/* Positional: NO. Stylistic: YES.*/
 .sidebar-left {
-  width: 200px;
+
 }
 
 </style>
