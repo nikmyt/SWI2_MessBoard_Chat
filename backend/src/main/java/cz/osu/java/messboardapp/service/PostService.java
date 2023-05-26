@@ -62,7 +62,7 @@ public class PostService
     }
 
 
-    public ArrayList<BoardPost> findBoardPostByTag(String tag, boolean desc) {
+    public Iterable<BoardPost> findBoardPostByTag(String tag, boolean desc) {
         ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
 
         if (desc) {
@@ -75,7 +75,7 @@ public class PostService
 
     }
 
-    public ArrayList<BoardPost> findBoardPostByTagAZ(String tag, boolean az) {
+    public Iterable<BoardPost> findBoardPostByTagAZ(String tag, boolean az) {
         ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
 
         if (az) {
@@ -88,7 +88,7 @@ public class PostService
 
         return list;
     }
-    public ArrayList<BoardPost> findBoardPostByTagTitleAZ(String tag, boolean az)
+    public Iterable<BoardPost> findBoardPostByTagTitleAZ(String tag, boolean az)
     {
         ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
         if (az) {
@@ -102,7 +102,7 @@ public class PostService
         return list;
     }
 
-    public ArrayList<BoardPost> sortBoardPostByTitle(boolean az)
+    public Iterable<BoardPost> sortBoardPostByTitle(boolean az)
     {
         ArrayList<BoardPost> list = postRepo.findAll();
 
@@ -116,7 +116,7 @@ public class PostService
 
         return list;
     }
-    public ArrayList<BoardPost> sortBoardPostByTime(boolean desc)
+    public Iterable<BoardPost> sortBoardPostByTime(boolean desc)
     {
         ArrayList<BoardPost> list = postRepo.findAll();
 
@@ -129,7 +129,7 @@ public class PostService
         return list;
     }
 
-    public ArrayList<BoardPost> sortBoardPostByTag(boolean az)
+    public Iterable<BoardPost> sortBoardPostByTag(boolean az)
     {
         ArrayList<BoardPost> list = postRepo.findAll();
 
@@ -142,5 +142,11 @@ public class PostService
         }
 
         return list;
+    }
+
+    public void deletePost(BoardPost bPost)
+    {
+
+        postRepo.delete(bPost);
     }
 }

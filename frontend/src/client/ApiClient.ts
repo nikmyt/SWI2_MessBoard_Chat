@@ -153,7 +153,7 @@ export class ApiClient{
     //["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],
 
     public static async getPostsByNewest(): Promise<PostModel[]> {
-        const response = await fetch(`http://localhost:8080/posts?filter=newest`);
+        const response = await fetch(`http://localhost:8080/postssort?filter=newest`);
         if (response.ok) {
             return await response.json();
         }
@@ -162,7 +162,7 @@ export class ApiClient{
     }
 
     public static async getPostsByOldest(): Promise<PostModel[]> {
-        const response = await fetch(`http://localhost:8080/posts?filter=oldest`);
+        const response = await fetch(`http://localhost:8080/postssort?filter=oldest`);
         if (response.ok) {
             return await response.json();
         }
@@ -171,7 +171,7 @@ export class ApiClient{
     }
 
     public static async getPostsByTagsAZ(): Promise<PostModel[]> {
-        const response = await fetch(`http://localhost:8080/posts?filter=tagsAZ`);
+        const response = await fetch(`http://localhost:8080/postssort?filter=tagsAZ`);
         if (response.ok) {
             return await response.json();
         }
@@ -180,7 +180,7 @@ export class ApiClient{
     }
 
     public static async getPostsByTagsZA(): Promise<PostModel[]> {
-        const response = await fetch(`http://localhost:8080/posts?filter=tagsZA`);
+        const response = await fetch(`http://localhost:8080/postssort?filter=tagsZA`);
         if (response.ok) {
             return await response.json();
         }
@@ -189,7 +189,7 @@ export class ApiClient{
     }
 
     public static async getPostsByTitleAZ(): Promise<PostModel[]> {
-        const response = await fetch(`http://localhost:8080/posts?filter=titleAZ`);
+        const response = await fetch(`http://localhost:8080/postssort?filter=titleAZ`);
         if (response.ok) {
             return await response.json();
         }
@@ -198,7 +198,7 @@ export class ApiClient{
     }
 
     public static async getPostsByTitleZA(): Promise<PostModel[]> {
-        const response = await fetch(`http://localhost:8080/posts?filter=titleZA`);
+        const response = await fetch(`http://localhost:8080/postssort?filter=titleZA`);
         if (response.ok) {
             return await response.json();
         }

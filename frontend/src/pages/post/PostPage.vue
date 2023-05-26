@@ -13,6 +13,10 @@
             <h2>{{ post.title || 'Invalid title' }}</h2>
             <h6>Posted by {{ post.user?.username || 'Invalid user' }} on {{ formatDate(post.createdAt) }}</h6>
             <h4>{{ post.text || 'Invalid content' }}</h4>
+
+            <button v-if="isCurrentUserPostOwner" @click="editPost">Edit</button>
+            <button v-if="isCurrentUserPostOwner" @click="deletePost">Delete</button>
+
           </div>
           <div class="post-page__comments">
             <p>Comments:</p>
@@ -53,6 +57,7 @@ export default {
     try {
       const post = await ApiClient.getPost(postId);
       this.post = post;
+
       await this.fetchComments();
     } catch (error) {
       console.error(error);
@@ -63,6 +68,7 @@ export default {
       try {
         const comments = await ApiClient.getComments(this.post.postId);
         this.comments = comments;
+
       } catch (error) {
         console.error(error);
       }
@@ -76,7 +82,28 @@ export default {
         month: "long",
         day: "numeric",
       });
-      return formattedDate.slice(0, 20); // Restricting date length to 10 characters
+      return formattedDate; // Restricting date length to 10 characters
+    },
+    async deletePost() {
+      try {
+        await ApiClient.deletePost(this.post.postId);
+
+        //TODO: check if response good, then u can return. else throw error.
+        this.$router.push('/');
+        // Handle successful deletion (e.g., show a success message, redirect, etc.)
+      } catch (error) {
+        console.error(error);
+        // Handle the error (e.g., show an error message)
+      }
+    },
+  },
+  computed: {
+    isCurrentUserPostOwner() {
+      const token = localStorage.getItem('token');
+      if (!token || !this.post.user) {
+        return false;
+      }
+      return this.post.user.userId === parseInt(token);
     },
   },
 };

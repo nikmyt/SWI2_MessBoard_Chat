@@ -67,31 +67,33 @@ export default {
     async fetchPosts() {
       this.posts = await ApiClient.getPosts();
     },
-    filterSelected() {
+    async filterSelected() {
       switch (this.selectedFilter) {
         case "Newest":
-          this.posts = ApiClient.getPostsByNewest();
+          this.posts = await ApiClient.getPostsByNewest();
           break;
         case "Oldest":
-          this.posts = ApiClient.getPostsByOldest();
+          this.posts = await ApiClient.getPostsByOldest();
           break;
         case "Tags A-Z":
-          this.posts = ApiClient.getPostsByTagsAZ();
+          this.posts = await ApiClient.getPostsByTagsAZ();
           break;
         case "Tags Z-A":
-          this.posts = ApiClient.getPostsByTagsZA();
+          this.posts = await ApiClient.getPostsByTagsZA();
           break;
         case "Title A-Z":
-          this.posts = ApiClient.getPostsByTitleAZ();
+          this.posts = await ApiClient.getPostsByTitleAZ();
           break;
         case "Title Z-A":
-          this.posts = ApiClient.getPostsByTitleZA();
+          this.posts = await ApiClient.getPostsByTitleZA();
           break;
         default:
-          this.posts = ApiClient.getPostsByNewest();
+          this.posts = await ApiClient.getPostsByNewest();
           break;
       }
     }
+
+  
   },
   computed: {
   },

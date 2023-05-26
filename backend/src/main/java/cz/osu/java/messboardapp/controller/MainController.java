@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RequestMapping({"/"})
@@ -81,6 +82,12 @@ public class MainController
 
 
     }
+    @DeleteMapping("/deletepost/{post_id}")
+    public void deletePostById(@PathVariable("post_id") Integer id)
+    {
+        BoardPost bPost = postService.findByPostId(id).orElse(null);
+        postService.deletePost(bPost);
+    }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -102,13 +109,45 @@ public class MainController
 
     }
 
-    @PostMapping("/deluser")
+    @DeleteMapping("/deluser")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> delete(BoardUser user, UserToken uToken)
     {
         RegistrationService rService = new RegistrationService(userRepository);
         return rService.delete(user, uToken);
 
+    }
+
+    @GetMapping("/postssort")
+    public Iterable<BoardPost> getFilteredPosts(@RequestParam(value = "filter", required = false) String filter) {
+        if (filter == null) {
+            // No filter provided, return all posts
+            return postService.findAll();
+        } else {
+
+            switch (filter) {
+                case "newest":
+                    return postService.sortBoardPostByTime(true);
+
+                case "oldest":
+                    return postService.sortBoardPostByTime(false);
+
+                case "tagsAZ":
+                    return postService.sortBoardPostByTag(true);
+
+                case "tagsZA":
+                    return postService.sortBoardPostByTag(false);
+
+                case "titleAZ":
+                    return postService.sortBoardPostByTitle(true);
+
+                case "titleZA":
+                    return postService.sortBoardPostByTitle(false);
+
+                default:
+                    return postService.findAll();
+            }
+        }
     }
 
 }
