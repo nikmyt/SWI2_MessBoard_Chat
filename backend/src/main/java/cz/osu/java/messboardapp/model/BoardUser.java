@@ -21,7 +21,10 @@ public class BoardUser //BOARDUSER / boarduser
     private String password;
 
     @Column(nullable = false)
-    private String e_mail;
+    private String email;
+
+    @Column(nullable = true)
+    private String password_hint;
 
 
 

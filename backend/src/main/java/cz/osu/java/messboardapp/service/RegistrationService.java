@@ -32,6 +32,9 @@ public class RegistrationService
             BoardUser user = new BoardUser();
             user.setUsername(registrationForm.getUsername());
             user.setPassword(registrationForm.getPassword());
+            user.setUserId(userRepository.findAll().size()+1);
+            user.setPassword_hint(registrationForm.getPassword_hint());
+            user.setEmail(registrationForm.getEmail());
             userRepository.save(user);
             return new ResponseEntity<>("Account was created", HttpStatus.OK);
         }

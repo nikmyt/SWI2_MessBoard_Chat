@@ -154,12 +154,15 @@ export class ApiClient{
     }
 
     public static async register(registration: RegisterForm){
-        const response = await fetch('http://localhost:8080/register', {
+        console.log(JSON.stringify(registration));
+        const response = await fetch( "http://localhost:8080/register", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+
             body: JSON.stringify(registration)
+
         });
         if (!response.ok) {
             const error = await response.text();

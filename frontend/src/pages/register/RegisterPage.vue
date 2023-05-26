@@ -67,7 +67,7 @@ export default {
             password_hint: this.newPassword_hint,
             email: this.newEmail,
           }
-        ApiClient.register(registration);
+        await ApiClient.register(registration);
         console.log("Registered!")
         this.$router.push('/');
         }

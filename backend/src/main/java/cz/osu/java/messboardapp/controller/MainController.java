@@ -121,8 +121,8 @@ public class MainController
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> register(@RequestBody RegistrationForm registrationForm)
     {
-        RegistrationService rService = new RegistrationService(userRepository);
-        return rService.register(registrationForm);
+
+       return registrationService.register(registrationForm);
     }
 
     @DeleteMapping("/deluser")
