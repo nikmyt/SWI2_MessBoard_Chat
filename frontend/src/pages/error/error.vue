@@ -1,9 +1,17 @@
 <template>
+  <link rel="stylesheet" href="src/assets/mainpage.css">
+
   <div class="error-page">
     <div class="error-page-content">
-      <img src="../../assets/piggers.svg" alt="Error" />
+      <router-link :to="{ name: 'MainPage' }" class="logo-link">
+        <div class="logo">
+          <img src="../../assets/piggers.svg" alt="Error boar!">
+          <!--TODONE make it clickable to get back to main page and everywhere-->
+        </div>
+      </router-link>
       <h1>Oopsie woopsie! Something went wrong.</h1>
-      <p>{{ errorMessage }}</p>
+      <p>Click the boar to return to main page!</p>
+      <!--<p>{{ errorMessage }}</p>-->
     </div>
   </div>
 </template>
@@ -27,6 +35,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: #5d536c;
 }
 
 .error-page-content {
@@ -38,8 +47,8 @@ export default {
 }
 
 .error-page img {
-  max-width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
   margin-bottom: 20px;
 }
 

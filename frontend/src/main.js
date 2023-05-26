@@ -21,7 +21,7 @@ import RegisterPage from "@/pages/register/RegisterPage.vue";
 const routes = [
     { path: '/', name: "MainPage" || "Main", component: MainPage },
     { path: '/about', component: error },
-    { path: '/*', component: error },
+    { path: '/:catchAll(.*)', component: error },
     { path: '/search/:query', name: 'SearchResults', component: SearchResults },
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: '/createPost', name: 'CreatePost', component: CreatePost},

@@ -47,7 +47,6 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
 </template>
 
 <script>
-import axios from 'axios'
 import PostPage from "@/pages/post/PostPage.vue";
 import {ApiClient} from "@/client/ApiClient";
 
