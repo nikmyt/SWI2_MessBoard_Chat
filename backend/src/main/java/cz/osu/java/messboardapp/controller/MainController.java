@@ -143,9 +143,8 @@ public class MainController
 
                 case "titleZA":
                     return postService.sortBoardPostByTitle(false);
-
                 default:
-                    return postService.findAll();
+                    return postService.sortBoardPostByTime(true);
             }
         }
     }

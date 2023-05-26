@@ -68,7 +68,7 @@ export default {
       try {
         const comments = await ApiClient.getComments(this.post.postId);
         this.comments = comments;
-
+        console.log("Post ID: " + this.post.postId);
       } catch (error) {
         console.error(error);
       }
@@ -86,7 +86,9 @@ export default {
     },
     async deletePost() {
       try {
-        await ApiClient.deletePost(this.post.postId);
+
+        const id = this.post.postId;
+        await ApiClient.deletePost(id);
 
         //TODO: check if response good, then u can return. else throw error.
         this.$router.push('/');

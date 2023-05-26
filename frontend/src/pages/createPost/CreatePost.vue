@@ -13,13 +13,19 @@
         <form @submit.prevent="createPost">
           <label for="title">Title:</label>
           <input type="text" id="title" v-model="newTitle">
-          <label for="text">Text:</label>
-          <input type="text" id="text" v-model="newText">
+
           <label for="tag">Tag:</label>
-          <input type="text" id="tag" v-model="newTag">
+          <input type="text" id="tag" v-model="newTag"> <br>
+
+          <label for="text">Text:</label>
+          <textarea id="text" v-model="newText" style="width: 375px; height: 200px; max-height: 800px; overflow-y: auto; resize: none;"></textarea>
+
+
+
           <!--select v-model="newTaskCategory">
             <option v-for="category in categories" :key="category">{{ category }}</option>
           </select-->
+          <br>
           <button v-if="isLoggedIn" type="submit">Submit post</button>
           <button v-else disabled>Log in to submit posts, cheeky!</button>
         </form>

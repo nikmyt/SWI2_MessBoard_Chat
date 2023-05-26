@@ -22,7 +22,7 @@ export class ApiClient{
     }
 
     public static async getPosts(): Promise<PostModel[]> {
-        const response = await fetch('http://localhost:8080/posts');
+        const response = await fetch('http://localhost:8080/postssort?filter=newest');
         if(response.ok){
             return await response.json();
         }
@@ -59,18 +59,19 @@ export class ApiClient{
 
     public static async deletePost(postId: number): Promise<void> {
         const token = localStorage.getItem('token');
-        const response = await fetch("http://localhost:8080/deletepost/${postId}", {
-        method: 'DELETE',
+        const response = await fetch(`http://localhost:8080/deletepost/${postId}`, {
+
+            method: 'DELETE',
             headers: {
             'Content-Type': 'application/json',
                 'Authorization': "Bearer ${token}"
         }
     });
 
-    if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
-    }
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(error);
+        }
 }
 
     public static async updatePost(postId: number, post: PostForm): Promise<PostModel> {
