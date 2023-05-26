@@ -50,7 +50,10 @@ public class MainController
         //BoardUser user = userRepository.findAppUserByUsername(newPost.getUsername());
         BoardUser user = userRepository.findBoardUserByUserId(newPost.getUserId());
         postService.save(newPost, user);
+
     }
+
+
 
 
 

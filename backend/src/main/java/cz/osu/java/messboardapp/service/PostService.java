@@ -32,7 +32,7 @@ public class PostService
         post.setTag(newPost.getTag());
         post.setTemp(false); //temp temp
 
-        //postRepo.save(post);
+        postRepo.save(post);
         //return post; //please let this be fix of dupli issue
     }
 
@@ -59,5 +59,88 @@ public class PostService
     public Optional<BoardPost> findByPostId(Integer id)
     {
         return postRepo.findById(id);
+    }
+
+
+    public ArrayList<BoardPost> findBoardPostByTag(String tag, boolean desc) {
+        ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
+
+        if (desc) {
+            Collections.sort(list, (post1, post2) -> post2.getCreatedAt().compareTo(post1.getCreatedAt()));
+        } else {
+            Collections.sort(list, (post1, post2) -> post1.getCreatedAt().compareTo(post2.getCreatedAt()));
+        }
+
+        return list;
+
+    }
+
+    public ArrayList<BoardPost> findBoardPostByTagAZ(String tag, boolean az) {
+        ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
+
+        if (az) {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTag));
+        } else {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTag).reversed());
+        }
+
+        return list;
+    }
+    public ArrayList<BoardPost> findBoardPostByTagTitleAZ(String tag, boolean az)
+    {
+        ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
+        if (az) {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTitle));
+        } else {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTitle).reversed());
+        }
+
+        return list;
+    }
+
+    public ArrayList<BoardPost> sortBoardPostByTitle(boolean az)
+    {
+        ArrayList<BoardPost> list = postRepo.findAll();
+
+        if (az) {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTitle));
+        } else {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTitle).reversed());
+        }
+
+        return list;
+    }
+    public ArrayList<BoardPost> sortBoardPostByTime(boolean desc)
+    {
+        ArrayList<BoardPost> list = postRepo.findAll();
+
+        if (desc) {
+            Collections.sort(list, (post1, post2) -> post2.getCreatedAt().compareTo(post1.getCreatedAt()));
+        } else {
+            Collections.sort(list, (post1, post2) -> post1.getCreatedAt().compareTo(post2.getCreatedAt()));
+        }
+
+        return list;
+    }
+
+    public ArrayList<BoardPost> sortBoardPostByTag(boolean az)
+    {
+        ArrayList<BoardPost> list = postRepo.findAll();
+
+        if (az) {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTag));
+        } else {
+
+            Collections.sort(list, Comparator.comparing(BoardPost::getTag).reversed());
+        }
+
+        return list;
     }
 }

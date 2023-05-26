@@ -39,7 +39,7 @@ export class ApiClient{
         throw new Error(await response.json());
     }
 
-    public static async createPost(post: PostForm): Promise<any> {
+    public static async createPost(post: PostForm) {
         //const token = localStorage.getItem('token');
         //could re-authenticate here but that's a little silly, no? it'd be extra safe tho.
         const response = await fetch('http://localhost:8080/new_post', {
@@ -50,10 +50,8 @@ export class ApiClient{
             },
             body: JSON.stringify(post)
         });
-        if (response.ok) {
-            console.log(response.status);
-            return await response.text();
-        } else {
+        if (!response.ok) {
+
             const error = await response.text();
             throw new Error(error);
         }
