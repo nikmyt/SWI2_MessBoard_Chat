@@ -149,4 +149,8 @@ public class PostService
 
         postRepo.delete(bPost);
     }
+    public void update(BoardPost bPost)
+    {
+        postRepo.save(bPost);
+    }
 }

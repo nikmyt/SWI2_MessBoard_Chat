@@ -88,6 +88,23 @@ public class MainController
         BoardPost bPost = postService.findByPostId(id).orElse(null);
         postService.deletePost(bPost);
     }
+    @PutMapping("/editpost/{post_id}")
+    public void editPostById(@PathVariable("post_id") Integer id, @RequestBody PostForm postForm)
+    {
+        BoardPost bPost = postService.findByPostId(id).orElse(null);
+        try
+        {
+            bPost.setTag(postForm.getTag());
+            bPost.setText(postForm.getText());
+            bPost.setTitle(postForm.getTitle());
+            postService.update(bPost);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)

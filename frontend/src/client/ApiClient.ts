@@ -76,9 +76,9 @@ export class ApiClient{
         }
 }
 
-    public static async updatePost(postId: number, post: PostForm): Promise<PostModel> {
+    public static async updatePost(postId: number, post: PostForm): Promise<any> {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/posts/${postId}`, {
+        const response = await fetch(`http://localhost:8080/editpost/${postId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export class ApiClient{
         });
 
         if (response.ok) {
-            return await response.json();
+            return await response.text();
         } else {
             const error = await response.text();
             throw new Error(error);

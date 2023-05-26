@@ -14,4 +14,6 @@ public interface PostRepository extends JpaRepository<BoardPost, Integer>
 
         public ArrayList<BoardPost> findAll();
 
+
+
 }

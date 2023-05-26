@@ -76,16 +76,17 @@ export default {
         console.log("Cannot edit a post to be empty!")
       } else {
         const post = {
+          postId: Number(this.postId),
           title: this.editTitle,
           text: this.editText,
           tag: this.editTag,
-          userId: this.const,
+          user: Number(this.const),
           createdAt: new Date()
 
         };
-        await ApiClient.updatePost(post);
+        await ApiClient.updatePost(this.post.postId, post);
         //TODO: check if response good, then u can return. else throw error.
-        this.$router.push('/');
+        this.$router.push('/posts/'+this.post.postId);
       }
     },
   }
