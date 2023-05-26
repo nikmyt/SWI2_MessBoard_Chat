@@ -76,7 +76,7 @@ export default {
         month: "long",
         day: "numeric",
       });
-      return formattedDate.slice(0, 10); // Restricting date length to 10 characters
+      return formattedDate.slice(0, 20); // Restricting date length to 10 characters
     },
   },
 };

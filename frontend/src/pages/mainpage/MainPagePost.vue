@@ -1,34 +1,47 @@
 <template>
   <div class="post">
-      <!-- @click="goToPostPage(post)" -->
-      <div class="post__content">
-        <router-link :to="{ name: 'PostPage',
-           params: { postId: post.postId,
-           //createdAt: post.createdAt, title: post.title, username: post.user.userId, text: post.text
-           } }" class="post-link">
-          <h2 class="post__title">Title: {{ post.title ? post.title : 'Invalid title' }}</h2>
-        </router-link>
-        <p class="post__description">Time: {{ post.createdAt ? post.createdAt : 'Ivalid time created' }}</p> <!-- TODO format time-->
-        <p class="post__username">Username: {{ post.user?.username ? post.user.username : 'Invalid user' }} </p> <!-- TODONE?: make bad users show error-->
-        <h4> {{post.text ? post.text : 'Invalid text'}}</h4>
-      </div>
+    <div class="post__content">
+      <router-link
+          :to="{
+          name: 'PostPage',
+          params: { postId: post.postId },
+        }"
+          class="post-link"
+      >
+        <h2 class="post__title">Title: {{ post.title ? post.title : 'Invalid title' }}</h2>
+      </router-link>
+      <p class="post__description">Time: {{ formatDate(post.createdAt) }}</p>
+      <p class="post__username">Username: {{ post.user?.username ? post.user.username : 'Invalid user' }}</p>
+      <h4>{{ post.text ? post.text : 'Invalid text' }}</h4>
+    </div>
   </div>
 </template>
 
 <script>
-//great, so more null value not showing errors
-import PostPage from "../post/PostPage.vue"
+import PostPage from "../post/PostPage.vue";
+
 export default {
   name: "mainPagePost.vue",
-  props:
-      {
-        post: Object
-      }, methods: {
-  goToPostPage(post) {
-    this.$router.push({ name: "PostPage", params: { postId: post.id } });
-  }
-  }
-}
+  props: {
+    post: Object,
+  },
+  methods: {
+    goToPostPage(post) {
+      this.$router.push({ name: "PostPage", params: { postId: post.id } });
+    },
+    formatDate(date) {
+      if (!date) {
+        return "Invalid time created";
+      }
+      const formattedDate = new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      return formattedDate;
+    },
+  },
+};
 </script>
 
 <style scoped>
