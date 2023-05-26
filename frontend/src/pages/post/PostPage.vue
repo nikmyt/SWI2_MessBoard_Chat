@@ -90,11 +90,13 @@ export default {
 
         //TODO: check if response good, then u can return. else throw error.
         this.$router.push('/');
-        // Handle successful deletion (e.g., show a success message, redirect, etc.)
       } catch (error) {
         console.error(error);
-        // Handle the error (e.g., show an error message)
       }
+    },
+    editPost(){
+      this.$router.push(this.$route.path + '/edit');
+      //TODO: this should work but doesn't. If you go to /edit manually, it "kicks you off".
     },
   },
   computed: {

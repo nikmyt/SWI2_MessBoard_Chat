@@ -7,7 +7,9 @@ import MainPage from "@/pages/mainpage/MainPage.vue";
 import error from "@/pages/error/error.vue";
 import SearchResults from "@/pages/search/SearchResults.vue";
 import PostPage from "@/pages/post/PostPage.vue";
+
 import CreatePost from "@/pages/createPost/CreatePost.vue";
+import EditPost from "@/pages/editPost/EditPost.vue";
 
 import './assets/main.css'
 import LoginPage from "@/pages/login/LoginPage.vue";
@@ -35,7 +37,27 @@ const routes = [
                 //due to bad entries, doesn't show nulls, commented for demo purposes
             }
         })
-    }
+    },
+    { path: "/posts/:postId/edit", name: "EditPost", component: EditPost, beforeEnter: (to, from, next) => {
+            const token = localStorage.getItem('token');
+            const postId = to.params.postId;
+
+            ApiClient.getPost(postId).then((post) => {
+                    if (post.userId == token.userId) {
+                        //TRY: == vs ===
+                        next();
+                    } else {
+                        //next('/'); //just throw them back to the mainpage
+                        return false;
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    console.log("Unprecedented edit error! Post doesn't exist, user doesn't exist, etc.")
+                    next('/error');
+                });
+        }
+    },
 ]
 
 const router = createRouter({
@@ -44,8 +66,6 @@ const router = createRouter({
     routes // short for `routes: routes`
 })
 
-const app = createApp(App) //app?
+const app = createApp(App)
 app.use(router)
 app.mount('#app')
-
-//createApp(App).mount('#app') //original
