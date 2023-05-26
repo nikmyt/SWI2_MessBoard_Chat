@@ -6,12 +6,11 @@
     <button @click="viewHistory" v-if=isLoggedIn> View your posts </button>
     <button v-else disabled> Log in to view your posts</button>
 
-    <h2>Other pages</h2>
+    <h2>Your stats:</h2>
     <ul>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
-      <li><a href="#">Page 3</a></li>
-      <p>Some description</p>
+      <li>Posts posted: </li>
+      <li>Comments commented: </li>
+      <li>Edits edited: </li>
     </ul>
   </aside>
 </template>
@@ -36,5 +35,10 @@ export default {
 </script>
 
 <style scoped>
+
+ul {
+  list-style: none;
+  padding: 0;
+}
 
 </style>

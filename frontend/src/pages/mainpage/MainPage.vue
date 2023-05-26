@@ -21,7 +21,13 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
 
       <main class="main-content">
         <!-- Main content in the center -->
-        <h1>The Board:</h1>
+        <div>
+          <h1>The Board:</h1>
+          <p>Filter by: </p>
+          <select @change="filterSelected" v-model="selectedFilter"> <!-- v-model="post.tag" -->
+            <option v-for="filter in filters" :key="filter" :value="filter">{{ filter }}</option>
+          </select>
+        </div>
         <div class="posts">
           <!-- Load posts from database using Axios. TODO post pagination -->
           <div v-for="post in posts" :key="post.postId">
@@ -52,13 +58,42 @@ export default {
   },
   data() {
     return {
-      posts: []
+      posts: [],
+      filters: ["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],
+      selectedFilter: '',
     }
   },
   methods: {
     async fetchPosts() {
       this.posts = await ApiClient.getPosts();
+    },
+    filterSelected() {
+      switch (this.selectedFilter) {
+        case "Newest":
+          this.posts = ApiClient.getPostsByNewest();
+          break;
+        case "Oldest":
+          this.posts = ApiClient.getPostsByOldest();
+          break;
+        case "Tags A-Z":
+          this.posts = ApiClient.getPostsByTagsAZ();
+          break;
+        case "Tags Z-A":
+          this.posts = ApiClient.getPostsByTagsZA();
+          break;
+        case "Title A-Z":
+          this.posts = ApiClient.getPostsByTitleAZ();
+          break;
+        case "Title Z-A":
+          this.posts = ApiClient.getPostsByTitleZA();
+          break;
+        default:
+          this.posts = ApiClient.getPostsByNewest();
+          break;
+      }
     }
+  },
+  computed: {
   },
   mounted() {
     this.fetchPosts();

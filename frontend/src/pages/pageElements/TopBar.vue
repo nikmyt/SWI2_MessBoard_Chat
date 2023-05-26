@@ -25,7 +25,9 @@
     <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
     <p class="login-text" v-else> Not logged in.</p>
     <button @click="login">Login or change user</button>
-    <button @click="logout">Logout</button>
+
+    <button @click="logout" v-if="isLoggedIn">Logout</button>
+    <!--button disabled v-else></button-->
     <button @click="register">Register</button>
   </div>
 </template>

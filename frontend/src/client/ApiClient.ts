@@ -59,19 +59,19 @@ export class ApiClient{
 
     public static async deletePost(postId: number): Promise<void> {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/posts/${postId}`, {
-            method: 'DELETE',
+        const response = await fetch("http://localhost:8080/deletepost/${postId}", {
+        method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            const error = await response.text();
-            throw new Error(error);
+            'Content-Type': 'application/json',
+                'Authorization': "Bearer ${token}"
         }
+    });
+
+    if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error);
     }
+}
 
     public static async updatePost(postId: number, post: PostForm): Promise<PostModel> {
         const token = localStorage.getItem('token');
@@ -147,5 +147,62 @@ export class ApiClient{
             const error = await response.text();
             throw new Error(error);
         }
+    }
+
+    //---------------FILTER ZONE--------------------
+    //["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],
+
+    public static async getPostsByNewest(): Promise<PostModel[]> {
+        const response = await fetch(`http://localhost:8080/posts?filter=newest`);
+        if (response.ok) {
+            return await response.json();
+        }
+        console.log("Cannot load posts with filter: Newest!");
+        throw new Error(await response.json());
+    }
+
+    public static async getPostsByOldest(): Promise<PostModel[]> {
+        const response = await fetch(`http://localhost:8080/posts?filter=oldest`);
+        if (response.ok) {
+            return await response.json();
+        }
+        console.log("Cannot load posts with filter: Oldest!");
+        throw new Error(await response.json());
+    }
+
+    public static async getPostsByTagsAZ(): Promise<PostModel[]> {
+        const response = await fetch(`http://localhost:8080/posts?filter=tagsAZ`);
+        if (response.ok) {
+            return await response.json();
+        }
+        console.log("Cannot load posts with filter: Tags A-Z!");
+        throw new Error(await response.json());
+    }
+
+    public static async getPostsByTagsZA(): Promise<PostModel[]> {
+        const response = await fetch(`http://localhost:8080/posts?filter=tagsZA`);
+        if (response.ok) {
+            return await response.json();
+        }
+        console.log("Cannot load posts with filter: Tags Z-A!");
+        throw new Error(await response.json());
+    }
+
+    public static async getPostsByTitleAZ(): Promise<PostModel[]> {
+        const response = await fetch(`http://localhost:8080/posts?filter=titleAZ`);
+        if (response.ok) {
+            return await response.json();
+        }
+        console.log("Cannot load posts with filter: Title A-Z!");
+        throw new Error(await response.json());
+    }
+
+    public static async getPostsByTitleZA(): Promise<PostModel[]> {
+        const response = await fetch(`http://localhost:8080/posts?filter=titleZA`);
+        if (response.ok) {
+            return await response.json();
+        }
+        console.log("Cannot load posts with filter: Title Z-A!");
+        throw new Error(await response.json());
     }
 }
