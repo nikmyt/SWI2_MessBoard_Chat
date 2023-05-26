@@ -14,6 +14,7 @@ import EditPost from "@/pages/editPost/EditPost.vue";
 import './assets/main.css'
 import LoginPage from "@/pages/login/LoginPage.vue";
 import { ApiClient } from "@/client/ApiClient";
+import RegisterPage from "@/pages/register/RegisterPage.vue";
 
 
 
@@ -24,6 +25,7 @@ const routes = [
     { path: '/search/:query', name: 'SearchResults', component: SearchResults },
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: '/createPost', name: 'CreatePost', component: CreatePost},
+    { path: '/register', name: 'RegisterPage', component: RegisterPage},
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {

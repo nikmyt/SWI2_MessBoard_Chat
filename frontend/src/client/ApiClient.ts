@@ -3,6 +3,7 @@ import {PostModel} from "../model/PostModel";
 import {AuthForm} from "../form/AuthForm";
 import {PostForm} from "../form/PostForm";
 import {CommentForm} from "../form/CommentForm";
+import {RegisterForm} from "../form/RegisterForm";
 
 declare var Promise: any;
 //TODO: add es2015 to your --lib option in your TypeScript configuration file (tsconfig.json) to include the Promise constructor in your project.
@@ -147,6 +148,20 @@ export class ApiClient{
             //console.log(localStorage.getItem('token'));
             return id;
         } else {
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
+
+    public static async register(registration: RegisterForm){
+        const response = await fetch('http://localhost:8080/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registration)
+        });
+        if (!response.ok) {
             const error = await response.text();
             throw new Error(error);
         }

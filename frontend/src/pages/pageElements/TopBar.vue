@@ -24,11 +24,10 @@
   <div class="user-info">
     <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
     <p class="login-text" v-else> Not logged in.</p>
-    <button @click="login">Login or change user</button>
-
+    <button @click="login" v-if="!isLoggedIn">Login</button>
     <button @click="logout" v-if="isLoggedIn">Logout</button>
-    <!--button disabled v-else></button-->
-    <button @click="register">Register</button>
+    <button @click="register" v-if="!isLoggedIn">Register</button>
+    <!-- Should you be able to register when logged in? -->
   </div>
 </template>
 
@@ -63,6 +62,9 @@ export default {
     },
     login(){
       this.$router.push('/login');
+    },
+    register(){
+      this.$router.push('/register');
     }
   }
 }

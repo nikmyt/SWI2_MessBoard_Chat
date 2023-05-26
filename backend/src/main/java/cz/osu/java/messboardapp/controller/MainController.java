@@ -123,7 +123,6 @@ public class MainController
     {
         RegistrationService rService = new RegistrationService(userRepository);
         return rService.register(registrationForm);
-
     }
 
     @DeleteMapping("/deluser")

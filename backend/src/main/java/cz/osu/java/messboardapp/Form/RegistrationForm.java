@@ -11,15 +11,17 @@ public class RegistrationForm
     private String username;
     private String password;
     private String email;
+    private String password_hint;
 
 
-    public RegistrationForm(String username, String password, String email)
+    public RegistrationForm(String username, String password, String email, String password_hint)
     {
         BoardUser bUser = new BoardUser();
         bUser.setUserId((int)userRep.count()+1);
         bUser.setUsername(username);
         bUser.setPassword(password);
         bUser.setE_mail(email);
+        //bUser.setPassword_hint
         userRep.save(bUser);
     }
 }

@@ -42,7 +42,7 @@ import Footer from "@/pages/pageElements/Footer.vue";
 
 export default {
 
-  name: "CreatePost",
+  name: "EditPost",
   components: {LeftMenu, RightMenu, TopBar, ApiClient, Footer},
   data() {
     return {
