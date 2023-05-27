@@ -42,7 +42,7 @@ public class CommentForm
     public CommentForm(String text, BoardPost post)
     {
         BoardComment bC = new BoardComment();
-        bC.setComment_id((int)comRep.count()+1);
+        bC.setId((int)comRep.count()+1);
         bC.setText(text);
         bC.setUser(post.getUser());
         bC.setPost(post);

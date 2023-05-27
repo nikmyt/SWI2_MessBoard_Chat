@@ -13,7 +13,7 @@ public class BoardComment
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="comment_id", nullable = false)
-    private Integer comment_id;
+    private Integer id;
 
 
 
@@ -30,6 +30,7 @@ public class BoardComment
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     private Date createdAt;
+
 
 
 }

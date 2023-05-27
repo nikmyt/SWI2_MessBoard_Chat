@@ -92,14 +92,19 @@ public class MainController
     @DeleteMapping("/deletecomment/{comment_id}")
     public void deleteCommentsById(@PathVariable("comment_id") Integer id)
     {
-        BoardComment boardComment = commentService.findCommentById(id);
-        commentService.deleteComment(boardComment);
+        BoardComment boardComment = commentService.findBoardCommentByComment_id(id).orElse(null);
+        try {
+            commentService.deleteComment(boardComment);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/editcomment/{comment_id}")
     public void editCommentById(@PathVariable("post_id") Integer id, @RequestBody CommentForm commentForm)
     {
-        BoardComment boardComment = commentService.findCommentById(id);
+        BoardComment boardComment = commentService.findBoardCommentByComment_id(id).orElse(null);
         try
         {
             BoardUser boardUser = new BoardUser();

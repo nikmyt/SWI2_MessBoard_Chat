@@ -9,6 +9,7 @@ import cz.osu.java.messboardapp.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class CommentService
@@ -53,9 +54,9 @@ public class CommentService
 
     }
 
-    public BoardComment findCommentById(int id)
+    public Optional<BoardComment> findBoardCommentByComment_id(int id)
     {
-        return commrep.findBoardCommentByComment_id(id);
+        return commrep.findBoardCommentById(id);
     }
 
     public int getCommentCountByUserId(int id)
