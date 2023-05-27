@@ -10,16 +10,15 @@
     <h1 class="title">MessBoard</h1>
   </router-link>
 
-  <div class="search">
-    <input type="text" placeholder="Search for boards, users, terms...">
-  </div>
+  <SearchBar />
 
-  <!-- Hamburger menu. doens't show up lol. TODO -->
+  <!-- Hamburger menu. doens't show up lol. TODO
   <div class="hamburger-menu">
     <span>Item 1</span>
     <span>Item 2</span>
     <span>Item 3</span>
   </div>
+  -->
 
   <div class="user-info">
     <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
@@ -32,7 +31,10 @@
 </template>
 
 <script>
+import SearchBar from "@/pages/pageElements/SearchBar.vue";
+
 export default {
+  components: {SearchBar},
   data() {
     return {
       username: '',
@@ -71,14 +73,6 @@ export default {
 </script>
 
 <style scoped>
-
-.search input {
-  border-radius: 20px;
-  padding: 10px;
-  background-color: #5d536c; /*34495e*/
-  border: none;
-  color: white;
-}
 
 .login-text{
   color: #dedbe3;

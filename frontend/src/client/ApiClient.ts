@@ -190,6 +190,20 @@ export class ApiClient{
         }
     }
 
+    public static async getSearchResults(searchQuery) {
+        try {
+            const response = await fetch(`/searchSimple?searchSimple=${searchQuery}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch search results');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+            throw error;
+        }
+    }
+
     //---------------FILTER ZONE--------------------
     //["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],
 

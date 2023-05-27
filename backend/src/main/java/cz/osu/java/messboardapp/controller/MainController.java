@@ -96,8 +96,6 @@ public class MainController
 
         BoardPost post = postService.findByBPostId(commentForm.getPostId());
         commentService.save(commentForm, user, post);
-
-
     }
 
     @DeleteMapping("/deletecomment/{comment_id}")
@@ -205,6 +203,18 @@ public class MainController
     {
         return postService.findBoardPostByUserId(id);
     }
+
+    @GetMapping("/searchSimple")
+    public Iterable<?> getSimpleSearchResults(@RequestParam(value = "searchSimple", required = true) String search){
+        //only looks at titles, ideally it would return by text and title... oh, i can do that
+        Iterable<BoardPost> searchResults;
+        searchResults = postService.findBoardPostsByTitleCont(search);
+        //ah well it doen't exist
+        //searchResults = postService.findBoardPostsByTextCont(search)
+
+        return searchResults;
+    }
+
     @GetMapping("/search")
     public Iterable<?> getSearchResults(@RequestParam(value = "search", required = true) String search)
     {
@@ -213,6 +223,7 @@ public class MainController
         String condition = parts[0];
         String term = parts[1];
 
+        //no text? why not?
         if(condition.equals("tag"))
         {
             return postService.findBoardPostsByTagCont(term);
