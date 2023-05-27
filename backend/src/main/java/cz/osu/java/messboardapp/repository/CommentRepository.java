@@ -9,9 +9,12 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<BoardComment, Integer>
 {
-        Iterable<BoardComment> findBoardCommentByPostId(int postId);
+        //public Iterable<BoardComment> findBoardCommentByPostId(int postId);
 
-        Iterable<BoardComment> findBoardCommentsByPostId(BoardPost bPost);
+        public Iterable<BoardComment> findBoardCommentByPost(BoardPost bPost);
 
         public Iterable<BoardComment> findBoardCommentsByUser(BoardUser bUser);
+
+        public BoardComment findBoardCommentByComment_id(int id);
+
 }

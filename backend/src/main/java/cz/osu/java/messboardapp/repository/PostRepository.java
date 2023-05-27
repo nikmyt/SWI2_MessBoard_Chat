@@ -21,6 +21,8 @@ public interface PostRepository extends JpaRepository<BoardPost, Integer>
 
         public Iterable<BoardPost> findBoardPostByUser(BoardUser bUser);
 
+        public BoardPost findBoardPostByPostId(int postId);
+
 
 
 

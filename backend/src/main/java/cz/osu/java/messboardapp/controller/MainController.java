@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.controller;
 
 import cz.osu.java.messboardapp.Form.AuthForm;
+import cz.osu.java.messboardapp.Form.CommentForm;
 import cz.osu.java.messboardapp.Form.PostForm;
 import cz.osu.java.messboardapp.Form.RegistrationForm;
 import cz.osu.java.messboardapp.json.UserToken;
@@ -78,10 +79,60 @@ public class MainController
     {
         BoardPost bPost = get(id);
        return commentService.findCommentsByPostId(bPost);
+    }
 
+    @PostMapping("/newcomment")
+    public void createcomment(@Valid @RequestBody CommentForm commentForm){
+        BoardUser user = userRepository.findBoardUserByUserId(commentForm.getUserId());
+        BoardPost post = postService.findByBPostId(commentForm.getPostId());
+        commentService.save(commentForm, user, post);
+
+    }
+
+    @DeleteMapping("/deletecomment/{comment_id}")
+    public void deleteCommentsById(@PathVariable("comment_id") Integer id)
+    {
+        BoardComment boardComment = commentService.findCommentById(id);
+        commentService.deleteComment(boardComment);
+    }
+
+    @PutMapping("/editcomment/{comment_id}")
+    public void editCommentById(@PathVariable("post_id") Integer id, @RequestBody CommentForm commentForm)
+    {
+        BoardComment boardComment = commentService.findCommentById(id);
+        try
+        {
+            BoardUser boardUser = new BoardUser();
+            boardUser = userRepository.findBoardUserByUserId(commentForm.getUserId());
+
+            BoardPost boardPost = new BoardPost();
+            boardPost = postService.findByBPostId(commentForm.getPostId());
+            boardComment.setUser(boardUser);
+            boardComment.setText(commentForm.getText());
+            boardComment.setPost(boardPost);
+            boardComment.setCreatedAt(commentForm.getCreatedAt());
+
+            commentService.update(boardComment);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
+
+    @GetMapping("/commentcount/{user_id}")
+    public int getCommentCount(@PathVariable("user_id") Integer id)
+    {
+        return commentService.getCommentCountByUserId(id);
+    }
+
+    @GetMapping("/postcount/{user_id}")
+    public int getPostCount(@PathVariable("user_id") Integer id)
+    {
+        return postService.getPostCountByUserId(id);
+    }
+
     @DeleteMapping("/deletepost/{post_id}")
     public void deletePostById(@PathVariable("post_id") Integer id)
     {

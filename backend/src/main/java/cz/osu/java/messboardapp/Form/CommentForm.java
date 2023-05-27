@@ -35,8 +35,8 @@ public class CommentForm
     public void setUser(BoardUser user) {
         this.userId = user.getUserId();
     }
-    public void setPost(BoardPost post) {
-        this.postId = post.getPostId();
+    public void setPost(int postId) {
+        this.postId = postId;
     }
 
     public CommentForm(String text, BoardPost post)
@@ -44,8 +44,8 @@ public class CommentForm
         BoardComment bC = new BoardComment();
         bC.setComment_id((int)comRep.count()+1);
         bC.setText(text);
-        //bC.setUser(post.getUserId());
-        bC.setPostId(post);
+        bC.setUser(post.getUser());
+        bC.setPost(post);
         bC.setCreatedAt(new Date());
         comRep.save(bC);
     }

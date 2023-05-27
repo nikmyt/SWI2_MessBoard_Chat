@@ -1,5 +1,6 @@
 package cz.osu.java.messboardapp.service;
 
+import cz.osu.java.messboardapp.Form.CommentForm;
 import cz.osu.java.messboardapp.model.BoardComment;
 import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.model.BoardUser;
@@ -17,23 +18,47 @@ public class CommentService
     private AppUserRepository userRepository;
 
 
+    public void save(CommentForm commentForm, BoardUser boardUser, BoardPost post)
+    {
+            BoardComment boardComment = new BoardComment();
+            boardComment.setCreatedAt(commentForm.getCreatedAt()); //time is sorted in creation of CommentForm
+            boardComment.setUser(boardUser);
+            boardComment.setText(commentForm.getText());
+            boardComment.setPost(post);
 
+            commrep.save(boardComment);
+
+    }
+
+    public void deleteComment(BoardComment boardComment)
+    {
+
+        commrep.delete(boardComment);
+    }
+
+    public void update(BoardComment boardComment)
+    {
+        commrep.save(boardComment);
+    }
     public CommentService(CommentRepository commentRepository)
     {
         this.commrep=commentRepository;
     }
 
-    public Iterable<BoardComment> findCommentByPostId(int postId)
-    {
-        return commrep.findBoardCommentByPostId(postId);
-    }
+
 
     public Iterable<BoardComment> findCommentsByPostId(BoardPost bPost)
     {
-        return commrep.findBoardCommentsByPostId(bPost);
+        return commrep.findBoardCommentByPost(bPost);
+
     }
 
-    public int getPostCountByUserId(int id)
+    public BoardComment findCommentById(int id)
+    {
+        return commrep.findBoardCommentByComment_id(id);
+    }
+
+    public int getCommentCountByUserId(int id)
     {
         BoardUser bUser = userRepository.findBoardUserByUserId(id);
         ArrayList<BoardComment> posts = (ArrayList<BoardComment>) commrep.findBoardCommentsByUser(bUser);

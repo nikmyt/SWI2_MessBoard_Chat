@@ -19,7 +19,7 @@ public class BoardComment
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="post_id", referencedColumnName = "post_id")
-    private BoardPost postId;
+    private BoardPost post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private BoardUser user;

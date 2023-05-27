@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.service;
 
 import cz.osu.java.messboardapp.Form.PostForm;
+import cz.osu.java.messboardapp.model.BoardComment;
 import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.model.BoardUser;
 import cz.osu.java.messboardapp.repository.AppUserRepository;
@@ -16,6 +17,8 @@ public class PostService
 
     private final PostRepository postRepo;
     private AppUserRepository userRepository;
+
+    private CommentService commentService;
 
     public PostService(PostRepository postRepository)
     {
@@ -63,7 +66,10 @@ public class PostService
         return postRepo.findById(id);
     }
 
-
+    public BoardPost findByBPostId(Integer id)
+    {
+        return postRepo.findBoardPostByPostId(id);
+    }
     public Iterable<BoardPost> findBoardPostByTag(String tag, boolean desc) {
         ArrayList<BoardPost> list = postRepo.findBoardPostByTag(tag);
 
@@ -148,7 +154,11 @@ public class PostService
 
     public void deletePost(BoardPost bPost)
     {
-
+        ArrayList<BoardComment> boardComments = (ArrayList<BoardComment>) commentService.findCommentsByPostId(bPost);
+        for(BoardComment bComment : boardComments)
+        {
+            commentService.deleteComment(bComment);
+        }
         postRepo.delete(bPost);
     }
     public void update(BoardPost bPost)
