@@ -134,8 +134,8 @@ export default {
         ApiClient.createComment(comment);
         console.log('Creating comment:', comment.toString());
       }
-  },
-  computed: {
+  }
+  }, computed: {
     isCurrentUserPostOwner() {
       const token = localStorage.getItem('token');
       if (!token || !this.post.user) {
@@ -143,7 +143,6 @@ export default {
       }
       return this.post.user.userId === parseInt(token);
     },
-  },
   },
 };
 </script>
