@@ -1,15 +1,16 @@
 export class CommentForm {
-    //TODO!!! Comment form is not correct yet
-    title: string;
     text: string;
-    tag: string;
-    user: string;
+    user: number;
+    postId: number;
+    createdAt: Date;
 
-    constructor(title: string, text: string, tag: string, user: string) {
-        this.title = title;
+    constructor(text: string, postId: number) {
         this.text = text;
-        this.tag = tag;
-        //this.user = user; //????
-        this.user = localStorage.getItem("user"); //TODO: well ok, but make it so you can't post if you aren't logged in
+        this.postId = postId;
+
+        this.createdAt = new Date();
+
+        const id = localStorage.getItem('token');
+        this.user = id ? parseInt(id, 10) : 0;
     }
 }

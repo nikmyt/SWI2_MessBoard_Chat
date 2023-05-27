@@ -11,7 +11,6 @@ import PostPage from "@/pages/post/PostPage.vue";
 import CreatePost from "@/pages/createPost/CreatePost.vue";
 import EditPost from "@/pages/editPost/EditPost.vue";
 
-import './assets/main.css'
 import LoginPage from "@/pages/login/LoginPage.vue";
 import { ApiClient } from "@/client/ApiClient";
 import RegisterPage from "@/pages/register/RegisterPage.vue";

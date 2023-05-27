@@ -16,10 +16,18 @@
 
             <button v-if="isCurrentUserPostOwner" @click="editPost">Edit</button>
             <button v-if="isCurrentUserPostOwner" @click="deletePost">Delete</button>
-
           </div>
           <div class="post-page__comments">
-            <p>Comments:</p>
+            <div class="comment-args">
+              <p>Comments:</p>
+              <button v-if="isLoggedIn" @click="toggleCommentForm">Create a comment</button>
+            </div>
+            <!-- this pops up -->
+            <form v-if="showCommentForm" @submit.prevent="submitComment">
+              <textarea v-model="commentText" placeholder="Enter your comment"></textarea>
+              <button type="submit">Submit</button>
+            </form>
+            <!-- comments, TODO: put comments in their own element -->
             <div v-for="comment in comments" :key="comment.id">
               <div class="comment">
                 <h6>Commented by {{ comment.user?.username || 'Invalid user' }} on {{ formatDate(comment.createdAt) }}</h6>
@@ -50,6 +58,10 @@ export default {
     return {
       post: {},
       comments: [],
+      isLoggedIn: localStorage.getItem("user") !== null, //kind of hate how this is on every page
+      showCommentForm: false,
+      commentText: '',
+      const: localStorage.getItem('token'),
     };
   },
   async mounted() {
@@ -99,8 +111,29 @@ export default {
     async editPost() {
       const postId = this.post.postId;
       this.$router.push({ name: 'EditPost', params: { postId } });
-      //TODO: this should work but doesn't. If you go to /edit manually, it "kicks you off".
     },
+    toggleCommentForm() {
+      this.showCommentForm = !this.showCommentForm;
+    },
+    submitComment() {
+      const comment = {
+        text: this.commentText,
+        userId: this.const,
+        postId: this.post.postId,
+        createdAt: new Date()
+      };
+    this.createComment(comment);
+    this.commentText = '';
+    this.showCommentForm = false;
+    },
+    createComment(comment) {
+      if(comment.newText == "") {
+        console.log("Cannot submit empty comment!")
+        return;
+      } else {
+        ApiClient.createComment(comment);
+        console.log('Creating comment:', comment.toString());
+      }
   },
   computed: {
     isCurrentUserPostOwner() {
@@ -111,10 +144,26 @@ export default {
       return this.post.user.userId === parseInt(token);
     },
   },
+  },
 };
 </script>
 
 <style scoped>
+.comment-args{
+  display: flex;
+  justify-content: space-between;
+}
+
+textarea{
+  margin: 3px;
+  width: 100%;
+  min-width: 375px;
+  height: 200px;
+  max-height: 800px;
+  overflow-y: auto;
+  resize: none;
+}
+
 .comment {
   width: 500pt;
   display: -ms-flexbox;

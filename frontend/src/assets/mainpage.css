@@ -6,6 +6,8 @@ dusk purple: 5d536c
 blush purple: 8a6f91
 */
 
+@import "base.css";
+
 @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap'); /* fancy */
 @import url('https://fonts.googleapis.com/css?family=Freckle Face&display=swap'); /* blocky */
 @import url('https://fonts.googleapis.com/css?family=Cabin Sketch&display=swap'); /* sketchy */
@@ -147,6 +149,10 @@ header {
 
 .sidebar-right p {
     margin-bottom: 0;
+}
+
+small {
+    font-size: x-small;
 }
 
 /* "Media queries for responsive design" what does that mean? investigate. TODONE: oh right, mobile. sorry */

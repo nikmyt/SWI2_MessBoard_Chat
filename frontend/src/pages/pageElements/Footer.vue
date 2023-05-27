@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>Copyright us two dumdums.</p>
+    <p>Copyright LachenJay & nikmyt - Semestral SWI Project 2023</p>
   </footer>
 </template>
 

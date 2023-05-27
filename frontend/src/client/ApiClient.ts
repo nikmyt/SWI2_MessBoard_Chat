@@ -11,17 +11,6 @@ declare var Promise: any;
 export class ApiClient{
     //create, read, update, delete, (list)
 
-    public static async getComments(postId: number): Promise<CommentModel[]> {
-        //TODO: hook up to correct GET
-        //TODO: actually use the method!
-        const response = await fetch('http://localhost:8080/comment/' + postId);
-        if(response.ok){
-            return await response.json();
-        }
-        console.log("Cannot load comments!");
-        throw new Error(await response.json());
-    }
-
     public static async getPosts(): Promise<PostModel[]> {
         const response = await fetch('http://localhost:8080/postssort?filter=newest');
         if(response.ok){
@@ -96,9 +85,37 @@ export class ApiClient{
         }
     }
 
+    public static async getComments(postId: number): Promise<any[]> {
+        const response = await fetch('http://localhost:8080/comment/${postId}');
+        if(response.ok){
+            return await response.json();
+        }
+        console.log("Cannot load comments!");
+        throw new Error(await response.json());
+    }
+
+    public static async createComment(comment: CommentForm): Promise<any>{
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:8080/newcomment`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(comment)
+        });
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
+
     public static async deleteComment(commentId: number): Promise<void> {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/comments/${commentId}`, {
+        const response = await fetch(`http://localhost:8080/deletecomment/${commentId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,7 +131,7 @@ export class ApiClient{
 
     public static async updateComment(commentId: number, comment: CommentForm): Promise<CommentModel> {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/comments/${commentId}`, {
+        const response = await fetch(`http://localhost:8080/editcomment/${commentId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

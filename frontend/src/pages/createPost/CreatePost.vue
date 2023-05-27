@@ -20,11 +20,6 @@
           <label for="text">Text:</label>
           <textarea id="text" v-model="newText" style="width: 375px; height: 200px; max-height: 800px; overflow-y: auto; resize: none;"></textarea>
 
-
-
-          <!--select v-model="newTaskCategory">
-            <option v-for="category in categories" :key="category">{{ category }}</option>
-          </select-->
           <br>
           <button v-if="isLoggedIn" type="submit">Submit post</button>
           <button v-else disabled>Log in to submit posts, cheeky!</button>
@@ -72,7 +67,6 @@ export default {
           tag: this.newTag,
           userId: this.const,
           createdAt: new Date()
-
         };
         await ApiClient.createPost(post);
         //TODO: check if response good, then u can return. else throw error.
