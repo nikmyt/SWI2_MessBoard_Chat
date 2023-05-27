@@ -1,8 +1,9 @@
 export class CommentForm {
     text: string;
-    user: number;
+    userId: number;
     postId: number;
     createdAt: Date;
+
 
     constructor(text: string, postId: number) {
         this.text = text;
@@ -11,6 +12,6 @@ export class CommentForm {
         this.createdAt = new Date();
 
         const id = localStorage.getItem('token');
-        this.user = id ? parseInt(id, 10) : 0;
+        this.userId = id ? parseInt(id, 10) : 0;
     }
 }

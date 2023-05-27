@@ -66,4 +66,9 @@ public class CommentService
         return posts.size();
     }
 
+    public long getCommentCount()
+    {
+        return commrep.count();
+    }
+
 }

@@ -84,8 +84,13 @@ public class MainController
     @PostMapping("/newcomment")
     public void createcomment(@Valid @RequestBody CommentForm commentForm){
         BoardUser user = userRepository.findBoardUserByUserId(commentForm.getUserId());
+
+
+
+
         BoardPost post = postService.findByBPostId(commentForm.getPostId());
         commentService.save(commentForm, user, post);
+
 
     }
 

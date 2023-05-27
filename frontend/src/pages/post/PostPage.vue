@@ -120,8 +120,9 @@ export default {
         text: this.commentText,
         userId: this.const,
         postId: this.post.postId,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
+
     this.createComment(comment);
     this.commentText = '';
     this.showCommentForm = false;

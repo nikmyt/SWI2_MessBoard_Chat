@@ -5,7 +5,6 @@ import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.model.BoardUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<BoardComment, Integer>
@@ -17,6 +16,8 @@ public interface CommentRepository extends JpaRepository<BoardComment, Integer>
         public Iterable<BoardComment> findBoardCommentsByUser(BoardUser bUser);
 
         public Optional<BoardComment> findBoardCommentById(int id);
+
+        public long count();
 
 
 

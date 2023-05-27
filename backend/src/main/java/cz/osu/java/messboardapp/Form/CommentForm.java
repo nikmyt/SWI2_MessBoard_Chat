@@ -4,9 +4,11 @@ package cz.osu.java.messboardapp.Form;
 import cz.osu.java.messboardapp.model.BoardComment;
 import cz.osu.java.messboardapp.model.BoardUser;
 import cz.osu.java.messboardapp.model.BoardPost;
+import cz.osu.java.messboardapp.repository.AppUserRepository;
 import cz.osu.java.messboardapp.repository.CommentRepository;
+import cz.osu.java.messboardapp.repository.PostRepository;
+
 import lombok.*;
-import org.apache.catalina.User;
 
 import java.util.Date;
 
@@ -14,11 +16,8 @@ import java.util.Date;
 @Setter
 public class CommentForm
 {
+
     private String text;
-
-    private CommentRepository comRep;
-
-
 
     @Setter(AccessLevel.NONE)
     private Date createdAt;
@@ -29,25 +28,19 @@ public class CommentForm
     @Setter(AccessLevel.NONE)
     private Integer postId;
 
-    public void setCreatedAt(java.sql.Timestamp createdAt) {
-        this.createdAt = new Date(createdAt.getTime());
-    }
-    public void setUser(BoardUser user) {
-        this.userId = user.getUserId();
-    }
-    public void setPost(int postId) {
-        this.postId = postId;
-    }
 
-    public CommentForm(String text, BoardPost post)
+
+
+
+
+    public void CommentForm(String text, Date createdAt)
     {
+
         BoardComment bC = new BoardComment();
-        bC.setId((int)comRep.count()+1);
         bC.setText(text);
-        bC.setUser(post.getUser());
-        bC.setPost(post);
-        bC.setCreatedAt(new Date());
-        comRep.save(bC);
+        bC.setCreatedAt(createdAt);
+
+
     }
 
 }

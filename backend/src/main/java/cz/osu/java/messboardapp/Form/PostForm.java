@@ -1,9 +1,5 @@
 package cz.osu.java.messboardapp.Form;
 
-
-import cz.osu.java.messboardapp.model.BoardPost;
-import cz.osu.java.messboardapp.model.BoardUser;
-import cz.osu.java.messboardapp.repository.AppUserRepository;
 import cz.osu.java.messboardapp.repository.PostRepository;
 import lombok.*;
 

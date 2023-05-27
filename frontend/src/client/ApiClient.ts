@@ -96,18 +96,20 @@ export class ApiClient{
 
     public static async createComment(comment: CommentForm): Promise<any>{
         const token = localStorage.getItem('token');
+        console.log(JSON.stringify(comment));
         const response = await fetch(`http://localhost:8080/newcomment`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
+
             body: JSON.stringify(comment)
+
         });
 
-        if (response.ok) {
-            return await response.json();
-        } else {
+        if (!response.ok) {
+
             const error = await response.text();
             throw new Error(error);
         }
