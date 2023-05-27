@@ -12,6 +12,8 @@ public interface AppUserRepository extends CrudRepository<BoardUser, Integer>
     boolean existsByUsernameIgnoreCase(String username);
     public BoardUser findAppUserByUsername(String username);
 
+    public Iterable<BoardUser> findBoardUserByUsernameContainingIgnoreCase(String username);
+
     BoardUser save(BoardUser user);
     List<BoardUser> findAll();
     //BoardUser update(BoardUser user, Integer bUserID);

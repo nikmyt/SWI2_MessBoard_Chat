@@ -133,6 +133,36 @@ public class MainController
         return rService.delete(user, uToken);
 
     }
+    @GetMapping("/posts-user/{id}")
+    public Iterable<BoardPost> userPosts(@PathVariable("id") Integer id)
+    {
+        return postService.findBoardPostByUserId(id);
+    }
+    @GetMapping("/search")
+    public Iterable<?> getSearchResults(@RequestParam(value = "search", required = true) String search)
+    {
+
+        String[] parts = search.split("_");
+        String condition = parts[0];
+        String term = parts[1];
+
+        if(condition.equals("tag"))
+        {
+            return postService.findBoardPostsByTagCont(term);
+        }
+        else if(condition.equals("title"))
+        {
+            return postService.findBoardPostsByTitleCont(term);
+        }
+        else if(condition.equals("user"))
+        {
+            return userRepository.findBoardUserByUsernameContainingIgnoreCase(term);
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     @GetMapping("/postssort")
     public Iterable<BoardPost> getFilteredPosts(@RequestParam(value = "filter", required = false) String filter) {

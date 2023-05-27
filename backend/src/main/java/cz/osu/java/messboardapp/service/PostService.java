@@ -7,6 +7,7 @@ import cz.osu.java.messboardapp.repository.AppUserRepository;
 import cz.osu.java.messboardapp.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Service
@@ -14,6 +15,7 @@ public class PostService
 {
 
     private final PostRepository postRepo;
+    private AppUserRepository userRepository;
 
     public PostService(PostRepository postRepository)
     {
@@ -152,5 +154,29 @@ public class PostService
     public void update(BoardPost bPost)
     {
         postRepo.save(bPost);
+    }
+
+    public Iterable<BoardPost> findBoardPostsByTitleCont(String title)
+    {
+        return postRepo.findBoardPostByTitleContainingIgnoreCase(title);
+    }
+    public Iterable<BoardPost> findBoardPostsByTagCont(String tag)
+    {
+        return postRepo.findBoardPostByTagContainingIgnoreCase(tag);
+    }
+
+    public Iterable<BoardPost> findBoardPostByUserId(int userId)
+    {
+
+        BoardUser bUser = userRepository.findBoardUserByUserId(userId);
+
+        return postRepo.findBoardPostByUser(bUser);
+    }
+
+    public int getPostCountByUserId(int id)
+    {
+        BoardUser bUser = userRepository.findBoardUserByUserId(id);
+        ArrayList<BoardPost> posts = (ArrayList<BoardPost>) postRepo.findBoardPostByUser(bUser);
+        return posts.size();
     }
 }
