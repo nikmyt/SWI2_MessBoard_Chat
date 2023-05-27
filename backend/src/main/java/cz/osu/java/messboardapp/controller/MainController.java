@@ -75,10 +75,16 @@ public class MainController
     }
 
     @GetMapping("/comment/{post_id}")
-    public Iterable<BoardComment> getByPostId(@PathVariable("post_id") Integer id)
+    public Iterable<BoardComment> getByPostId(@PathVariable("post_id") Integer post_id)
     {
-        BoardPost bPost = get(id);
-       return commentService.findCommentsByPostId(bPost);
+        try {
+            BoardPost bPost = get(post_id);
+            return commentService.findCommentsByPostId(bPost);
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
     }
 
     @PostMapping("/newcomment")

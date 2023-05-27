@@ -86,18 +86,19 @@ export class ApiClient{
     }
 
     public static async getComments(postId: number): Promise<any[]> {
-        const response = await fetch('http://localhost:8080/comment/${postId}');
+        const response = await fetch('http://localhost:8080/comment/' + postId);
         if(response.ok){
             return await response.json();
         }
+        else{
         console.log("Cannot load comments!");
-        throw new Error(await response.json());
+        throw new Error(await response.json());}
     }
 
     public static async createComment(comment: CommentForm): Promise<any>{
         const token = localStorage.getItem('token');
-        console.log(JSON.stringify(comment));
-        const response = await fetch(`http://localhost:8080/newcomment`, {
+
+        const response = await fetch('http://localhost:8080/newcomment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
