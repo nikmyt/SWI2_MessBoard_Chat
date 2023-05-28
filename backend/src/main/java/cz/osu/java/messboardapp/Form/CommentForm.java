@@ -33,13 +33,14 @@ public class CommentForm
 
 
 
-    public void CommentForm(String text, Date createdAt)
+    public CommentForm assets(String text, Date createdAt, int userId, int postId)
     {
 
-        BoardComment bC = new BoardComment();
-        bC.setText(text);
-        bC.setCreatedAt(createdAt);
-
+        this.createdAt=createdAt;
+        this.postId=postId;
+        this.text=text;
+        this.userId = userId;
+        return this;
 
     }
 

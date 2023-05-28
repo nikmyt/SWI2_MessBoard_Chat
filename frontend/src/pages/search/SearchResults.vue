@@ -1,6 +1,6 @@
 <template>
   <header>
-    <link rel="stylesheet" href="src/assets/mainpage.css">
+    <link rel="stylesheet" href="../src/assets/mainpage.css">
     <TopBar />
   </header>
 
@@ -8,9 +8,9 @@
     <LeftMenu />
 
     <main class="main-content">
-      <h1>Search Results for "{{ searchQuery }}"</h1>
+      <h1>Search Results for "{{ term }}"</h1>
       <div class="posts">
-        <div v-for="post in searchResults" :key="post.postId">
+        <div v-for="post in posts" :key="post.postId">
           <MainPagePost :post="post" />
         </div>
       </div>
@@ -36,7 +36,7 @@ import MainPagePost from "@/pages/mainpage/MainPagePost.vue";
 export default {
   name: "SearchResults",
   props: {
-    searchQuery: {
+    term: {
       type: String,
       required: true
     }
@@ -44,13 +44,13 @@ export default {
   components: {TopBar, LeftMenu, RightMenu, Footer, MainPagePost },
   data() {
     return {
-      searchResults: [],
-      searchQuery: this.$route.params.searchQuery,
+      posts: [],
+      term: this.$route.params.term,
     }}, async mounted() {
-    const searchQuery = this.$route.params.searchQuery;
+    const searchQuery = this.$route.params.term;
     console.log('Search query:', searchQuery);
-    this.searchResults = await ApiClient.getSearchResults(searchQuery);
-    console.log(this.searchResults);
+    this.posts = await ApiClient.getSearchResults(this.term);
+    console.log(this.posts);
   }
 }
 

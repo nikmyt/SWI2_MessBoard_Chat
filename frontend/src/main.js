@@ -21,7 +21,7 @@ const routes = [
     { path: '/', name: "MainPage" || "Main", component: MainPage },
     { path: '/about', component: error },
     { path: '/:catchAll(.*)', component: error },
-    { path: '/search/:searchQuery', name: 'SearchResults', component: SearchResults },
+    { path: '/search/:term', name: 'SearchResults', component: SearchResults, props: true },
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: '/createPost', name: 'CreatePost', component: CreatePost},
     { path: '/register', name: 'RegisterPage', component: RegisterPage},

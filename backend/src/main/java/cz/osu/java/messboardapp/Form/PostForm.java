@@ -40,19 +40,18 @@ public class PostForm
     //    this.createdAt = new Date(createdAt.getTime());
     //}
 
-    public void PostForm(String title, String text, String tag, String username, int userId)
+    public PostForm uses(String title, String text, String tag, int userId, int postId, Date createdAt)
     {
         this.title = title;
         this.text = text;
         this.tag = tag;
-        this.username = username;
-        this.createdAt = Calendar.getInstance().getTime();
+
+        this.createdAt = createdAt;
         this.temp = false;
 
         this.userId=userId;
-        int find = (int) postRep.count();
-        this.postId = find+1;
-
+        this.postId = postId;
+        return this;
         //don't save it here!!! it creates duplis
 
     }

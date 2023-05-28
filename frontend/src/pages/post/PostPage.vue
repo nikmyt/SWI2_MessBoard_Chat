@@ -139,10 +139,14 @@ export default {
   }, computed: {
     isCurrentUserPostOwner() {
       const token = localStorage.getItem('token');
-      if (!token || !this.post.user) {
+      if (!token || !this.post.user || !this.post.user.userId) {
         return false;
       }
-      return this.post.user.userId === parseInt(token);
+      console.log('User ID:', this.post.user.userId);
+      const parsedToken = parseInt(token, 10);
+      console.log('Parsed Token:', parsedToken);
+
+      return this.post.user.userId === parsedToken;
     },
   },
 };

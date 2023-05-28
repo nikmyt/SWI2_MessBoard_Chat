@@ -85,7 +85,7 @@ export class ApiClient{
         }
     }
 
-    public static async getComments(postId: number): Promise<any[]> {
+    public static async getComments(postId: number): Promise<CommentForm[]> {
         const response = await fetch('http://localhost:8080/comment/' + postId);
         if(response.ok){
             return await response.json();
@@ -190,19 +190,19 @@ export class ApiClient{
         }
     }
 
-    public static async getSearchResults(searchQuery) {
-        try {
-            const response = await fetch(`/searchSimple?searchSimple=${searchQuery}`);
+    public static async getSearchResults(search):Promise<PostModel[]>{
+        const response = await fetch('http://localhost:8080/search/'+search);
+
+
             if (!response.ok) {
                 throw new Error('Failed to fetch search results');
+
             }
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching search results:', error);
-            throw error;
-        }
+
+        return await response.json();
+
     }
+
 
     //---------------FILTER ZONE--------------------
     //["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],

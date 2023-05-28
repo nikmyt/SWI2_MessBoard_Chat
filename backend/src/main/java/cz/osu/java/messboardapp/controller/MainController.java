@@ -14,12 +14,15 @@ import cz.osu.java.messboardapp.service.CommentService;
 import cz.osu.java.messboardapp.service.PostService;
 import cz.osu.java.messboardapp.service.RegistrationService;
 import jakarta.validation.Valid;
+import org.hibernate.Hibernate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @RequestMapping({"/"})
 //@RequestMapping("/users") ?
@@ -75,14 +78,18 @@ public class MainController
     }
 
     @GetMapping("/comment/{post_id}")
-    public Iterable<BoardComment> getByPostId(@PathVariable("post_id") Integer post_id)
-    {
+    public Iterable<CommentForm> getByPostId(@PathVariable("post_id") Integer post_id) {
         try {
-            BoardPost bPost = get(post_id);
-            return commentService.findCommentsByPostId(bPost);
-        }
-        catch(Exception e)
-        {
+            BoardPost bPost = postService.findByBPostId(post_id);
+            Iterable<BoardComment> comments = commentService.findCommentsByPostId(bPost);
+            ArrayList<CommentForm> formCom = new ArrayList<>();
+            // Initialize the user objects before serialization
+            for (BoardComment comment : comments) {
+                formCom.add((new CommentForm()).assets(comment.getText(), comment.getCreatedAt(), comment.getUser().getUserId(), comment.getPost().getPostId()));
+            }
+
+            return formCom;
+        } catch (Exception e) {
             return null;
         }
     }
@@ -215,31 +222,33 @@ public class MainController
         return searchResults;
     }
 
-    @GetMapping("/search")
-    public Iterable<?> getSearchResults(@RequestParam(value = "search", required = true) String search)
+    @GetMapping("/search/{term}")
+    public Iterable<PostForm> getSearchResults(@RequestParam(value = "term", required = true) String term)
     {
 
-        String[] parts = search.split("_");
-        String condition = parts[0];
-        String term = parts[1];
 
-        //no text? why not?
-        if(condition.equals("tag"))
-        {
-            return postService.findBoardPostsByTagCont(term);
+        ArrayList<PostForm> postForms = new ArrayList<>();
+        Iterable<BoardPost> boardPosts= postService.findBoardPostsByTagCont(term);
+
+        Iterable<BoardPost> boardPoststitle= postService.findBoardPostsByTitleCont(term);
+
+        Set<BoardPost> mergedPosts = new HashSet<>();
+        for (BoardPost post : boardPosts) {
+            mergedPosts.add(post);
         }
-        else if(condition.equals("title"))
-        {
-            return postService.findBoardPostsByTitleCont(term);
+        for (BoardPost post : boardPoststitle) {
+            mergedPosts.add(post);
         }
-        else if(condition.equals("user"))
-        {
-            return userRepository.findBoardUserByUsernameContainingIgnoreCase(term);
+        Iterable<BoardPost> mergedIterable = mergedPosts;
+
+        for (BoardPost bPost: mergedIterable
+             ) {
+            postForms.add((new PostForm()).uses(bPost.getTitle(), bPost.getText(), bPost.getTag(), bPost.getUser().getUserId(), bPost.getPostId(), bPost.getCreatedAt()));
+
         }
-        else
-        {
-            return null;
-        }
+        return postForms;
+
+
     }
 
     @GetMapping("/postssort")
