@@ -14,7 +14,7 @@ import EditPost from "@/pages/editPost/EditPost.vue";
 import LoginPage from "@/pages/login/LoginPage.vue";
 import { ApiClient } from "@/client/ApiClient";
 import RegisterPage from "@/pages/register/RegisterPage.vue";
-
+import History from "@/pages/post/History.vue";
 
 
 const routes = [
@@ -22,6 +22,7 @@ const routes = [
     { path: '/about', component: error },
     { path: '/:catchAll(.*)', component: error },
     { path: '/search/:searchQuery', name: 'SearchResults', component: SearchResults, props: true },
+    { path: '/viewHistory', name: 'History', component: History, props: true },
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: '/createPost', name: 'CreatePost', component: CreatePost},
     { path: '/register', name: 'RegisterPage', component: RegisterPage},

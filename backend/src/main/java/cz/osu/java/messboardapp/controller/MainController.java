@@ -73,6 +73,13 @@ public class MainController
         return bPost;
 
     }
+    @GetMapping("/postsbyuser/{id}")
+    public Iterable<BoardPost> getPostsByUser(@PathVariable("id") Integer id)
+    {
+        BoardUser bUser = userRepository.findBoardUserByUserId(id);
+        Iterable<BoardPost> posts = postService.findBoardPostByUserId(bUser);
+        return posts;
+    }
 
     @GetMapping("/comment/{post_id}")
     public Iterable<CommentForm> getByPostId(@PathVariable("post_id") Integer post_id) {
@@ -207,7 +214,8 @@ public class MainController
     @GetMapping("/posts-user/{id}")
     public Iterable<BoardPost> userPosts(@PathVariable("id") Integer id)
     {
-        return postService.findBoardPostByUserId(id);
+        BoardUser bUser = userRepository.findBoardUserByUserId(id);
+        return postService.findBoardPostByUserId(bUser);
     }
 
     @GetMapping("/searchSimple")

@@ -175,12 +175,12 @@ public class PostService
         return postRepo.findBoardPostByTagContainingIgnoreCase(tag);
     }
 
-    public Iterable<BoardPost> findBoardPostByUserId(int userId)
+    public Iterable<BoardPost> findBoardPostByUserId(BoardUser boardUser)
     {
 
-        BoardUser bUser = userRepository.findBoardUserByUserId(userId);
 
-        return postRepo.findBoardPostByUser(bUser);
+
+        return postRepo.findBoardPostByUser(boardUser);
     }
 
 

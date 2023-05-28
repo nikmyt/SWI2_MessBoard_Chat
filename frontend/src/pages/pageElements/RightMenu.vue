@@ -37,7 +37,7 @@ export default {
       this.$router.push("/createPost");
     },
     viewHistory() {
-      console.log("Unimplemented!"); // TODO: implement view history
+      this.$router.push("/viewHistory"); // TODO: implement view history
     },
     async fetchUserStats() {
       try {

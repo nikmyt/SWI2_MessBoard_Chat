@@ -203,6 +203,19 @@ export class ApiClient{
 
     }
 
+    public static async getPostsByUserId(userId) : Promise<any[]>
+    {
+        const response = await fetch('http://localhost:8080/postsbyuser/'+userId);
+
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch search results');
+
+        }
+
+        return await response.json();
+    }
+
 
     //---------------FILTER ZONE--------------------
     //["Newest", "Oldest", "Tags A-Z", "Tags Z-A", "Title A-Z", "Title Z-A"],
