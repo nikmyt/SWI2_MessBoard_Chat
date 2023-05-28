@@ -21,4 +21,7 @@ public interface CommentRepository extends JpaRepository<BoardComment, Integer>
 
 
 
+
+
+
 }

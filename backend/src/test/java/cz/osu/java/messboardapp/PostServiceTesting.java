@@ -23,7 +23,9 @@ public class PostServiceTesting {
     @Mock
     private PostRepository postRepository;
 
+    @Mock
     private AppUserRepository userRepository;
+    @Mock
     private PostService postService;
 
     @BeforeEach
@@ -132,14 +134,17 @@ public class PostServiceTesting {
 
     @Test
     public void testDeletePost() {
-        // Arrange
-        BoardPost postToDelete = new BoardPost();
+        BoardUser boardUser = new BoardUser();
+        boardUser.setUserId(0);
+        PostForm postToDelete = new PostForm();
+        postToDelete.uses("hint", "hint", "hint", boardUser.getUserId(), 1, new Date());
 
-        // Act
-        postService.deletePost(postToDelete);
+        postService.save(postToDelete, boardUser);
+        BoardPost bPost = postService.findByBPostId(postToDelete.getPostId());
+        postService.deletePost(bPost);
 
-        // Assert
-        verify(postRepository, times(1)).delete(postToDelete);
+
+        verify(postRepository, times(1)).delete(bPost);
     }
     @Test
     public void testFindBoardPostsByTagCont() {

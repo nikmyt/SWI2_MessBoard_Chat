@@ -4,6 +4,7 @@ export class CommentForm {
     postId: number;
     createdAt: Date;
 
+    username: string;
 
     constructor(text: string, postId: number) {
         this.text = text;

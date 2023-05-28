@@ -152,14 +152,18 @@ public class PostService
         return list;
     }
 
-    public void deletePost(BoardPost bPost)
-    {
-        ArrayList<BoardComment> boardComments = (ArrayList<BoardComment>) commentService.findCommentsByPostId(bPost);
-        for(BoardComment bComment : boardComments)
-        {
-            commentService.deleteComment(bComment);
+    public void deletePost(BoardPost bPost) {
+        if (commentService != null) {
+            ArrayList<BoardComment> boardComments = (ArrayList<BoardComment>) commentService.findCommentsByPostId(bPost);
+
+            for (BoardComment bComment : boardComments) {
+                commentService.deleteComment(bComment);
+            }
+
         }
         postRepo.delete(bPost);
+
+
     }
     public void update(BoardPost bPost)
     {

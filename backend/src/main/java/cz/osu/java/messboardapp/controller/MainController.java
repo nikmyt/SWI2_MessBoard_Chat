@@ -89,7 +89,7 @@ public class MainController
             ArrayList<CommentForm> formCom = new ArrayList<>();
             // Initialize the user objects before serialization
             for (BoardComment comment : comments) {
-                formCom.add((new CommentForm()).assets(comment.getText(), comment.getCreatedAt(), comment.getUser().getUserId(), comment.getPost().getPostId()));
+                formCom.add((new CommentForm()).assets(comment.getText(), comment.getCreatedAt(), comment.getUser().getUserId(), comment.getPost().getPostId(), comment.getUser().getUsername()));
             }
 
             return formCom;

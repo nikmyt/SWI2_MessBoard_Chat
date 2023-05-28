@@ -30,16 +30,17 @@ public class CommentForm
 
 
 
+    private String username;
 
 
-
-    public CommentForm assets(String text, Date createdAt, int userId, int postId)
+    public CommentForm assets(String text, Date createdAt, int userId, int postId, String username)
     {
 
         this.createdAt=createdAt;
         this.postId=postId;
         this.text=text;
         this.userId = userId;
+        this.username=username;
         return this;
 
     }

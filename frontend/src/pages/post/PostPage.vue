@@ -28,9 +28,9 @@
               <button type="submit">Submit</button>
             </form>
             <!-- comments, TODO: put comments in their own element -->
-            <div v-for="comment in comments" :key="comment.id">
+            <div v-for="comment in comments" :key="comment.postId">
               <div class="comment">
-                <h6>Commented by {{ comment.user?.username || 'Invalid user' }} on {{ formatDate(comment.createdAt) }}</h6>
+                <h6>Commented by {{ comment.username || 'Invalid user' }} on {{ formatDate(comment.createdAt) }}</h6>
                 <p>{{ comment.text }}</p>
               </div>
             </div>
@@ -126,6 +126,7 @@ export default {
     this.createComment(comment);
     this.commentText = '';
     this.showCommentForm = false;
+    window.location.reload();
     },
     createComment(comment) {
       if(comment.newText == "") {
@@ -139,7 +140,7 @@ export default {
   }, computed: {
     isCurrentUserPostOwner() {
 
-      if (!this.const || !this.post.user) {
+      if (!this.const || !this.post.user ) {
         return false;
       }
       console.log('User ID:', this.post.user.userId);
