@@ -46,7 +46,8 @@ export default {
     if (user) {
       this.username = user;
     } else {
-      this.username = null //okay, somehow my logout null checks worked despite me setting it as not-null.
+      this.username = null
+      //okay, somehow my logout null checks worked despite me setting it as not-null.
     }
     /*const token = localStorage.getItem('token'); // retrieve the token from localStorage
     if (token) {
