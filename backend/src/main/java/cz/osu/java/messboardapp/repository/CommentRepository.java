@@ -17,7 +17,7 @@ public interface CommentRepository extends JpaRepository<BoardComment, Integer>
 
         public Optional<BoardComment> findBoardCommentById(int id);
 
-        public long count();
+        public int countAllByUser(BoardUser bUser);
 
 
 

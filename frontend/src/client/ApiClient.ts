@@ -190,8 +190,8 @@ export class ApiClient{
         }
     }
 
-    public static async getSearchResults(search):Promise<PostModel[]>{
-        const response = await fetch('http://localhost:8080/search/'+search);
+    public static async getSearchResults(term):Promise<any[]>{
+        const response = await fetch('http://localhost:8080/search/'+term);
 
 
             if (!response.ok) {
@@ -260,4 +260,34 @@ export class ApiClient{
         console.log("Cannot load posts with filter: Title Z-A!");
         throw new Error(await response.json());
     }
+
+    public static async getCommentCount(userId) {
+        try {
+            const response = await fetch('http://localhost:8080/commentcount/'+userId);
+            if (!response.ok) {
+                throw new Error('Failed to fetch comment count');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching comment count:', error);
+            throw error;
+        }
+    }
+
+// Get post count by user ID
+    public static async getPostCount(userId: number): Promise<number> {
+        try {
+            const response = await fetch('http://localhost:8080/postcount/'+userId);
+            if (!response.ok) {
+                throw new Error('Failed to fetch comment count');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching comment count:', error);
+            throw error;
+        }
+    }
+
 }

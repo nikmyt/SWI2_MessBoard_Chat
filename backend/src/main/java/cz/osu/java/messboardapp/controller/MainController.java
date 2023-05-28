@@ -19,10 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RequestMapping({"/"})
 //@RequestMapping("/users") ?
@@ -145,13 +142,15 @@ public class MainController
     @GetMapping("/commentcount/{user_id}")
     public int getCommentCount(@PathVariable("user_id") Integer id)
     {
-        return commentService.getCommentCountByUserId(id);
+        BoardUser bUser = userRepository.findBoardUserByUserId(id);
+        return commentService.getCommentCountByUserId(bUser);
     }
 
     @GetMapping("/postcount/{user_id}")
     public int getPostCount(@PathVariable("user_id") Integer id)
     {
-        return postService.getPostCountByUserId(id);
+        BoardUser bUser = userRepository.findBoardUserByUserId(id);
+        return postService.getPostCountByUserId(bUser);
     }
 
     @DeleteMapping("/deletepost/{post_id}")
@@ -223,14 +222,14 @@ public class MainController
     }
 
     @GetMapping("/search/{term}")
-    public Iterable<PostForm> getSearchResults(@RequestParam(value = "term", required = true) String term)
+    public Iterable<PostForm> getSearchResults(@PathVariable(value = "term", required = true) String term)
     {
 
 
         ArrayList<PostForm> postForms = new ArrayList<>();
-        Iterable<BoardPost> boardPosts= postService.findBoardPostsByTagCont(term);
+        List<BoardPost> boardPosts= postService.findBoardPostsByTagCont(term);
 
-        Iterable<BoardPost> boardPoststitle= postService.findBoardPostsByTitleCont(term);
+        List<BoardPost> boardPoststitle= postService.findBoardPostsByTitleCont(term);
 
         Set<BoardPost> mergedPosts = new HashSet<>();
         for (BoardPost post : boardPosts) {
@@ -239,6 +238,7 @@ public class MainController
         for (BoardPost post : boardPoststitle) {
             mergedPosts.add(post);
         }
+
         Iterable<BoardPost> mergedIterable = mergedPosts;
 
         for (BoardPost bPost: mergedIterable

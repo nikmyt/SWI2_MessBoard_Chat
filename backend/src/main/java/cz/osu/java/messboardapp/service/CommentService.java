@@ -59,11 +59,9 @@ public class CommentService
         return commrep.findBoardCommentById(id);
     }
 
-    public int getCommentCountByUserId(int id)
+    public int getCommentCountByUserId(BoardUser bUser)
     {
-        BoardUser bUser = userRepository.findBoardUserByUserId(id);
-        ArrayList<BoardComment> posts = (ArrayList<BoardComment>) commrep.findBoardCommentsByUser(bUser);
-        return posts.size();
+        return commrep.countAllByUser(bUser);
     }
 
     public long getCommentCount()

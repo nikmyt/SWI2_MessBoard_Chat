@@ -166,11 +166,11 @@ public class PostService
         postRepo.save(bPost);
     }
 
-    public Iterable<BoardPost> findBoardPostsByTitleCont(String title)
+    public List<BoardPost> findBoardPostsByTitleCont(String title)
     {
         return postRepo.findBoardPostByTitleContainingIgnoreCase(title);
     }
-    public Iterable<BoardPost> findBoardPostsByTagCont(String tag)
+    public List<BoardPost> findBoardPostsByTagCont(String tag)
     {
         return postRepo.findBoardPostByTagContainingIgnoreCase(tag);
     }
@@ -183,10 +183,10 @@ public class PostService
         return postRepo.findBoardPostByUser(bUser);
     }
 
-    public int getPostCountByUserId(int id)
+
+
+    public int getPostCountByUserId(BoardUser bUser)
     {
-        BoardUser bUser = userRepository.findBoardUserByUserId(id);
-        ArrayList<BoardPost> posts = (ArrayList<BoardPost>) postRepo.findBoardPostByUser(bUser);
-        return posts.size();
+        return postRepo.countAllByUser(bUser);
     }
 }

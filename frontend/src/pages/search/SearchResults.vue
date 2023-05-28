@@ -1,6 +1,6 @@
 <template>
   <header>
-    <link rel="stylesheet" href="../src/assets/mainpage.css">
+    <link rel="stylesheet" href="/src/assets/mainpage.css">
     <TopBar />
   </header>
 
@@ -8,9 +8,9 @@
     <LeftMenu />
 
     <main class="main-content">
-      <h1>Search Results for "{{ term }}"</h1>
+      <h1>Search Results for "{{ searchQuery }}"</h1>
       <div class="posts">
-        <div v-for="post in posts" :key="post.postId">
+        <div v-for="post in searchResults" :key="post.postId">
           <MainPagePost :post="post" />
         </div>
       </div>
@@ -30,27 +30,45 @@ import Footer from "@/pages/pageElements/Footer.vue";
 import RightMenu from "@/pages/pageElements/RightMenu.vue";
 import LeftMenu from "@/pages/pageElements/LeftMenu.vue";
 import TopBar from "@/pages/pageElements/TopBar.vue";
-import {ApiClient} from "@/client/ApiClient";
+import { ApiClient } from "@/client/ApiClient";
 import MainPagePost from "@/pages/mainpage/MainPagePost.vue";
 
 export default {
   name: "SearchResults",
   props: {
-    term: {
+    searchQuery: {
       type: String,
       required: true
     }
   },
-  components: {TopBar, LeftMenu, RightMenu, Footer, MainPagePost },
+  components: { TopBar, LeftMenu, RightMenu, Footer, MainPagePost },
   data() {
     return {
-      posts: [],
-      term: this.$route.params.term,
-    }}, async mounted() {
-    const searchQuery = this.$route.params.term;
-    console.log('Search query:', searchQuery);
-    this.posts = await ApiClient.getSearchResults(this.term);
-    console.log(this.posts);
+      searchResults: []
+    }
+  },
+  async mounted() {
+    this.performSearch();
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler() {
+        this.performSearch();
+      }
+    }
+  },
+  methods: {
+    async performSearch() {
+      try {
+        const searchQuery = this.$route.params.searchQuery;
+        console.log('Search query:', searchQuery);
+        this.searchResults = await ApiClient.getSearchResults(searchQuery);
+        console.log(this.searchResults);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    }
   }
 }
 

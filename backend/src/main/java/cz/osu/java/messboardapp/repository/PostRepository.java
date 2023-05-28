@@ -15,13 +15,16 @@ public interface PostRepository extends JpaRepository<BoardPost, Integer>
 
         public ArrayList<BoardPost> findAll();
 
-        public Iterable<BoardPost> findBoardPostByTitleContainingIgnoreCase(String title);
+        public List<BoardPost> findBoardPostByTitleContainingIgnoreCase(String title);
 
-        public Iterable<BoardPost> findBoardPostByTagContainingIgnoreCase(String tag);
+        public List<BoardPost> findBoardPostByTagContainingIgnoreCase(String tag);
 
         public Iterable<BoardPost> findBoardPostByUser(BoardUser bUser);
 
         public BoardPost findBoardPostByPostId(int postId);
+
+
+        public int countAllByUser(BoardUser bUser);
 
 
 
