@@ -218,23 +218,14 @@ public class MainController
         return postService.findBoardPostByUserId(bUser);
     }
 
-    @GetMapping("/searchSimple")
-    public Iterable<?> getSimpleSearchResults(@RequestParam(value = "searchSimple", required = true) String search){
-        //only looks at titles, ideally it would return by text and title... oh, i can do that
-        Iterable<BoardPost> searchResults;
-        searchResults = postService.findBoardPostsByTitleCont(search);
-        //ah well it doen't exist
-        //searchResults = postService.findBoardPostsByTextCont(search)
 
-        return searchResults;
-    }
 
     @GetMapping("/search/{term}")
-    public Iterable<PostForm> getSearchResults(@PathVariable(value = "term", required = true) String term)
+    public Iterable<BoardPost> getSearchResults(@PathVariable(value = "term", required = true) String term)
     {
 
 
-        ArrayList<PostForm> postForms = new ArrayList<>();
+        ArrayList<BoardPost> boardPostsX = new ArrayList<>();
         List<BoardPost> boardPosts= postService.findBoardPostsByTagCont(term);
 
         List<BoardPost> boardPoststitle= postService.findBoardPostsByTitleCont(term);
@@ -251,10 +242,10 @@ public class MainController
 
         for (BoardPost bPost: mergedIterable
              ) {
-            postForms.add((new PostForm()).uses(bPost.getTitle(), bPost.getText(), bPost.getTag(), bPost.getUser().getUserId(), bPost.getPostId(), bPost.getCreatedAt()));
+            boardPostsX.add(bPost);
 
         }
-        return postForms;
+        return boardPostsX;
 
 
     }
