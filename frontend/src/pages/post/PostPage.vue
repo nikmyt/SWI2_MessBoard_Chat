@@ -126,15 +126,18 @@ export default {
     this.createComment(comment);
     this.commentText = '';
     this.showCommentForm = false;
-    window.location.reload();
     },
     createComment(comment) {
       if(comment.newText == "") {
         console.log("Cannot submit empty comment!")
         return;
       } else {
-        ApiClient.createComment(comment);
-        console.log('Creating comment:', comment.toString());
+        //console.log('Creating comment:', comment.toString());
+        ApiClient.createComment(comment).then(() => {
+          this.comments.push(comment); //TODO: unsure if edit/delete will work correclty
+          //OR
+          //window.location.reload();
+        })
       }
   }
   }, computed: {
