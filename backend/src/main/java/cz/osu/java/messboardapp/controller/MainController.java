@@ -250,13 +250,5 @@ public class MainController
 
 
     }
-
-
-
 }
 
-// %20 is a space in an url
-//possibly in the future: search?name=l&year=2005
-
-//To test:
-// and add header: Content-Type: application/json
