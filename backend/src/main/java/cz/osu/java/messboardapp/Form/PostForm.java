@@ -27,18 +27,12 @@ public class PostForm
     @Setter(AccessLevel.NONE)
     private Date createdAt;
 
-    /*
-    @Setter(AccessLevel.NONE)
-    private Integer userId;
-    */
+
 
     @Setter(AccessLevel.NONE)
     private Integer postId;
 
-    //what?!
-    //public void setCreatedAt(java.sql.Timestamp createdAt) {
-    //    this.createdAt = new Date(createdAt.getTime());
-    //}
+
 
     public PostForm uses(String title, String text, String tag, int userId, int postId, Date createdAt)
     {
@@ -52,7 +46,6 @@ public class PostForm
         this.userId=userId;
         this.postId = postId;
         return this;
-        //don't save it here!!! it creates duplis
 
     }
 }

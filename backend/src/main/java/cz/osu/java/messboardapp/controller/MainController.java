@@ -27,9 +27,8 @@ import java.util.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MainController
 {
-    private final AppUserRepository userRepository; //I don't think this is correct bro
-    //Sure it is sis
-    //sorry 🥺 but you commented it out yourself!
+    private final AppUserRepository userRepository;
+
 
     private final RegistrationService registrationService;
     private final AuthService authService;
@@ -43,35 +42,24 @@ public class MainController
         this.authService = authService;
         this.postService = postService;
         this.commentService = commentService;
-        //uToken = null;
     }
 
-
-    @PostMapping("/new_post") //sorry i made bad things here
+    //BoardPost control
+    @PostMapping("/new_post")
     public void create(@Valid @RequestBody PostForm newPost){
-        //BoardUser user = userRepository.findAppUserByUsername(newPost.getUsername());
         BoardUser user = userRepository.findBoardUserByUserId(newPost.getUserId());
         postService.save(newPost, user);
-
     }
-
-
-
-
-
     @GetMapping("/posts")
     @ResponseStatus(HttpStatus.OK)
     public Iterable<BoardPost> getAll()
     {
         return postService.findAll(); //?
     }
-
     @GetMapping("/posts/{id}")
     public BoardPost get(@PathVariable("id") Integer id){
         BoardPost bPost = postService.findByPostId(id).orElse(null);
-
         return bPost;
-
     }
     @GetMapping("/postsbyuser/{id}")
     public Iterable<BoardPost> getPostsByUser(@PathVariable("id") Integer id)
@@ -80,86 +68,12 @@ public class MainController
         Iterable<BoardPost> posts = postService.findBoardPostByUserId(bUser);
         return posts;
     }
-
-    @GetMapping("/comment/{post_id}")
-    public Iterable<CommentForm> getByPostId(@PathVariable("post_id") Integer post_id) {
-        try {
-            BoardPost bPost = postService.findByBPostId(post_id);
-            Iterable<BoardComment> comments = commentService.findCommentsByPostId(bPost);
-            ArrayList<CommentForm> formCom = new ArrayList<>();
-            // Initialize the user objects before serialization
-            for (BoardComment comment : comments) {
-                formCom.add((new CommentForm()).assets(comment.getText(), comment.getCreatedAt(), comment.getUser().getUserId(), comment.getPost().getPostId(), comment.getUser().getUsername()));
-            }
-
-            return formCom;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @PostMapping("/newcomment")
-    public void createcomment(@Valid @RequestBody CommentForm commentForm){
-        BoardUser user = userRepository.findBoardUserByUserId(commentForm.getUserId());
-
-
-
-
-        BoardPost post = postService.findByBPostId(commentForm.getPostId());
-        commentService.save(commentForm, user, post);
-    }
-
-    @DeleteMapping("/deletecomment/{comment_id}")
-    public void deleteCommentsById(@PathVariable("comment_id") Integer id)
-    {
-        BoardComment boardComment = commentService.findBoardCommentByComment_id(id).orElse(null);
-        try {
-            commentService.deleteComment(boardComment);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @PutMapping("/editcomment/{comment_id}")
-    public void editCommentById(@PathVariable("post_id") Integer id, @RequestBody CommentForm commentForm)
-    {
-        BoardComment boardComment = commentService.findBoardCommentByComment_id(id).orElse(null);
-        try
-        {
-            BoardUser boardUser = new BoardUser();
-            boardUser = userRepository.findBoardUserByUserId(commentForm.getUserId());
-
-            BoardPost boardPost = new BoardPost();
-            boardPost = postService.findByBPostId(commentForm.getPostId());
-            boardComment.setUser(boardUser);
-            boardComment.setText(commentForm.getText());
-            boardComment.setPost(boardPost);
-            boardComment.setCreatedAt(commentForm.getCreatedAt());
-
-            commentService.update(boardComment);
-        }
-        catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
-    @GetMapping("/commentcount/{user_id}")
-    public int getCommentCount(@PathVariable("user_id") Integer id)
-    {
-        BoardUser bUser = userRepository.findBoardUserByUserId(id);
-        return commentService.getCommentCountByUserId(bUser);
-    }
-
     @GetMapping("/postcount/{user_id}")
     public int getPostCount(@PathVariable("user_id") Integer id)
     {
         BoardUser bUser = userRepository.findBoardUserByUserId(id);
         return postService.getPostCountByUserId(bUser);
     }
-
     @DeleteMapping("/deletepost/{post_id}")
     public void deletePostById(@PathVariable("post_id") Integer id)
     {
@@ -180,36 +94,6 @@ public class MainController
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
-    }
-
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> login(@RequestBody AuthForm authForm) {
-
-        AuthService authService = new AuthService(userRepository);
-
-        ResponseEntity<Object> responseEntity = authService.authenticate(authForm);
-
-        return responseEntity;
-    }
-
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> register(@RequestBody RegistrationForm registrationForm)
-    {
-
-       return registrationService.register(registrationForm);
-    }
-
-    @DeleteMapping("/deluser")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> delete(BoardUser user, UserToken uToken)
-    {
-        RegistrationService rService = new RegistrationService(userRepository);
-        return rService.delete(user, uToken);
-
     }
     @GetMapping("/posts-user/{id}")
     public Iterable<BoardPost> userPosts(@PathVariable("id") Integer id)
@@ -217,39 +101,6 @@ public class MainController
         BoardUser bUser = userRepository.findBoardUserByUserId(id);
         return postService.findBoardPostByUserId(bUser);
     }
-
-
-
-    @GetMapping("/search/{term}")
-    public Iterable<BoardPost> getSearchResults(@PathVariable(value = "term", required = true) String term)
-    {
-
-
-        ArrayList<BoardPost> boardPostsX = new ArrayList<>();
-        List<BoardPost> boardPosts= postService.findBoardPostsByTagCont(term);
-
-        List<BoardPost> boardPoststitle= postService.findBoardPostsByTitleCont(term);
-
-        Set<BoardPost> mergedPosts = new HashSet<>();
-        for (BoardPost post : boardPosts) {
-            mergedPosts.add(post);
-        }
-        for (BoardPost post : boardPoststitle) {
-            mergedPosts.add(post);
-        }
-
-        Iterable<BoardPost> mergedIterable = mergedPosts;
-
-        for (BoardPost bPost: mergedIterable
-             ) {
-            boardPostsX.add(bPost);
-
-        }
-        return boardPostsX;
-
-
-    }
-
     @GetMapping("/postssort")
     public Iterable<BoardPost> getFilteredPosts(@RequestParam(value = "filter", required = false) String filter) {
         if (filter == null) {
@@ -281,11 +132,131 @@ public class MainController
         }
     }
 
+    //BoardComment control
+    @GetMapping("/comment/{post_id}")
+    public Iterable<CommentForm> getByPostId(@PathVariable("post_id") Integer post_id) {
+        try {
+            BoardPost bPost = postService.findByBPostId(post_id);
+            Iterable<BoardComment> comments = commentService.findCommentsByPostId(bPost);
+            ArrayList<CommentForm> formCom = new ArrayList<>();
+            // Initialize the user objects before serialization
+            for (BoardComment comment : comments) {
+                formCom.add((new CommentForm()).assets(comment.getText(), comment.getCreatedAt(), comment.getUser().getUserId(), comment.getPost().getPostId(), comment.getUser().getUsername()));
+            }
+            return formCom;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    @PostMapping("/newcomment")
+    public void createcomment(@Valid @RequestBody CommentForm commentForm){
+        BoardUser user = userRepository.findBoardUserByUserId(commentForm.getUserId());
+        BoardPost post = postService.findByBPostId(commentForm.getPostId());
+        commentService.save(commentForm, user, post);
+    }
+    @DeleteMapping("/deletecomment/{comment_id}")
+    public void deleteCommentsById(@PathVariable("comment_id") Integer id)
+    {
+        BoardComment boardComment = commentService.findBoardCommentByComment_id(id).orElse(null);
+        try {
+            commentService.deleteComment(boardComment);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PutMapping("/editcomment/{comment_id}")
+    public void editCommentById(@PathVariable("post_id") Integer id, @RequestBody CommentForm commentForm)
+    {
+        BoardComment boardComment = commentService.findBoardCommentByComment_id(id).orElse(null);
+        try
+        {
+            BoardUser boardUser = new BoardUser();
+            boardUser = userRepository.findBoardUserByUserId(commentForm.getUserId());
+            BoardPost boardPost = new BoardPost();
+            boardPost = postService.findByBPostId(commentForm.getPostId());
+            boardComment.setUser(boardUser);
+            boardComment.setText(commentForm.getText());
+            boardComment.setPost(boardPost);
+            boardComment.setCreatedAt(commentForm.getCreatedAt());
+            commentService.update(boardComment);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/commentcount/{user_id}")
+    public int getCommentCount(@PathVariable("user_id") Integer id)
+    {
+        BoardUser bUser = userRepository.findBoardUserByUserId(id);
+        return commentService.getCommentCountByUserId(bUser);
+    }
+
+
+    //BoardUser control
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> login(@RequestBody AuthForm authForm) {
+
+        AuthService authService = new AuthService(userRepository);
+
+        ResponseEntity<Object> responseEntity = authService.authenticate(authForm);
+
+        return responseEntity;
+    }
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> register(@RequestBody RegistrationForm registrationForm)
+    {
+
+       return registrationService.register(registrationForm);
+    }
+    @DeleteMapping("/deluser")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> delete(BoardUser user, UserToken uToken)
+    {
+        RegistrationService rService = new RegistrationService(userRepository);
+        return rService.delete(user, uToken);
+
+    }
+
+    //Search control
+    @GetMapping("/search/{term}")
+    public Iterable<BoardPost> getSearchResults(@PathVariable(value = "term", required = true) String term)
+    {
+
+
+        ArrayList<BoardPost> boardPostsX = new ArrayList<>();
+        List<BoardPost> boardPosts= postService.findBoardPostsByTagCont(term);
+
+        List<BoardPost> boardPoststitle= postService.findBoardPostsByTitleCont(term);
+
+        Set<BoardPost> mergedPosts = new HashSet<>();
+        for (BoardPost post : boardPosts) {
+            mergedPosts.add(post);
+        }
+        for (BoardPost post : boardPoststitle) {
+            mergedPosts.add(post);
+        }
+
+        Iterable<BoardPost> mergedIterable = mergedPosts;
+
+        for (BoardPost bPost: mergedIterable
+             ) {
+            boardPostsX.add(bPost);
+
+        }
+        return boardPostsX;
+
+
+    }
+
+
+
 }
 
 // %20 is a space in an url
 //possibly in the future: search?name=l&year=2005
 
 //To test:
-//v body dej raw: {"name":"Black Sabbath"}
 // and add header: Content-Type: application/json

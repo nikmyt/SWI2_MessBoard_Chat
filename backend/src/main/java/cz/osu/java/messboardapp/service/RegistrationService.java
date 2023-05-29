@@ -17,12 +17,8 @@ import org.springframework.stereotype.Service;
 public class RegistrationService
 {
     private final AppUserRepository userRepository;
-
     public ResponseEntity<String> register(RegistrationForm registrationForm)
     {
-        //check if username exists
-        //Y -> return that username is taken, http status = bad request
-        //N -> create new user and return that user was, registered = OK
         if(userRepository.existsByUsernameIgnoreCase(registrationForm.getUsername()) == true)
         {
             return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
@@ -38,11 +34,7 @@ public class RegistrationService
             userRepository.save(user);
             return new ResponseEntity<>("Account was created", HttpStatus.OK);
         }
-
-
-
     }
-
     public ResponseEntity<String> delete(BoardUser bUser, UserToken uToken)
     {
         if(bUser.getUserId() == uToken.getUserId())

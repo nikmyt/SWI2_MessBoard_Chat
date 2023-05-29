@@ -9,19 +9,9 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<BoardComment, Integer>
 {
-        //public Iterable<BoardComment> findBoardCommentByPostId(int postId);
-
         public Iterable<BoardComment> findBoardCommentByPost(BoardPost bPost);
-
-        public Iterable<BoardComment> findBoardCommentsByUser(BoardUser bUser);
 
         public Optional<BoardComment> findBoardCommentById(int id);
 
         public int countAllByUser(BoardUser bUser);
-
-
-
-
-
-
 }

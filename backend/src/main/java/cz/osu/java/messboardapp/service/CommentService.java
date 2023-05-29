@@ -15,10 +15,6 @@ import java.util.Optional;
 public class CommentService
 {
     public final CommentRepository commrep;
-
-    private AppUserRepository userRepository;
-
-
     public void save(CommentForm commentForm, BoardUser boardUser, BoardPost post)
     {
             BoardComment boardComment = new BoardComment();
@@ -30,13 +26,10 @@ public class CommentService
             commrep.save(boardComment);
 
     }
-
     public void deleteComment(BoardComment boardComment)
     {
-
         commrep.delete(boardComment);
     }
-
     public void update(BoardComment boardComment)
     {
         commrep.save(boardComment);
@@ -45,25 +38,18 @@ public class CommentService
     {
         this.commrep=commentRepository;
     }
-
-
-
     public Iterable<BoardComment> findCommentsByPostId(BoardPost bPost)
     {
         return commrep.findBoardCommentByPost(bPost);
-
     }
-
     public Optional<BoardComment> findBoardCommentByComment_id(int id)
     {
         return commrep.findBoardCommentById(id);
     }
-
     public int getCommentCountByUserId(BoardUser bUser)
     {
         return commrep.countAllByUser(bUser);
     }
-
     public long getCommentCount()
     {
         return commrep.count();

@@ -10,7 +10,6 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<BoardPost, Integer>
 {
-
         public ArrayList<BoardPost> findBoardPostByTag(String tag);
 
         public ArrayList<BoardPost> findAll();
@@ -23,11 +22,5 @@ public interface PostRepository extends JpaRepository<BoardPost, Integer>
 
         public BoardPost findBoardPostByPostId(int postId);
 
-
         public int countAllByUser(BoardUser bUser);
-
-
-
-
-
 }
