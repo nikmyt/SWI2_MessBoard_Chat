@@ -13,12 +13,17 @@ export class ApiClient{
 
     public static async getPosts(): Promise<PostModel[]> {
         const response = await fetch('http://localhost:8080/postssort?filter=newest');
-        if(response.ok){
+
+        if (response.ok) {
             return await response.json();
+        } else {
+            const errorResponse = await response.json();
+            const errorMessage = errorResponse?.error || 'Failed to fetch posts';
+            console.log("Cannot load posts!");
+            throw new Error(errorMessage);
         }
-        console.log("Cannot load posts!");
-        throw new Error(await response.json());
     }
+
 
     public static async getPost(postId: number): Promise<PostModel> {
         const response = await fetch(`http://localhost:8080/posts/` + postId); //or ${postId}
