@@ -1,5 +1,5 @@
-# MessBoard
-This is a semestral project called MessBoard. It does not have much going on at the moment.
+# MessBoard (with chat!)
+This is a semestral project called MessBoard. It has register/login user functionality, and the ability for users to make posts and comment on them, as well as filtering of posts and searching for posts.
 ## Architecture
 We use Vue.js and Java Springboot.
 ## Setup
@@ -8,8 +8,7 @@ You will need to install MariaDB, XAMPP and IntelliJ Idea/other Java development
 2) Start the Java backend. You should see Tomcat server add itself in XAMPP.
 3) "npm run dev" the Vue frontend.
 4) Go to the provided localhost port and enjoy our website.
-**todo**
 ## Images
 >todo
 ## Credits
-*todo*
+J.L., V.M and K.S.
