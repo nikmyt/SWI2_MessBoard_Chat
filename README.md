@@ -8,6 +8,9 @@ You will need to install MariaDB, XAMPP and IntelliJ Idea/other Java development
 2) Start the Java backend. You should see Tomcat server add itself in XAMPP.
 3) "npm run dev" the Vue frontend.
 4) Go to the provided localhost port and enjoy our website.
+## Notes
+-you must install xammp in a folder that is not white male privileged
+-you must set the mariadb/mysql port to 3307
 ## Images
 >todo
 ## Credits
