@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 @Service
 @AllArgsConstructor
@@ -15,12 +16,14 @@ public class AuthService
 {
     private final AppUserRepository userRepository;
 
+    private final Argon2PasswordEncoder argon2id = new Argon2PasswordEncoder(16, 32, 1, 64000, 10);
+
     public ResponseEntity<Object> authenticate(AuthForm authForm)
     {
         BoardUser user = userRepository.findAppUserByUsername(authForm.getUsername());
         if (user != null)
         {
-            if(user.getPassword().equals(authForm.getPassword()))
+            if(argon2id.matches(authForm.getPassword(), user.getPassword()))
             {
                 UserToken userToken = new UserToken(user.getUserId(), user.getUsername());
                 return new ResponseEntity<>(userToken, HttpStatus.OK);

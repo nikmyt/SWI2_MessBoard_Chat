@@ -10,6 +10,7 @@ import cz.osu.java.messboardapp.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 public class RegistrationService
 {
     private final AppUserRepository userRepository;
+
+    private final Argon2PasswordEncoder argon2id = new Argon2PasswordEncoder(16, 32, 1, 64000, 10);
+
     public ResponseEntity<String> register(RegistrationForm registrationForm)
     {
         if(userRepository.existsByUsernameIgnoreCase(registrationForm.getUsername()) == true)
@@ -27,7 +31,7 @@ public class RegistrationService
         {
             BoardUser user = new BoardUser();
             user.setUsername(registrationForm.getUsername());
-            user.setPassword(registrationForm.getPassword());
+            user.setPassword(argon2id.encode(registrationForm.getPassword()));
             user.setUserId(userRepository.findAll().size()+1);
             user.setPassword_hint(registrationForm.getPassword_hint());
             user.setEmail(registrationForm.getEmail());
