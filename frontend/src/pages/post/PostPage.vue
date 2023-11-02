@@ -2,9 +2,7 @@
   <link rel="stylesheet" href="/src/assets/mainpage.css">
 
   <div>
-    <header>
-      <TopBar />
-    </header>
+    <TopBar />
     <div class="container">
       <LeftMenu />
       <main class="main-content">

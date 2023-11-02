@@ -1,8 +1,6 @@
 <template>
-  <header>
     <link rel="stylesheet" href="src/assets/mainpage.css">
     <TopBar />
-  </header>
 
   <div class="container">
     <LeftMenu />
