@@ -12,7 +12,9 @@ import RightMenu from "@/pages/pageElements/RightMenu.vue";
   <link rel="stylesheet" href="src/assets/mainpage.css">
 
   <div>
+    <header>
       <TopBar />
+    </header>
 
     <div class="container">
       <LeftMenu />

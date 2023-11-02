@@ -1,35 +1,33 @@
 <template>
-  <header>
-    <!-- Logo and search bar -->
-    <router-link :to="{ name: 'MainPage' }" class="logo-link">
-      <div class="logo">
-        <img src="/src/assets/piggers.svg" alt="Logo">
-        <!--TODONE make it clickable to get back to main page and everywhere-->
-      </div>
-    </router-link>
-    <router-link :to="{ name: 'MainPage'}" >
-      <h1 class="title">MessBoard</h1>
-    </router-link>
-
-    <SearchBar />
-
-    <!-- Hamburger menu. doens't show up lol. TODO
-    <div class="hamburger-menu">
-      <span>Item 1</span>
-      <span>Item 2</span>
-      <span>Item 3</span>
+  <!-- Logo and search bar -->
+  <router-link :to="{ name: 'MainPage' }" class="logo-link">
+    <div class="logo">
+      <img src="/src/assets/piggers.svg" alt="Logo">
+      <!--TODONE make it clickable to get back to main page and everywhere-->
     </div>
-    -->
+  </router-link>
+  <router-link :to="{ name: 'MainPage'}" >
+    <h1 class="title">MessBoard</h1>
+  </router-link>
 
-    <div class="user-info">
-      <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
-      <p class="login-text" v-else> Not logged in.</p>
-      <button @click="login" v-if="!isLoggedIn">Login</button>
-      <button @click="logout" v-if="isLoggedIn">Logout</button>
-      <button @click="register" v-if="!isLoggedIn">Register</button>
-      <!-- Should you be able to register when logged in? -->
-    </div>
-  </header>
+  <SearchBar />
+
+  <!-- Hamburger menu. doens't show up lol. TODO
+  <div class="hamburger-menu">
+    <span>Item 1</span>
+    <span>Item 2</span>
+    <span>Item 3</span>
+  </div>
+  -->
+
+  <div class="user-info">
+    <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
+    <p class="login-text" v-else> Not logged in.</p>
+    <button @click="login" v-if="!isLoggedIn">Login</button>
+    <button @click="logout" v-if="isLoggedIn">Logout</button>
+    <button @click="register" v-if="!isLoggedIn">Register</button>
+    <!-- Should you be able to register when logged in? -->
+  </div>
 </template>
 
 <script>
@@ -76,6 +74,7 @@ export default {
 </script>
 
 <style scoped>
+
 .login-text{
   color: #dedbe3;
 }
@@ -86,15 +85,4 @@ export default {
   cursor: pointer;
 }
 
-header {
-  display: flex;
-}
-
-.user-info {
-  margin-left: auto;
-  float: right;
-  /*display: flex;*/
-  align-items: stretch;
-}
 </style>
-

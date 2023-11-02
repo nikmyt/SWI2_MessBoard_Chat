@@ -15,9 +15,7 @@ import LoginPage from "@/pages/login/LoginPage.vue";
 import { ApiClient } from "@/client/ApiClient";
 import RegisterPage from "@/pages/register/RegisterPage.vue";
 import History from "@/pages/post/History.vue";
-//------------------ SWI2
-import ChatPage from "@/pages/chat/ChatPage.vue";
-import ChatMessage from "@/pages/chat/ChatMessage.vue";
+
 
 const routes = [
     { path: '/', name: "MainPage" || "Main", component: MainPage },
@@ -69,8 +67,6 @@ const routes = [
                 });
         }
     },
-    //SWI2
-    { path: '/chat', name: 'ChatPage', component: ChatPage},
 ]
 
 const router = createRouter({
