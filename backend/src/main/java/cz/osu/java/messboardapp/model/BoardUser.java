@@ -1,5 +1,7 @@
 package cz.osu.java.messboardapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 
+@ToString
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id", scope = BoardUser.class)
 public class BoardUser //BOARDUSER / boarduser
 {
     @Id
