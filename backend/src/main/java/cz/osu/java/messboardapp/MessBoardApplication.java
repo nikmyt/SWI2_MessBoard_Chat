@@ -30,14 +30,4 @@ public class MessBoardApplication {
 		return connectionFactory;
 	}
 
-<<<<<<< HEAD
-
 }
-=======
-	@Bean
-	MessageListenerAdapter listenerAdapter(Receiver receiver)
-	{
-		return new MessageListenerAdapter(receiver, "receiveMessage");
-	}
-}
->>>>>>> ac8905b3830b39808286d98909aa8d136ffe2b34
