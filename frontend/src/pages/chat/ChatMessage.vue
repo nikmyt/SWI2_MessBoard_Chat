@@ -1,6 +1,6 @@
 <template>
-  <div className="chat-bubble">
-    <div className="message-username"> {{username}}</div>
+  <div :class="{ 'chat-bubble-self': username === user, 'chat-bubble': username !== user }">
+    <div className="message-username"> {{username}} says:</div>
     <div className="message-timestamp"></div>
     <div className="message-content"> {{message}} </div>
     <div className="message-reactions">
@@ -26,13 +26,26 @@ export default {
       reactions: []
       */
     }
+  },methods: {
+    mounted(){
+      const user = localStorage.getItem("user");
+    }
   }
 }
 </script>
 
 <style scoped>
 .chat-bubble {
-  background-color: #f0f0f0;
+  background-color: #b8ecff;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.chat-bubble {
+  background-color: #ffedd9;
   padding: 10px;
   border-radius: 10px;
   margin: 10px;

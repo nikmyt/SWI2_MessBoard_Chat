@@ -1,54 +1,66 @@
 <template>
   <div>
     <div class="chat-window">
-      <div id="main-content" class="container">
+      <div class="container">
+        <!-- WebSocket connection form -->
         <div class="row">
           <div class="col-md-6">
-            <form class="form-inline">
+            <form class="form-inline" @submit.prevent="connect">
               <div class="form-group">
                 <label for="connect">WebSocket connection:</label>
-                <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+                <button id="connect" class="btn btn-default" :disabled="connected" type="submit">Connect</button>
+                <button id="disconnect" class="btn btn-default" :disabled="!connected" @click="disconnect" type="button">
+                  Disconnect
                 </button>
               </div>
             </form>
           </div>
+          <!-- Name input form -->
           <div class="col-md-6">
             <form class="form-inline">
               <div class="form-group">
                 <label for="name">What is your name?</label>
-                <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                <input v-model="userName" type="text" id="name" class="form-control" placeholder="Your name here..." />
               </div>
-              <button id="send" class="btn btn-default" type="submit">Send</button>
+              <button class="btn btn-default" @click="sendName" type="button">Send</button>
             </form>
           </div>
         </div>
+        <!-- Message table -->
         <div class="row">
           <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
+            <table class="table table-striped" v-show="connected">
               <thead>
               <tr>
                 <th>Greetings</th>
               </tr>
               </thead>
-              <tbody id="greetings">
+              <tbody>
+              <tr v-for="(message, index) in messages" :key="index">
+                <td>{{ message }}</td>
+              </tr>
               </tbody>
             </table>
           </div>
         </div>
+        <!-- Chat messages -->
+        <div class="chat-messages">
+          <ChatMessage v-for="(message, index) in messages" :key="index" :username="sender" :message="text" />
+        </div>
       </div>
+      <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
     </div>
-    <input v-model="newMessage" @keyup.enter="sendMessage"  placeholder="Type a message..." />
   </div>
 </template>
 
 <script>
 import ChatMessage from "./ChatMessage.vue";
+import Stomp from 'stompjs';
 
 export default {
   name: "ChatPage",
   components: {
-    ChatMessage, // Register the ChatMessage component
+    ChatMessage,
   },
   data() {
     return {
@@ -56,6 +68,8 @@ export default {
       isLoggedIn: localStorage.getItem("user") !== null,
       messages: [],
       newMessage: '',
+      connected: false,
+      stompClient: null,
     };
   },
   methods: {
@@ -64,116 +78,69 @@ export default {
       if (user) {
         this.username = user;
       } else {
-        this.username = 'unlogged'
+        this.username = 'unlogged';
       }
-      //EventBus.$stomp.subscribe('/user/queue/messages', (message) => {
-      //  this.messages.push(message);
-      //  console.log('Received message from RabbitMQ:', message.body);
-      //});
 
-      /*
-      const socket = new WebSocket('ws://localhost:8080/ws');
+      const socket = new WebSocket('ws://localhost:5672/ws'); //init i guess
+      this.stompClient = Stomp.over(socket);
 
-      socket.onopen = () => {
-        console.log('WebSocket connection opened');
-      };
+      this.stompClient.connect({}, frame => {
+        this.connected = true;
+        console.log('Connected:', frame);
 
-      socket.onmessage = (event) => {
-        const messageContent = event.data;
-        console.log('Received message from WebSocket: ' + messageContent);
-      };
-
-      socket.onclose = () => {
-        console.log('WebSocket connection closed');
-      };
-      */
-      const Stomp = require('stompjs');
-      const stompClient = new Stomp.Client({
-        brokerURL: 'ws://localhost:8080/ws'
-      });
-      stompClient.onConnect = (frame) => {
-        setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/messages', (message)=>{
-          showMessage(JSON.parse(message.body).content);
+        this.stompClient.subscribe('/topic/messages', message => {
+          this.showMessage(JSON.parse(message.body).content);
         });
-      };
-
-      stompClient.onWebSocketError = (error) => {
-        console.error('Error with websocket', error);
-      };
-
-      stompClient.onStompError = (frame) => {
-        console.error('Broker reported error: ' + frame.headers['message']);
-        console.error('Additional details: ' + frame.body);
-      };
-
-      function setConnected(connected) {
-        $("#connect").prop("disabled", connected);
-        $("#disconnect").prop("disabled", !connected);
-        if (connected) {
-          $("#conversation").show();
-        }
-        else {
-          $("#conversation").hide();
-        }
-        $("#greetings").html("");
-      }
-
-      function connect() {
-        stompClient.activate();
-      }
-
-      function disconnect() {
-        stompClient.deactivate();
-        setConnected(false);
-        console.log("Disconnected");
-      }
-
-      function sendName() {
-        stompClient.publish({
-          destination: "/app/hello",
-          body: JSON.stringify({'name': $("#name").val()})
-        });
-      }
-
-      function showMessage(message) {
-        $("#greetings").append("<tr><td>" + message + "</td></tr>");
-      }
-
-      $(function () {
-        $("form").on('submit', (e) => e.preventDefault());
-        $( "#connect" ).click(() => connect());
-        $( "#disconnect" ).click(() => disconnect());
-        $( "#send" ).click(() => sendName());
+      }, error => {
+        console.error('Error with WebSocket', error);
       });
     },
-    sendMessage() { //message?
+    connect() {
+      const socket = new WebSocket('ws://localhost:5672/ws'); //why twice?
+      this.stompClient = Stomp.over(socket);
+
+      this.stompClient.connect({}, frame => {
+        this.connected = true;
+        console.log('Connected:', frame);
+
+        this.stompClient.subscribe('/topic/messages', message => {
+          this.showMessage(JSON.parse(message.body).content);
+        });
+      }, error => {
+        console.error('Error with WebSocket', error);
+      });
+    },
+    disconnect() {
+      if (this.stompClient) {
+        this.stompClient.disconnect();
+      }
+      this.connected = false;
+      console.log('Disconnected');
+    },
+    sendName() {
+      this.stompClient.publish({
+        destination: "/app/hello",
+        body: JSON.stringify({ name: this.userName }),
+      });
+    },
+    sendMessage() {
       if (this.newMessage.trim() !== '') {
         this.messages.push({
           sender: this.username,
           text: this.newMessage,
         });
-
-        socket.send(this.newMessage);
-
-        /*
-        try {
-        EventBus.$stomp.publish('/api/message/send', JSON.stringify({
-          sender: this.username,
-          text: this.newMessage,
-        }))} catch (error) {
-        console.error('Error publishing message to RabbitMQ:', error);
-        this.errorMessage = 'Failed to send message to RabbitMQ. Please try again.';
-        this.messages.push(errorMessage);
-      }*/
+        // Send message through WebSocket
+        this.stompClient.send('/app/send', {}, JSON.stringify({ text: this.newMessage }));
         this.newMessage = '';
       }
+    },
+    showMessage(message) {
+      this.messages.push(message);
     },
   },
 };
 </script>
 
 <style scoped>
-
+/* Your styles go here */
 </style>
