@@ -38,13 +38,45 @@ export default {
       } else {
         this.username = 'unlogged'
       }
+      //EventBus.$stomp.subscribe('/user/queue/messages', (message) => {
+      //  this.messages.push(message);
+      //  console.log('Received message from RabbitMQ:', message.body);
+      //});
+
+      const socket = new WebSocket('ws://localhost:8080/ws');
+
+      socket.onopen = () => {
+        console.log('WebSocket connection opened');
+      };
+
+      socket.onmessage = (event) => {
+        const messageContent = event.data;
+        console.log('Received message from WebSocket: ' + messageContent);
+      };
+
+      socket.onclose = () => {
+        console.log('WebSocket connection closed');
+      };
+
+
     },
-    sendMessage() {
+    sendMessage() { //message?
       if (this.newMessage.trim() !== '') {
         this.messages.push({
           sender: this.username,
           text: this.newMessage,
         });
+        socket.send(this.newMessage);
+        /*
+        try {
+        EventBus.$stomp.publish('/api/message/send', JSON.stringify({
+          sender: this.username,
+          text: this.newMessage,
+        }))} catch (error) {
+        console.error('Error publishing message to RabbitMQ:', error);
+        this.errorMessage = 'Failed to send message to RabbitMQ. Please try again.';
+        this.messages.push(errorMessage);
+      }*/
         this.newMessage = '';
       }
     },

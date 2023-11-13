@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory, createWebHashHistory, RouterLink } from "vue-router"
+import VueStomp from "vue-stomp";
+import SockJS from 'sockjs-client';
 
 
 import App from './App.vue'
@@ -76,5 +78,22 @@ const router = createRouter({
 })
 
 const app = createApp(App)
+
+
+/*
 app.use(router)
+try {
+    app.use(VueStomp, "http://localhost:8080/api", {SockJS});} // /api/message/send  i dont know
+catch (error) {
+    console.log("Can't connect through stomp/websockets. Is server down?")
+}
+
+try {
+    export const EventBus = new Vue();
+} //i may have put this in the wrong place
+catch (error) {
+    console.log("Could not create Event Bus.")
+}
+// send json: {id, name}
+ */
 app.mount('#app')

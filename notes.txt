@@ -1,0 +1,19 @@
+9.11
+Caniusethis - pro css kompatibilitu
+Polyfill? - zlepší kompatibilitu frontendu s webem
+
+dvoufaktorová autentifikace is good but fuck, are we really doing that?
+regex pro heslo
+
+incremental db backup
+
+zpětná vazba je funkční
+ve zkratce nefunkční: není to essential but nice to have.
+
+rabbitmq
+odeslat z jedné instance do druhé
+
+ve vue
+websocket - STOMP
+
+configure client websocket sockjs
