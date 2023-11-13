@@ -1,7 +1,6 @@
 package cz.osu.java.messboardapp.controller;
 
 import cz.osu.java.messboardapp.model.BoardUser;
-import cz.osu.java.messboardapp.model.User;
 import cz.osu.java.messboardapp.service.MessageGeneratorService;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,10 @@ public class ProducerController {
     public String exchange = "cart_exchange";
     private MessageGeneratorService mgs = new MessageGeneratorService();
     @PostMapping("/message/send")
-    public String publishUser(@RequestBody BoardUser user) {
+    public String getMessage(@RequestBody BoardUser user) {
         amqpTemplate.convertAndSend(exchange, "", user);
         return mgs.generateMessage();
     }
+
+
 }

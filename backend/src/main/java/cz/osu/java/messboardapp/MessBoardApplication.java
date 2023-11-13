@@ -1,8 +1,10 @@
 package cz.osu.java.messboardapp;
 
-import org.springframework.amqp.core.Queue;
+import cz.osu.java.messboardapp.RabbitMQ.Producer;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,20 +16,18 @@ public class MessBoardApplication {
 		SpringApplication.run(MessBoardApplication.class, args);
 		//required for functionality
 	}
-	public static final String topicExchangeName = "spring-boot-exchange";
-	static final String queueName = "spring-boot";
 
 	@Bean
-	Queue queue()
-	{
-		return new Queue(queueName, false);
+	CommandLineRunner demo(Producer producer){
+		return args -> {
+			String string1 = "{\"content\": \"Hello from Queue 1!\"}";
+			String string2 = "{\"content\": \"Greetings from Queue 2!\"}";
+			producer.sendMessageToQueue1(string1);
+			producer.sendMessageToQueue2(string2);
+		};
 	}
 
-	@Bean
-	ConnectionFactory connectionFactory()
-	{
-		CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
-		return connectionFactory;
-	}
+
+
 
 }

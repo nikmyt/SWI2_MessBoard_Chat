@@ -5,51 +5,68 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
+@ComponentScan
 public class RabbitMQConfig {
-    String deliveryQueue = "delivery_queue_fanout";
-
-    String emailQueue = "email_queue_fanout";
-
-    String cartExchange = "cart_exchange";
-
-    @Bean
-    Queue deliveryQueue() {
-        return new Queue(deliveryQueue, false);
-    }
-
-    @Bean
-    Queue emailQueue() {
-        return new Queue(emailQueue, false);
-    }
-
-    @Bean
-    FanoutExchange exchange() {
-        return new FanoutExchange(cartExchange);
-    }
-
-    @Bean
-    Binding deliveryBinding(Queue deliveryQueue, FanoutExchange exchange) {
-        return BindingBuilder.bind(deliveryQueue).to(exchange);
-    }
-
-    @Bean
-    Binding emailBinding(Queue emailQueue, FanoutExchange exchange) {
-        return BindingBuilder.bind(emailQueue).to(exchange);
-    }
-
     @Bean
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 
     @Bean
+    @Autowired
     public AmqpTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter());
         return rabbitTemplate;
     }
+
+    public static final String TOPIC_EXCHANGE_NAME = "topic-exchange";
+
+    public static final String BINDING_KEY_1 = "topic.key.*";
+    public static final String BINDING_KEY_2 = "topic.key.#";
+    public static final String DIRECT_EXCHANGE_NAME = "direct-exchange";
+
+    public static final String QUEUE_1_NAME = "queue-1";
+    public static final String QUEUE_2_NAME = "queue-2";
+    public static final String ROUTING_KEY_1 = "routing-key-1";
+    public static final String ROUTING_KEY_2 = "routing-key-2";
+
+    @Bean
+    TopicExchange topicExchange(){
+        return new TopicExchange(TOPIC_EXCHANGE_NAME);
+    }
+
+
+
+    @Bean
+    DirectExchange directExchange(){
+        return new DirectExchange(DIRECT_EXCHANGE_NAME);
+    }
+
+    @Bean
+    Queue queue1(){
+        return new Queue(QUEUE_1_NAME, true);
+    }
+    @Bean
+    Queue queue2(){
+        return new Queue(QUEUE_2_NAME, true);
+    }
+
+    @Bean
+    Binding binding1(Queue queue1, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queue1).to(topicExchange).with(ROUTING_KEY_1);
+    }
+
+    @Bean
+    Binding binding2(Queue queue2, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queue2).to(topicExchange).with(ROUTING_KEY_2);
+    }
+
 }
