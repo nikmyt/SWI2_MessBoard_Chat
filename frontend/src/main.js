@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory, createWebHashHistory, RouterLink } from "vue-router"
-import VueStomp from "vue-stomp";
-import SockJS from 'sockjs-client';
+//import VueStomp from "vue-stomp";
+//import SockJS from 'sockjs-client';
 
 
 import App from './App.vue'
@@ -18,6 +18,7 @@ import { ApiClient } from "@/client/ApiClient";
 import RegisterPage from "@/pages/register/RegisterPage.vue";
 import History from "@/pages/post/History.vue";
 
+import ChatPage from "@/pages/chat/ChatPage.vue";
 
 const routes = [
     { path: '/', name: "MainPage" || "Main", component: MainPage },
@@ -28,6 +29,7 @@ const routes = [
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: '/createPost', name: 'CreatePost', component: CreatePost},
     { path: '/register', name: 'RegisterPage', component: RegisterPage},
+    { path: '/chatpage', name: 'ChatPage', component: ChatPage},
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {
@@ -80,8 +82,8 @@ const router = createRouter({
 const app = createApp(App)
 
 
-/*
 app.use(router)
+/*
 try {
     app.use(VueStomp, "http://localhost:8080/api", {SockJS});} // /api/message/send  i dont know
 catch (error) {

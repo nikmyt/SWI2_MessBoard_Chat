@@ -1,28 +1,30 @@
 <template>
   <div className="chat-bubble">
-    <div className="message-header">
-      {{ username }} <span v-if="respondingTo">is responding to {{ respondingTo }}</span>
-    </div>
-    <div className="message-timestamp">{{ timestamp }}</div>
-    <div className="message-content">
-    </div>
+    <div className="message-username"> {{username}}</div>
+    <div className="message-timestamp"></div>
+    <div className="message-content"> {{message}} </div>
     <div className="message-reactions">
     </div>
-    <input v-model="newMessage" placeholder="Type your message..."/>
   </div>
 </template>
 
 <script>
 export default {
   name: "ChatMessage",
+  props: {
+    username: String,
+    message: String,
+  },
   data() {
     return {
+      /*
       username: '',
       respondingTo: '',
       timestamp: '',
-      messages: [],
-      newMessage: '',
+      messages: [], //what is this for?
+      message: '',
       reactions: []
+      */
     }
   }
 }

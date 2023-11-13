@@ -5,12 +5,12 @@
         <ChatMessage
             v-for="(message, index) in messages"
             :key="index"
-            :username="message.sender"
-            :text="message.text"
+            :username="message.username"
+            :message="message.newMessage"
         />
       </div>
     </div>
-    <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
+    <input v-model="newMessage" @keyup.enter="sendMessage"  placeholder="Type a message..." />
   </div>
 </template>
 
@@ -43,7 +43,8 @@ export default {
       //  console.log('Received message from RabbitMQ:', message.body);
       //});
 
-      const socket = new WebSocket('ws://localhost:8080/ws');
+      
+      const socket = new WebSocket('ws://localhost/ws');
 
       socket.onopen = () => {
         console.log('WebSocket connection opened');
@@ -66,7 +67,9 @@ export default {
           sender: this.username,
           text: this.newMessage,
         });
+
         socket.send(this.newMessage);
+
         /*
         try {
         EventBus.$stomp.publish('/api/message/send', JSON.stringify({
