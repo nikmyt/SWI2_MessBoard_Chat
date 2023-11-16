@@ -9,14 +9,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.stomp.StompSessionHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
-
-@Controller
+import org.springframework.web.bind.annotation.RestController;
+@RestController
 public class WebSocketController {
 
     @Autowired
@@ -31,8 +27,8 @@ public class WebSocketController {
 
     @MessageMapping("/sendMessage")
     public void receiveMessage(@Payload TextMessageDTO textMessageDTO) {
-        producer.sendMessageToQueue1(textMessageDTO.getMessage());
-        producer.sendMessageToQueue2(textMessageDTO.getMessage());
+        //producer.sendMessageToQueue1(textMessageDTO.getMessage());
+        //producer.sendMessageToQueue2(textMessageDTO.getMessage());
     }
 
 

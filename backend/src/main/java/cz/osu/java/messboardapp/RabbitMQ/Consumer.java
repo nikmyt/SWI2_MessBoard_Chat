@@ -23,7 +23,7 @@ public class Consumer {
 
             // Forward the message to connected WebSocket clients
             messagingTemplate.convertAndSend("/topic/queue1", messageContent);
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch (Exception ex){
             ex.printStackTrace();
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
@@ -38,7 +38,7 @@ public class Consumer {
 
             // Forward the message to connected WebSocket clients
             messagingTemplate.convertAndSend("/topic/queue2", messageContent);
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+            //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch (Exception ex){
             ex.printStackTrace();
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true );
