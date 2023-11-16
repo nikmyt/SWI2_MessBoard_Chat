@@ -81,7 +81,7 @@ export default {
         this.username = 'unlogged';
       }
 
-      const socket = new WebSocket('ws://localhost:5672/ws'); //init i guess
+      const socket = new WebSocket('ws://localhost:8080/ws/'); //init i guess
       this.stompClient = Stomp.over(socket);
 
       this.stompClient.connect({}, frame => {
@@ -96,7 +96,7 @@ export default {
       });
     },
     connect() {
-      const socket = new WebSocket('ws://localhost:5672/ws'); //why twice?
+      const socket = new WebSocket('ws://localhost:8080/ws/'); //why twice?
       this.stompClient = Stomp.over(socket);
 
       this.stompClient.connect({}, frame => {
