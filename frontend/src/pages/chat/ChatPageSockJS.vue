@@ -37,7 +37,7 @@
               </thead>
               <tbody>
               <tr v-for="(message, index) in messages" :key="index">
-                <td>{{ message }}</td>
+                <td>{{ message.text }}</td>
               </tr>
               </tbody>
             </table>
@@ -45,7 +45,7 @@
         </div>
         <!-- Chat messages -->
         <div class="chat-messages">
-          <ChatMessage v-for="(message, index) in messages" :key="index" :username="sender" :message="text" />
+          <!-- Display chat messages here -->
         </div>
       </div>
       <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
@@ -55,92 +55,71 @@
 
 <script>
 import ChatMessage from "./ChatMessage.vue";
-import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 
 export default {
-  name: "ChatPage",
+  name: "ChatPageSockJS",
   components: {
     ChatMessage,
   },
   data() {
     return {
-      username: '',
+      userName: '',
       isLoggedIn: localStorage.getItem("user") !== null,
       messages: [],
       newMessage: '',
       connected: false,
-      stompClient: null,
+      sockJS: null,
     };
   },
   methods: {
     mounted() {
       const user = localStorage.getItem("user");
-      if (user) {
-        this.username = user;
-      } else {
-        this.username = 'unlogged';
-      }
-
-      const socket = new WebSocket('ws://localhost:8081/ws/'); //init i guess
-      this.stompClient = Stomp.over(socket);
-
-      this.stompClient.connect({}, frame => {
-        this.connected = true;
-        console.log('Connected:', frame);
-
-        this.stompClient.subscribe('/topic/messages', message => {
-          this.showMessage(JSON.parse(message.body).content);
-        });
-      }, error => {
-        console.error('Error with WebSocket', error);
-      });
+      this.userName = user || 'unlogged';
     },
     connect() {
-      const socket = new WebSocket('ws://localhost:8081/ws/'); //why twice?
-      this.stompClient = Stomp.over(socket);
+      this.sockJS = new SockJS('http://localhost:8080/ws');
 
-      this.stompClient.connect({}, frame => {
+      this.sockJS.onopen = () => {
         this.connected = true;
-        console.log('Connected:', frame);
+        console.log('Connected');
 
-        this.stompClient.subscribe('/topic/messages', message => {
-          this.showMessage(JSON.parse(message.body).content);
-        });
-      }, error => {
+        this.sockJS.onmessage = (message) => {
+          const receivedMessage = JSON.parse(message.data);
+          this.messages.push(receivedMessage);
+        };
+      };
+
+      this.sockJS.onerror = (error) => {
         console.error('Error with WebSocket', error);
-      });
+      };
     },
     disconnect() {
-      if (this.stompClient) {
-        this.stompClient.disconnect();
+      if (this.sockJS) {
+        this.sockJS.close();
       }
       this.connected = false;
       console.log('Disconnected');
     },
     sendName() {
-      this.stompClient.publish({
-        destination: "/app/hello",
-        body: JSON.stringify({ name: this.userName }),
-      });
+      const message = {
+        type: 'hello',
+        name: this.userName,
+      };
+      this.sockJS.send(JSON.stringify(message));
     },
     sendMessage() {
       if (this.newMessage.trim() !== '') {
-        this.messages.push({
-          sender: this.username,
+        const message = {
+          type: 'text',
+          sender: this.userName,
           text: this.newMessage,
-        });
-        // Send message through WebSocket
-        this.stompClient.send('/app/send', {}, JSON.stringify({ text: this.newMessage }));
+        };
+        this.messages.push(message);
+        this.sockJS.send(JSON.stringify(message));
         this.newMessage = '';
       }
-    },
-    showMessage(message) {
-      this.messages.push(message);
     },
   },
 };
 </script>
-
-<style scoped>
-/* Your styles go here */
-</style>

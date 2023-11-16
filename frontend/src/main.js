@@ -19,6 +19,7 @@ import RegisterPage from "@/pages/register/RegisterPage.vue";
 import History from "@/pages/post/History.vue";
 
 import ChatPage from "@/pages/chat/ChatPage.vue";
+import ChatPageSockJS from "@/pages/chat/ChatPageSockJS.vue";
 
 const routes = [
     { path: '/', name: "MainPage" || "Main", component: MainPage },
@@ -30,6 +31,7 @@ const routes = [
     { path: '/createPost', name: 'CreatePost', component: CreatePost},
     { path: '/register', name: 'RegisterPage', component: RegisterPage},
     { path: '/chatpage', name: 'ChatPage', component: ChatPage},
+    { path: '/chatpagesockjs', name: 'ChatPageSockJs', component: ChatPageSockJS},
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {
