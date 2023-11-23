@@ -17,6 +17,7 @@ public class MessBoardApplication {
 		//required for functionality
 	}
 
+	/*
 	@Bean
 	CommandLineRunner demo(Producer producer){
 		return args -> {
@@ -26,7 +27,7 @@ public class MessBoardApplication {
 			producer.sendMessageToQueue2(string2);
 		};
 	}
-
+	*/
 
 
 

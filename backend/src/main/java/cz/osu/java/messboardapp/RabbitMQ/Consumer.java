@@ -2,6 +2,7 @@ package cz.osu.java.messboardapp.RabbitMQ;
 
 import com.rabbitmq.client.Channel;
 import cz.osu.java.messboardapp.Configs.RabbitMQConfig;
+import cz.osu.java.messboardapp.controller.WebSocketController;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class Consumer {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private WebSocketController socket;
     @RabbitListener(queues = RabbitMQConfig.QUEUE_1_NAME)
     public void receiveFromQueue1(Message message, Channel channel) throws IOException {
         try{
@@ -34,10 +37,11 @@ public class Consumer {
     public void receiveFromQueue2(Message message, Channel channel) throws  IOException{
         try {
             String messageContent = new String(message.getBody());
+            //messageContent = messageContent.substring(13, messageContent.length()-2);
             System.out.println("Received from Queue 2: " + messageContent);
-
+            TextMessageDTO textMessageDTO = new TextMessageDTO(messageContent);
             // Forward the message to connected WebSocket clients
-            messagingTemplate.convertAndSend("/topic/queue2", messageContent);
+            messagingTemplate.convertAndSend("/topic/message", textMessageDTO);
             //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch (Exception ex){
             ex.printStackTrace();

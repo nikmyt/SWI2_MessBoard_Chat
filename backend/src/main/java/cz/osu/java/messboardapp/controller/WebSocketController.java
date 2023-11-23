@@ -19,15 +19,24 @@ public class WebSocketController {
     SimpMessagingTemplate template;
     @Autowired
     Producer producer;
+
     @PostMapping("/send")
     public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {
-        template.convertAndSend("/topic/message", textMessageDTO);
+        System.out.println("Message received.");
+        producer.sendMessageToQueue2(makeTheMessageSendable(textMessageDTO.getMessage()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    private String makeTheMessageSendable(String message)
+    {
+        message = "{\"content\": \"" + message + "\"}";
+        return message;
+    }
+
+
     @MessageMapping("/sendMessage")
     public void receiveMessage(@Payload TextMessageDTO textMessageDTO) {
-        //producer.sendMessageToQueue1(textMessageDTO.getMessage());
+        System.out.println("Message sent.");
         //producer.sendMessageToQueue2(textMessageDTO.getMessage());
     }
 
