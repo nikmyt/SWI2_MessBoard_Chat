@@ -17,3 +17,11 @@ ve vue
 websocket - STOMP
 
 configure client websocket sockjs
+
+9.1
+so. you need to make 2 functional frontends in 7 days. no biggie.
+look fam as long as you make this cumsocket shit work the ui is easy-ish
+fuck
+just a web and m.web interface.
+THE ONLY PROBLEM.
+the cumsock

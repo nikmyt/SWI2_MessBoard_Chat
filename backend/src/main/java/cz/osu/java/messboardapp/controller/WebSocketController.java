@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,13 @@ public class WebSocketController {
     @PostMapping("/send")
     public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {
         System.out.println("Message received.");
-        producer.sendMessageToQueue2(makeTheMessageSendable(textMessageDTO.getMessage()));
+        //alright lets unpack this
+        //1) what do template do: should stay the way it is
+        //2) what do producer do:
+        template.convertAndSend("/topic/globalChat", 
+                makeTheMessageSendable(textMessageDTO.getMessage()));
+        producer.sendMessageToQueue1(makeTheMessageSendable(textMessageDTO.getMessage()));
+        //alright, so it seems im not in the right channel.
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -41,7 +48,9 @@ public class WebSocketController {
     }
 
 
-    @SendTo("/topic/message")
+    //@SendTo("/topic/messages")
+    @MessageMapping("/topic/messages")
+    @SendToUser
     public TextMessageDTO broadcastMessage(@Payload TextMessageDTO textMessageDTO) {
         return textMessageDTO;
     }

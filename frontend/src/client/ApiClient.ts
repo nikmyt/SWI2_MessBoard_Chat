@@ -4,6 +4,7 @@ import {AuthForm} from "../form/AuthForm";
 import {PostForm} from "../form/PostForm";
 import {CommentForm} from "../form/CommentForm";
 import {RegisterForm} from "../form/RegisterForm";
+import {MessageForm} from "../form/MessageForm";
 
 declare var Promise: any;
 //TODO: add es2015 to your --lib option in your TypeScript configuration file (tsconfig.json) to include the Promise constructor in your project.
@@ -305,6 +306,24 @@ export class ApiClient{
         } catch (error) {
             console.error('Error fetching comment count:', error);
             throw error;
+        }
+    }
+
+    //chat stuff
+
+    public static async sendMessage(message: MessageForm) {
+        const response = await fetch('http://localhost:8080/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}` // cool idea. actually don't
+            },
+            body: JSON.stringify(message)
+        });
+        if (!response.ok) {
+            console.log("failed to send message")
+            const error = await response.text();
+            throw new Error(error);
         }
     }
 

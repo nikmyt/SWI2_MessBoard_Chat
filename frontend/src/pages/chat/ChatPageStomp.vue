@@ -58,7 +58,7 @@ import ChatMessage from "./ChatMessage.vue";
 import Stomp from 'stompjs';
 
 export default {
-  name: "ChatPage",
+  name: "ChatPageStomp",
   components: {
     ChatMessage,
   },
@@ -81,7 +81,7 @@ export default {
         this.username = 'unlogged';
       }
 
-      const socket = new WebSocket('ws://localhost:8081/ws/'); //init i guess
+      const socket = new WebSocket('ws://localhost:8080/ws');
       this.stompClient = Stomp.over(socket);
 
       this.stompClient.connect({}, frame => {
@@ -96,7 +96,7 @@ export default {
       });
     },
     connect() {
-      const socket = new WebSocket('ws://localhost:8081/ws/'); //why twice?
+      const socket = new WebSocket('ws://localhost:8080/ws/'); //why twice?
       this.stompClient = Stomp.over(socket);
 
       this.stompClient.connect({}, frame => {

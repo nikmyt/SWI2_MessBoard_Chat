@@ -3,7 +3,6 @@ import { createRouter, createWebHistory, createWebHashHistory, RouterLink } from
 //import VueStomp from "vue-stomp";
 //import SockJS from 'sockjs-client';
 
-
 import App from './App.vue'
 import MainPage from "@/pages/mainpage/MainPage.vue";
 import error from "@/pages/error/error.vue";
@@ -18,7 +17,7 @@ import { ApiClient } from "@/client/ApiClient";
 import RegisterPage from "@/pages/register/RegisterPage.vue";
 import History from "@/pages/post/History.vue";
 
-import ChatPage from "@/pages/chat/ChatPage.vue";
+import ChatPageStomp from "@/pages/chat/ChatPageStomp.vue";
 import ChatPageSockJS from "@/pages/chat/ChatPageSockJS.vue";
 
 const routes = [
@@ -30,8 +29,8 @@ const routes = [
     { path: '/login', name: 'LoginPage', component: LoginPage, props: (route) => ({ credentials: route.query.credentials }) },
     { path: '/createPost', name: 'CreatePost', component: CreatePost},
     { path: '/register', name: 'RegisterPage', component: RegisterPage},
-    { path: '/chatpage', name: 'ChatPage', component: ChatPage},
-    { path: '/chatpagesockjs', name: 'ChatPageSockJs', component: ChatPageSockJS},
+    { path: '/chatpageStomp', name: 'ChatPageStomp', component: ChatPageStomp}, //not set up, maybe try later
+    { path: '/chatpageSock', name: 'ChatPageSockJs', component: ChatPageSockJS},
     { path: "/posts/:postId", name: "PostPage", component: PostPage,
         props: route => ({
             post: {

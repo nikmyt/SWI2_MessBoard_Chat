@@ -4,6 +4,8 @@
     <button v-else disabled>Log in to post</button>
     <button @click="viewHistory" v-if="isLoggedIn">View your posts</button>
     <button v-else disabled>Log in to view your posts</button>
+    <button @click="goChat" v-if="isLoggedIn">Join the chat</button>
+    <button v-else disabled>Log in to join the chat</button>
 
     <h2>Your stats:</h2>
     <ul>
@@ -38,6 +40,9 @@ export default {
     },
     viewHistory() {
       this.$router.push("/viewHistory"); // TODO: implement view history
+    },
+    goChat() {
+      this.$router.push("/chatpageSock");
     },
     async fetchUserStats() {
       try {
