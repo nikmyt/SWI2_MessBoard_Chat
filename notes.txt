@@ -25,3 +25,50 @@ fuck
 just a web and m.web interface.
 THE ONLY PROBLEM.
 the cumsock
+
+yeah i fixed it
+wrong channel
+good
+
+technically, its the worst fucking thing ever but if i do another frontend it's technically finished
+
+
+ok its fine: the messageForm will save us.
+also implement persistent queue up to idk, 1000 messages. is that too many? nah. try 100
+
+things that are broken rn:
+-username works for topbar but not chat??? i guess you could parse it if youre desperate to know your own name
+-if you try to send messageForm presumably the BE shits itself and makes it a null (messageDPO?)
+-aaaaand.........make it less uggy
+-i never finished the java update, i stopped at the listener so pls check chatgpt again what to do. and find listener. its a little fucky wucky rn
+
+2024-01-09 23:46:11.781630+00:00 [error] <0.11833.0> Channel error on connection <0.11824.0> (172.17.0.1:47704 -> 172.17.0.2:5672, vhost: '/', user: 'guest'), channel 1:
+2024-01-09 23:46:11.781630+00:00 [error] <0.11833.0> operation queue.declare caused a channel exception precondition_failed: inequivalent arg 'x-message-ttl' for queue 'queue-1' in vhost '/': received the value '86400000' of type 'signedint' but current is none
+
+10.1.24
+-we cannot use TTL as an easy hacky way to store messages, but this gives us oppurtunity to do it the right way
+-still make messageForm work
+-js parsing is fuckened, try manually adding } etc. or just parsing yourself
+-chat has a good idea on parsing directly
+
+11.1
+what are even the reqs?
+-persistent messgaes (dammit)
+-completely reworked sendMessage where queue name is not handled by backend but frontend (dammit)
+-web app (ok) and desktop app (fuck)
+-each user can make at least 2 of their own groups (FUCKKKK) that they can add others to (FUUUUUUUUUUUUUUUUCKKKKK)
+-message consumerism (message must be consumed but doesn't need to be that persistent, then?)
+
+FIREFIGHTING:
+-persistent messages are a must
+-nice ui is a must
+-second app can just be... messenger app. we already have login code, it can sux ballz, as long as it support DB and WS connection. so java app is fine? maybe
+
+where do i store the messages, the db? damn, can i just do a file? fuck me, why not learn sqlite so i can go fuck myslef/actually learn something newww
+1) frontend handles it's own queues. they are named globalChat and [username]Chat[#]
+2) rabbit handles....????? what is it even doing. can it save to sqlite?
+3) rabbit OR be handles the saving of the messages to db
+//its actually ok for rabbit to be here cuz it needs to deliver messages fastly, but the saving CAN be slow (loading probably shouldn't be tho oops)
+
+alright so peep new UNIVERSAL messageForm: destinationName, timestamp, sender, text
+should be enough.

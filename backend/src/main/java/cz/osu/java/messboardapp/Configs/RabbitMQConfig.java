@@ -52,7 +52,7 @@ public class RabbitMQConfig {
 
     @Bean
     Queue queue1(){
-        return new Queue(QUEUE_1_NAME, true);
+        return new Queue(QUEUE_1_NAME, true); //good, this is well setup
     }
     @Bean
     Queue queue2(){
@@ -67,6 +67,14 @@ public class RabbitMQConfig {
     @Bean
     Binding binding2(Queue queue2, TopicExchange topicExchange) {
         return BindingBuilder.bind(queue2).to(topicExchange).with(ROUTING_KEY_2);
+    }
+
+    @Bean
+    public Queue myQueue() {
+        Integer msgTimeToLive = 10090; //86400000 ms is a day. too many?
+        return QueueBuilder.durable(QUEUE_1_NAME)
+                //.ttl(msgTimeToLive) //TTL does not work easily. youd have to use rules injection
+                .build();
     }
 
 }

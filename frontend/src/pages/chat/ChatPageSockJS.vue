@@ -1,14 +1,3 @@
-<script setup>
-import ChatMessage from "./ChatMessage.vue";
-import SockJS from 'sockjs-client';
-import {ApiClient} from "@/client/ApiClient";
-import Stomp from "stompjs";
-import TopBar from "@/pages/pageElements/TopBar.vue";
-import LeftMenu from "@/pages/pageElements/LeftMenu.vue";
-import RightMenu from "@/pages/pageElements/RightMenu.vue";
-import Footer from "@/pages/pageElements/Footer.vue";
-</script>
-
 <template>
   <div>
       <header>
@@ -45,7 +34,7 @@ import Footer from "@/pages/pageElements/Footer.vue";
             <form class="form-inline">
               <div class="form-group">
                 <label for="name">What is your name?</label>
-                <input v-model="userName" type="text" id="name" class="form-control" placeholder="Your name here..." />
+                <input v-model="username" type="text" id="name" class="form-control" placeholder="Your name here..." />
               </div>
               <button class="btn btn-default" @click="sendMessage" type="button">Send</button>
             </form>
@@ -79,21 +68,27 @@ export default {
     LeftMenu,
     TopBar,
     ChatMessage,
+    Footer,
   },
   data() {
     return {
-      userName: '',
+      username: '',
       isLoggedIn: localStorage.getItem("user") !== null,
       messages: [],
       newMessage: '',
       connected: false,
       sockJS: null,
+      selectedChatroom: '/topic/globalChat', //why is everything fucky ONLY on this page?
     };
   },
   methods: {
     mounted() {
       const user = localStorage.getItem("user");
-      this.userName = user || 'unlogged';
+      if (user) {
+        this.username = user;
+      } else {
+        this.username = null
+      }
     },
     connect() {
       this.sockJS = new SockJS('http://localhost:8080/ws');
@@ -120,12 +115,19 @@ export default {
 
       this.stompClient.connect({}, (frame) => {
         this.connected = true;
-        console.log('Connected:', frame);
 
-        //topic-exchange routing-key-1 / 2
-        //yeha it works now. ok. i just needed to stop being stupid
-        this.stompClient.subscribe('/topic/globalChat', (message) => { //topic/messages
-          const receivedMessage = JSON.parse(message.body).content;
+        //11.1 make sure to subscribe to where user is (replace
+        this.stompClient.subscribe(selectedChatroom, (message) => {
+          const rawContent = JSON.parse(message.body).content;
+
+          const receivedMessage = {
+            destination: JSON.parse(rawContent).destination, //this would be unused since subscribe is filtering it already
+            timestamp: JSON.parse(rawContent).timestamp,
+            sender: JSON.parse(rawContent).sender,
+            text: JSON.parse(rawContent).text,
+            extra: JSON.parse(rawContent).extra
+          };
+
           this.messages.push(receivedMessage);
           this.showMessage(receivedMessage);
           //console.log('Received a message via Stomp:', receivedMessage);
@@ -138,6 +140,8 @@ export default {
     showMessage() {
       //uhh yeah
       console.log("showeming message");
+      console.log(this.username);
+      console.log(this.isLoggedIn);
 
     },
     disconnect() {
@@ -152,23 +156,24 @@ export default {
     sendName() {
       const message = {
         type: 'hello',
-        name: this.userName,
+        name: this.username,
       };
       this.sockJS.send(JSON.stringify(message));
     },
     */
     sendMessage() {
-      //do not need websocket here YET just send
       if (this.newMessage.trim() !== '') {
         var message = {
-          type: 'text',
-          sender: this.userName,
-          text: this.newMessage,
+          sender: this.username, //what do you mean <empty string> this string is FULL
+          text: this.newMessage, //like why does this work and username doesnt. this is unfair
         };
 
-        message = this.newMessage;
-        //this.messages.push(message);
-        ApiClient.sendMessage(message);
+        //have to solve the above so it doesn't resolve as NULL
+        //message = this.newMessage; //this is well recieved
+
+        console.log(JSON.stringify(message)); //i have to unstinfiy it now at reception.
+
+        ApiClient.sendMessage(JSON.stringify(message)); //stringify?
 
         /*
         var something = {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(message)}

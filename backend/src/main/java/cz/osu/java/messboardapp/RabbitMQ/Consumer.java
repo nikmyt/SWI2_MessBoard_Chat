@@ -18,7 +18,7 @@ public class Consumer {
     private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private WebSocketController socket;
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_1_NAME)
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_1_NAME, concurrency = "3-5") //The concurrency attribute can specify a range of consumers that can be spawned to process messages concurrently.
     public void receiveFromQueue1(Message message, Channel channel) throws IOException {
         try{
             String messageContent = new String(message.getBody());

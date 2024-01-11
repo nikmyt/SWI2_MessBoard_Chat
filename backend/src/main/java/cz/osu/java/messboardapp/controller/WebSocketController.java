@@ -25,7 +25,7 @@ public class WebSocketController {
     public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {
         System.out.println("Message received.");
         //alright lets unpack this
-        //1) what do template do: should stay the way it is
+        //1) what do template do: should stay the way it is.
         //2) what do producer do:
         template.convertAndSend("/topic/globalChat", 
                 makeTheMessageSendable(textMessageDTO.getMessage()));
@@ -36,6 +36,7 @@ public class WebSocketController {
 
     private String makeTheMessageSendable(String message)
     {
+        //this should work
         message = "{\"content\": \"" + message + "\"}";
         return message;
     }
