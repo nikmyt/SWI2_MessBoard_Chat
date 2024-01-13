@@ -1,11 +1,13 @@
 package cz.osu.java.messboardapp.controller;
 
 import cz.osu.java.messboardapp.Configs.DynamicRoutingDataSource;
+import cz.osu.java.messboardapp.Form.MessageForm;
 import cz.osu.java.messboardapp.RabbitMQ.Producer;
 import cz.osu.java.messboardapp.RabbitMQ.TextMessageDTO;
 import cz.osu.java.messboardapp.model.ChatMessage;
 import cz.osu.java.messboardapp.repository.ChatMessageRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,30 +40,45 @@ public class WebSocketController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendMessage(@RequestBody TextMessageDTO textMessageDTO) {
+    public ResponseEntity<Void> sendMessage(@Valid @RequestBody MessageForm messageForm) {
+        //12.1 problem: its setting everything to text. NOT COOL!
+        //you have to make/use form dummy!
+        //or parse, worst case scenario. but that doesn't make sense
         System.out.println("Message received.");
-        System.out.println(TextMessageDTO);
+        System.out.println("message: " + messageForm.toString());
+        System.out.println("raw: " + messageForm.getDestination());
+        System.out.println("stringed: " + messageForm.getDestination().toString());
         //11.1 need to parse message, find out the destination, and send the message accordingly
-        String gimmeDestination = textMessageDTO.getDestination();
+        String gimmeDestination = messageForm.getDestination();
         //now we hinge on the fact that rabbit needs to be able to create new topics automatically
         //  "/topic/globalChat"
-        template.convertAndSend(gimmeDestination,
-                makeTheMessageSendable(textMessageDTO));
-        //extemely problematic but maybe we can sidestep the problem and send everything to 1 queue anyway.
-        producer.sendMessageToQueue1(makeTheMessageSendable(textMessageDTO));
+        TextMessageDTO message = new TextMessageDTO(messageForm.getDestination(), messageForm.getTimestamp(), messageForm.getSender(), messageForm.getText(),messageForm.getExtra());
 
-        saveMessageToDisk(textMessageDTO);
+        template.convertAndSend(gimmeDestination,
+                makeTheMessageSendable(message));
+        //extemely problematic but maybe we can sidestep the problem and send everything to 1 queue anyway.
+        producer.sendMessageToQueue1(makeTheMessageSendable(message));
+
+        saveMessageToDisk(message); //this could be fine unironically
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private String makeTheMessageSendable(TextMessageDTO message)
     {
+        //String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
         String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
         System.out.println(jsoned); //TODO: does it look correct? check please
         //likely not, because it used to send a string. now it send what? whole ass json obj
         //i guess i need to sift garbage again
         //13.1 just as i predicted, GIGO.
+        // {"content":"
+        // {"text":"
+        // {\"destination\":\"globalChat\",\"timestamp\":\"1705157435766\",\"sender\":\"\",\"text\":\"jjbhjk\",\"extra\":\"\"}
+        // "}
+        // "}
+        //missing a bracket!?
+        //no. then im out of ideas.
         return jsoned;
     }
 
@@ -69,7 +86,7 @@ public class WebSocketController {
         // Convert TextMessageDTO to ChatMessage entity
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setDestination(textMessageDTO.getDestination());
-        chatMessage.setTimestamp(LocalDateTime.now().toString());
+        chatMessage.setTimestamp(textMessageDTO.getTimestamp());
         chatMessage.setSender(textMessageDTO.getSender());
         chatMessage.setText(textMessageDTO.getText());
         chatMessage.setExtra(textMessageDTO.getExtra());

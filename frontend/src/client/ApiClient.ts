@@ -322,7 +322,7 @@ export class ApiClient{
             body: JSON.stringify(message)
         });
         if (!response.ok) {
-            console.log("failed to send message")
+            console.log("Failed to send message")
             const error = await response.text();
             throw new Error(error);
         }

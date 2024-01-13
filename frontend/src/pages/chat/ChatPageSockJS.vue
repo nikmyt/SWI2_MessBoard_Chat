@@ -178,8 +178,12 @@ export default {
     sendMessage() {
       if (this.newMessage.trim() !== '') {
         var message = {
-          sender: this.username, //what do you mean <empty string> this string is FULL
+          //destination, timestamp, sender, text, extra
+          destination: "globalChat", //TODO: change to correct destination, fix username
+          timestamp: Date.now().toString(),
+          sender: "weenus1", //this.username,
           text: this.newMessage, //like why does this work and username doesnt. this is unfair
+          extra: "",
         };
 
         //have to solve the above so it doesn't resolve as NULL

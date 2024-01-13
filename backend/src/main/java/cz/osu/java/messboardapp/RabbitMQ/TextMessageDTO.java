@@ -66,5 +66,14 @@ public class TextMessageDTO {
         return jsonified;
     }
 
-    
+    @Override
+    public String toString() {
+        return "TextMessageDTO{" +
+                "destination='" + destination + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", sender='" + sender + '\'' +
+                ", text='" + text + '\'' +
+                ", extra='" + extra + '\'' +
+                '}';
+    }
 }
