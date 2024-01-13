@@ -5,7 +5,13 @@
       </header>
 
       <div class="container">
-        <LeftMenu />
+        <!-- add a chatroom display, with "New room" at the bootom and "Global chat" on top -->
+        <aside class="sidebar-left">
+          <h2>this is chatroom display</h2>
+          <button @click="changeChatroom" v-if="!isChungus">🪐 Global chat</button>
+          <button @click="createNewChatroom" v-if="!isChungus">➕ Create new chatroom</button>
+          <!-- frick i just realized i need to have people joinery thingy somehow. whereeeee -->
+        </aside>
 
         <div class="chat-window">
       <div class="container">
@@ -60,6 +66,14 @@
 </template>
 
 <script>
+
+import RightMenu from "@/pages/pageElements/RightMenu.vue";
+import LeftMenu from "@/pages/pageElements/LeftMenu.vue";
+import TopBar from "@/pages/pageElements/TopBar.vue";
+import ChatMessage from "@/pages/chat/ChatMessage.vue";
+import Footer from "@/pages/pageElements/Footer.vue";
+import SockJS from 'sockjs-client';
+import {ApiClient} from "@/client/ApiClient";
 
 export default {
   name: "ChatPageSockJS",

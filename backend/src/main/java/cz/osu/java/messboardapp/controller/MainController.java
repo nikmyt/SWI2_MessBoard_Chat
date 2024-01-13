@@ -1,5 +1,6 @@
 package cz.osu.java.messboardapp.controller;
 
+import cz.osu.java.messboardapp.Configs.DynamicRoutingDataSource;
 import cz.osu.java.messboardapp.Form.AuthForm;
 import cz.osu.java.messboardapp.Form.CommentForm;
 import cz.osu.java.messboardapp.Form.PostForm;
@@ -13,8 +14,10 @@ import cz.osu.java.messboardapp.service.AuthService;
 import cz.osu.java.messboardapp.service.CommentService;
 import cz.osu.java.messboardapp.service.PostService;
 import cz.osu.java.messboardapp.service.RegistrationService;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,14 +30,18 @@ import java.util.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MainController
 {
+    @Autowired
+    private DynamicRoutingDataSource dynamicRoutingDataSource;
     private final AppUserRepository userRepository;
-
-
     private final RegistrationService registrationService;
     private final AuthService authService;
     private final PostService postService;
     private final CommentService commentService;
 
+    @PostConstruct
+    public void init() {
+        dynamicRoutingDataSource.setDataSource("mariadb");
+    }
 
     public MainController(AppUserRepository userRepository, RegistrationService registrationService, AuthService authService, PostService postService, CommentService commentService) {
         this.userRepository = userRepository;

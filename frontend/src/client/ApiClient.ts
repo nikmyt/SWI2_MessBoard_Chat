@@ -312,7 +312,7 @@ export class ApiClient{
     //chat stuff
 
     public static async sendMessage(message: MessageForm) {
-        //ah, so that's why BE may be messed up and needs formatting. odd
+        //do i even need to change anything here? maybe i just need to change backend
         const response = await fetch('http://localhost:8080/send', {
             method: 'POST',
             headers: {

@@ -64,11 +64,30 @@ FIREFIGHTING:
 -nice ui is a must
 -second app can just be... messenger app. we already have login code, it can sux ballz, as long as it support DB and WS connection. so java app is fine? maybe
 
-where do i store the messages, the db? damn, can i just do a file? fuck me, why not learn sqlite so i can go fuck myslef/actually learn something newww
-1) frontend handles it's own queues. they are named globalChat and [username]Chat[#]
-2) rabbit handles....????? what is it even doing. can it save to sqlite?
-3) rabbit OR be handles the saving of the messages to db
-//its actually ok for rabbit to be here cuz it needs to deliver messages fastly, but the saving CAN be slow (loading probably shouldn't be tho oops)
+1) frontend handles it's own queues, unlike how backend throws it all into globalChat
+2) rabbit handles real time timely sending/recieving
+3) backend handles the saving of the messages to db
+so peep new UNIVERSAL messageForm: destination, timestamp, sender, text, extra
+should be enough
+destination is extremely important and selects the chatroom where to send the messages.
+now, db and chatmessage interconnectness: named globalChat and [username]Chat[#] (obviously procedurally named/created depending on username and assigned incrementally increasing number)
+im thinking we do it in SQLite. the toplevel is called messboard, and there's tables called, you guessed it, globalChat and the procedurally generated user chatrooms. each with the same layout: destination, timestamp, sender, text, extra
 
-alright so peep new UNIVERSAL messageForm: destinationName, timestamp, sender, text
-should be enough.
+fuck how do i add ppl to the chat with the db thing. i guess an extra special table of ChatroomAllowed, which is just username+chatroom name. anyone can add anyone to a chat theyre in.
+
+another thing, so i save messages but what now? i need to load them too. load only messages from the specific chatroom i loaded UP TO A POINT. okay its very important you don't load EVERY MESSAGE FROM THE GLOBAL CHAT FROM THE BEGINNING OF TIME.
+
+PRAXIS:
+1) Uncouple backend's monopoly of where messages go. Criminals: ApiClent.ts-sendMessage, makeMessageSendable() --------- DONE?
+1.5) actually check wtf you are sending backwards and forwards
+X) Frontend ability to choose which chat to send messages to - /topic/globalChat, /topic/weenus1chatB
+X) Make UI nice - remove what you have, add left and right bar.
+
+13.1
+I'm the greatest programmer that has ever lived!
+...
+I'm the worst programmer that has ever lived.
+
+anyway now that it boots again:
+-i need to fix message formatting ughghghgh
+-need to do the rooms n shit
