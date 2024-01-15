@@ -21,7 +21,7 @@ public class Producer {
     public void sendMessageToQueue1(String messageContent){
         rabbitTemplate.setMessageConverter(converter);
         Message message = MessageBuilder.withBody(messageContent.getBytes()).build();
-        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY_1, message);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY_1, message.getBody()); //im out of ideas. Actually this seems to have fixed the "required content" bug. lol. fixing by breaking
         System.out.println("Message sent with Binding Key 1: " + messageContent);
     }
 

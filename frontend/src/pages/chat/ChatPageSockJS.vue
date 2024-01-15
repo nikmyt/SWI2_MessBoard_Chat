@@ -8,8 +8,8 @@
         <!-- add a chatroom display, with "New room" at the bootom and "Global chat" on top -->
         <aside class="sidebar-left">
           <h2>this is chatroom display</h2>
-          <button @click="changeChatroom" v-if="!isChungus">🪐 Global chat</button>
-          <button @click="createNewChatroom" v-if="!isChungus">➕ Create new chatroom</button>
+          <button @click="changeChatroom">🪐 Global chat</button>
+          <button @click="createNewChatroom">➕ Create new chatroom</button>
           <!-- frick i just realized i need to have people joinery thingy somehow. whereeeee -->
         </aside>
 
@@ -92,7 +92,8 @@ export default {
       newMessage: '',
       connected: false,
       sockJS: null,
-      selectedChatroom: '/topic/globalChat', //why is everything fucky ONLY on this page?
+      //selectedChatroom: '/topic/globalChat',
+      //selectedChatroom: 'globalChat',
     };
   },
   methods: {
@@ -130,16 +131,19 @@ export default {
       this.stompClient.connect({}, (frame) => {
         this.connected = true;
 
-        //11.1 make sure to subscribe to where user is (replace
-        this.stompClient.subscribe(selectedChatroom, (message) => {
-          const rawContent = JSON.parse(message.body).content;
-
+        //TODO: 11.1 make sure to subscribe to where user is (replace
+        this.stompClient.subscribe("/topic/globalChat", (message) => {
+          //its being sent in Base64
+          console.log("Got a message from Rabbit: " + message.body);
+          //const trimmed = message.body.trim();
+          const rawContent = JSON.parse(message.body.toString());
+          console.log("destin: " + rawContent.destination);
           const receivedMessage = {
-            destination: JSON.parse(rawContent).destination, //this would be unused since subscribe is filtering it already
-            timestamp: JSON.parse(rawContent).timestamp,
-            sender: JSON.parse(rawContent).sender,
-            text: JSON.parse(rawContent).text,
-            extra: JSON.parse(rawContent).extra
+            destination: rawContent.destination, //this would be unused since subscribe is filtering it already
+            timestamp: rawContent.timestamp,
+            sender: rawContent.sender,
+            text: rawContent.text,
+            extra: rawContent.extra
           };
 
           this.messages.push(receivedMessage);
@@ -165,21 +169,11 @@ export default {
       this.connected = false;
       console.log('Disconnected');
     },
-    //what is this for?
-    /*
-    sendName() {
-      const message = {
-        type: 'hello',
-        name: this.username,
-      };
-      this.sockJS.send(JSON.stringify(message));
-    },
-    */
     sendMessage() {
       if (this.newMessage.trim() !== '') {
         var message = {
           //destination, timestamp, sender, text, extra
-          destination: "globalChat", //TODO: change to correct destination, fix username
+          destination: "/topic/globalChat", //TODO: change to correct destination, fix username
           timestamp: Date.now().toString(),
           sender: "weenus1", //this.username,
           text: this.newMessage, //like why does this work and username doesnt. this is unfair

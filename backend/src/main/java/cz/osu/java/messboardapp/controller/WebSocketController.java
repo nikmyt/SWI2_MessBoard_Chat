@@ -62,23 +62,16 @@ public class WebSocketController {
     private String makeTheMessageSendable(TextMessageDTO message)
     {
         //String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
-        String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
-        System.out.println(jsoned); //TODO: does it look correct? check please
-        //likely not, because it used to send a string. now it send what? whole ass json obj
-        //i guess i need to sift garbage again
-        //13.1 just as i predicted, GIGO.
-        // {"content":"
-        // {"text":"
-        // {\"destination\":\"globalChat\",\"timestamp\":\"1705157435766\",\"sender\":\"\",\"text\":\"jjbhjk\",\"extra\":\"\"}
-        // "}
-        // "}
-        //missing a bracket!?
-        //no. then im out of ideas.
+        //String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
+        String jsoned = message.toJson();
+        System.out.println(jsoned); //TODONE: does it look correct? YES!
         return jsoned;
     }
 
     private void saveMessageToDisk(TextMessageDTO textMessageDTO) {
         // Convert TextMessageDTO to ChatMessage entity
+        //15.1 TODO: chatrepo is null for some reason
+        //perhaps bc the db file doesn't exist
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setDestination(textMessageDTO.getDestination());
         chatMessage.setTimestamp(textMessageDTO.getTimestamp());
