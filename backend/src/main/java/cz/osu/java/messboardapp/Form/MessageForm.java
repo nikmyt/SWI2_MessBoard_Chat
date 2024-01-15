@@ -1,6 +1,6 @@
 package cz.osu.java.messboardapp.Form;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 
 public class MessageForm {
 
@@ -11,14 +11,21 @@ public class MessageForm {
 	private String extra;
 
 	public MessageForm(String json) {
-		ObjectMapper objectMapper = new ObjectMapper();
+		System.out.println("json:" + json);
 		try {
-			MessageForm messageForm = objectMapper.readValue(json, MessageForm.class);
-			this.destination = messageForm.getDestination();
-			this.timestamp = messageForm.getTimestamp();
-			this.sender = messageForm.getSender();
-			this.text = messageForm.getText();
-			this.extra = messageForm.getExtra();
+			JSONObject jsonObject = new JSONObject(json);
+
+			String destination = jsonObject.getString("destination");
+			String timestamp = jsonObject.getString("timestamp");
+			String sender = jsonObject.getString("sender");
+			String text = jsonObject.getString("text");
+			String extra = jsonObject.getString("extra");
+
+			this.destination = destination;
+			this.timestamp = timestamp;
+			this.sender = sender;
+			this.text = text;
+			this.extra = extra;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -42,5 +49,16 @@ public class MessageForm {
 
 	public String getExtra() {
 		return extra;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageForm{" +
+				"destination='" + destination + '\'' +
+				", timestamp='" + timestamp + '\'' +
+				", sender='" + sender + '\'' +
+				", text='" + text + '\'' +
+				", extra='" + extra + '\'' +
+				'}';
 	}
 }
