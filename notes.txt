@@ -96,3 +96,21 @@ right the FORMATTING is FUCKED please keep this in mind for BOTH SIDES
 java side wants some parses but i already made form, what else??
 ask chat what this means:
 JSON parse error: Cannot construct instance of `cz.osu.java.messboardapp.Form.MessageForm` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('{"destination":"globalChat","timestamp":"1705160050541","sender":"weenus1","text":"this is a message","extra":""}')]
+
+15.1
+yayyy i can chat with myself again (cuz double parsing JSON + sending wrong format)
+things 2 do
+-automatic WS connection cuz its bad optics to have to click connect2chat button
+-make UI nicer
+
+MYSTERIES:
+investigate how hooks work cuz wtf. why does mounted and activated beahve so weird. why does activated not exist, am i using fuckin vue 1?
+
+
+17.1 chill tasklist
+-fix autoconnect
+-sketch a noded frontend in like... whatever. react, angler, whatever takes js/ts.
+-possibly do chatroom
+-possibly do saving
+
+how does users in a chatroom work? i say it's a separate saved thing.
