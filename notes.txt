@@ -114,3 +114,4 @@ investigate how hooks work cuz wtf. why does mounted and activated beahve so wei
 -possibly do saving
 
 how does users in a chatroom work? i say it's a separate saved thing.
+upgraded from node Node.js 18.14.2 to v20
