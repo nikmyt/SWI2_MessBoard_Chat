@@ -1,15 +1,14 @@
 package cz.osu.java.messboardapp.controller;
 
 import cz.osu.java.messboardapp.Configs.DynamicRoutingDataSource;
-import cz.osu.java.messboardapp.Form.AuthForm;
-import cz.osu.java.messboardapp.Form.CommentForm;
-import cz.osu.java.messboardapp.Form.PostForm;
-import cz.osu.java.messboardapp.Form.RegistrationForm;
+import cz.osu.java.messboardapp.Form.*;
 import cz.osu.java.messboardapp.json.UserToken;
 import cz.osu.java.messboardapp.model.BoardComment;
 import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.model.BoardUser;
+import cz.osu.java.messboardapp.model.ChatMessage;
 import cz.osu.java.messboardapp.repository.AppUserRepository;
+import cz.osu.java.messboardapp.repository.ChatMessageRepository;
 import cz.osu.java.messboardapp.service.AuthService;
 import cz.osu.java.messboardapp.service.CommentService;
 import cz.osu.java.messboardapp.service.PostService;
@@ -18,6 +17,9 @@ import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,17 +40,21 @@ public class MainController
     private final PostService postService;
     private final CommentService commentService;
 
+    private final ChatMessageRepository chatMessageRepository;
+
     @PostConstruct
     public void init() {
         dynamicRoutingDataSource.setDataSource("mariadb");
     }
 
-    public MainController(AppUserRepository userRepository, RegistrationService registrationService, AuthService authService, PostService postService, CommentService commentService) {
+    public MainController(AppUserRepository userRepository, RegistrationService registrationService, AuthService authService, PostService postService, CommentService commentService,
+                          ChatMessageRepository chatMessageRepository) {
         this.userRepository = userRepository;
         this.registrationService = registrationService;
         this.authService = authService;
         this.postService = postService;
         this.commentService = commentService;
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     //BoardPost control
@@ -197,6 +203,16 @@ public class MainController
     {
         BoardUser bUser = userRepository.findBoardUserByUserId(id);
         return commentService.getCommentCountByUserId(bUser);
+    }
+
+    @GetMapping("/getMessages")
+    public List<ChatMessage> getCommentCount(@RequestBody MessageRequestForm messageRequestForm)
+    {
+        Pageable pageable = PageRequest.of(0, messageRequestForm.getNumberOfMessages());
+        Page<ChatMessage> messages = chatMessageRepository.findByDestinationAndTimestampLessThanOrderByTimestampDesc(
+                messageRequestForm.getDestination(), messageRequestForm.getTimestamp(), pageable);
+        List<ChatMessage> resultMessages = messages.getContent();
+        return resultMessages;
     }
 
 

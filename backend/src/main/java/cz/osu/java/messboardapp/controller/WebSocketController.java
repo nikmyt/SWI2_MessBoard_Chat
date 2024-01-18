@@ -31,6 +31,7 @@ public class WebSocketController {
     @Autowired
     Producer producer;
 
+    @Autowired
     private ChatMessageRepository chatMessageRepository;
 
     //oddly enough may be correctly setup. pls check.
@@ -44,6 +45,7 @@ public class WebSocketController {
         System.out.println("Message received.");
         System.out.println("message: " + messageForm.toString());
         System.out.println("raw: " + messageForm.getDestination());
+        System.out.println("timestamp: " + messageForm.getTimestamp());
         String gimmeDestination = messageForm.getDestination();
         //now we hinge on the fact that rabbit needs to be able to create new topics automatically
         //  "/topic/globalChat"
@@ -54,7 +56,7 @@ public class WebSocketController {
         //extemely problematic but maybe we can sidestep the problem and send everything to 1 queue anyway.
         producer.sendMessageToQueue1(makeTheMessageSendable(message));
 
-        //saveMessageToDisk(message); //this could be fine unironically
+        saveMessageToDisk(message); //this could be fine unironically
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -79,7 +81,9 @@ public class WebSocketController {
         chatMessage.setText(textMessageDTO.getText());
         chatMessage.setExtra(textMessageDTO.getExtra());
 
+        System.out.println("saving message");
         chatMessageRepository.save(chatMessage);
+        System.out.println("message saved");
     }
 
 

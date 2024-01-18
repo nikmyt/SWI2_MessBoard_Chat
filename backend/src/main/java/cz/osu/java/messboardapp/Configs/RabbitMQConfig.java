@@ -73,7 +73,7 @@ public class RabbitMQConfig {
     public Queue myQueue() {
         Integer msgTimeToLive = 10090; //86400000 ms is a day. too many?
         return QueueBuilder.durable(QUEUE_1_NAME)
-                //.ttl(msgTimeToLive) //TTL does not work easily. youd have to use rules injection
+                //.ttl(msgTimeToLive) //TTL does not work easily. you'd have to use rules injection
                 .build();
     }
 

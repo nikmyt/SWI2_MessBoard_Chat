@@ -16,11 +16,10 @@ public class ProducerController {
     private AmqpTemplate amqpTemplate;
 
     public String exchange = "cart_exchange";
-    private MessageGeneratorService mgs = new MessageGeneratorService();
     @PostMapping("/message/send")
     public String getMessage(@RequestBody BoardUser user) {
         amqpTemplate.convertAndSend(exchange, "", user);
-        return mgs.generateMessage();
+        return "message received";
     }
 
 

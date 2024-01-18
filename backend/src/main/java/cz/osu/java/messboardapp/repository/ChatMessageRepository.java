@@ -1,6 +1,10 @@
 package cz.osu.java.messboardapp.repository;
 
+import cz.osu.java.messboardapp.model.BoardComment;
+import cz.osu.java.messboardapp.model.BoardPost;
 import cz.osu.java.messboardapp.model.ChatMessage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
@@ -18,4 +22,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
 	List<ChatMessage> findChatMessagesByDestination(String destination); //generic purpose
 
 	List<ChatMessage> findChatMessagesByIdGreaterThan(int id); //alternative, just try n
+
+	Page<ChatMessage> findByDestinationAndTimestampLessThanOrderByTimestampDesc(
+			String destination, String timestamp, Pageable pageable);
+
 }
