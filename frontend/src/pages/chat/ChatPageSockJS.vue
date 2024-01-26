@@ -161,7 +161,7 @@ export default {
     async fetchMessages() {
       try {
         const messageRequestForm = new MessageRequestForm();
-        messageRequestForm.destination = "globalChat"; //TODO: change to automatically go to where room button clicked
+        messageRequestForm.destination = "/topic/globalChat"; //TODO: change to automatically go to where room button clicked
         messageRequestForm.timestamp = Date.now().toString(); //before? i think so. BE says: findByDestinationAnd TimestampLessThan OrderByTimestampDesc
         messageRequestForm.numberOfMessages = 256; //variable somehow
 
@@ -177,9 +177,16 @@ export default {
       this.messages = [];
     },
     createRoom(destination) {
-      //check if such named thing exists...?
+      //check if such named thing exists...? naw, it's ok
       //MAKE SURE TO SHOW USER THE CREATED CHAT'S ID?... or not, they're automatically added.
+      //1) saveRoom - yes, id is destination sender. destination is name
+      //2?) AddUserToRoom(joinDestinatioform) - also make sure to do this when user makes a room
+      const room = {
+        destination: "gimmeName",
+        userID: localStorage.getItem("token") //???!!!
+      }
       
+
     },
     formatDate(timestamp) {
       const date = new Date(parseInt(timestamp));

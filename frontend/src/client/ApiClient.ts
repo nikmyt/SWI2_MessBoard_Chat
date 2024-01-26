@@ -6,6 +6,8 @@ import {CommentForm} from "../form/CommentForm";
 import {RegisterForm} from "../form/RegisterForm";
 import {MessageForm} from "../form/MessageForm";
 import {MessageRequestForm} from "../form/MessageRequestForm";
+import {DestinationForm} from "../form/DestinationForm";
+import {JoinDestinationForm} from "../form/JoinDestinationForm";
 
 declare var Promise: any;
 //TODO: add es2015 to your --lib option in your TypeScript configuration file (tsconfig.json) to include the Promise constructor in your project.
@@ -169,7 +171,9 @@ export class ApiClient{
 
             const id = token.userId;
 
+            //26.1 is token just userID all this time... 😑
             localStorage.setItem('token', id);
+
             //console.log(localStorage.getItem('token'));
             return id;
         } else {
@@ -337,19 +341,87 @@ export class ApiClient{
         if (response.ok) {
             return await response.json(); //TODO: check what you get back
         } else {
-            const errorResponse = await response.json();
-            const errorMessage = errorResponse?.error || 'Failed to fetch messages';
-            console.log("Cannot load messages!");
-            throw new Error(errorMessage);
+            console.log("Failed to fetch messages")
+            const error = await response.text();
+            throw new Error(error);
         }
     }
 
-    //saveRoom
-
-    //searchRooms (findByDestinationContainingIgnoreCase)
-
-    // getUserRooms (by userId)
+    //saveRoom - use destinationForm. why is this a post, god dammit.
+    //no need for return
+    public static async saveRoom(destinationForm: DestinationForm) {
+        const response = await fetch('http://localhost:8080/saveRoom', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(destinationForm)
+        });
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.log("Failed to fetch messages")
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
 
     // AddUserToRoom(joinDestinatioform) - also make sure to do this when user makes a room
+    //no need for return
+    public static async addUserToRoom(joinDestinationForm: JoinDestinationForm) {
+        const response = await fetch('http://localhost:8080/AddUserToRoom', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(joinDestinationForm)
+        });
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.log("Failed to fetch messages")
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
 
+    //searchRooms (findByDestinationContainingIgnoreCase)
+    public static async searchRooms(searchTerm: string) : Promise<any> {
+        const response = await fetch('http://localhost:8080/searchRooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(searchTerm)
+        });
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.log("Failed to fetch messages")
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
+
+    // getUserRooms (by userId)
+    public static async getUserRooms(userID: number) : Promise<any> {
+        const response = await fetch('http://localhost:8080/getUserRooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(userID)
+        });
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.log("Failed to fetch messages")
+            const error = await response.text();
+            throw new Error(error);
+        }
+    }
 }
