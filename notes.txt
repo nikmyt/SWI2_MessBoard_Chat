@@ -108,10 +108,42 @@ investigate how hooks work cuz wtf. why does mounted and activated beahve so wei
 
 
 17.1 chill tasklist
--fix autoconnect
--sketch a noded frontend in like... whatever. react, angler, whatever takes js/ts.
+-fix autoconnect - DONE
+-sketch a noded frontend in like... whatever. react, angler, whatever takes js/ts - DONE
 -possibly do chatroom
 -possibly do saving
 
 how does users in a chatroom work? i say it's a separate saved thing.
 upgraded from node Node.js 18.14.2 to v20
+
+what went wrong with rect?
+i put it out of /app and renamed the page.tsx. well it all crumbled. where's routes n shit btw?
+
+18.1
+electron is our last hope
+- make shit i have work in electron ==> drink copious amounts of Monster(c) Energy Drink
+You cannot use Electron. (wtf)
+- it's ok. you just need some stompy shit + basic web sending thingies. can make it a cmd app in java LOL. no one said the ui has to be good on BOTH fe's
+- chatrooms??? hello?
+- saving
+
+26.1 zmsp/vyda cringed break
+- frick you, i want to make a consolapp. navigated with commands.
+HACKER MESSCHAT - ascii welcome screen
+/login name password /l
+/listrooms /lr
+/createroom roomName /cr
+/addtoroom username
+/join globalChat (case sensitive?) /j
+/exit /e
+hello this is a message (works only in chat)
+
+chat periodically updates, every second i suppose? that's fine. that's not even a problem what is you doin
+
+kamil sez:
+1) použít API na načtení messages to roomky - DONE? waiting on BE confirmation
+2) UI pro založení roomky -> odešle na BE string roomky a id usera
+	-pop up with name of room and a dialog to add users (shit, im not doing user search here)
+	-saveRoom + addUserToRoom
+3) načtení všech roomek ve kterých je user do UI
+4) search bar na vyhledání roomky ve které user ještě není -> odešle na BE string roomky, vrátí to všechny roomky, jejichž název obsahuje ten string a ve kterých user ještě není

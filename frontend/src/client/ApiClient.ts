@@ -5,6 +5,7 @@ import {PostForm} from "../form/PostForm";
 import {CommentForm} from "../form/CommentForm";
 import {RegisterForm} from "../form/RegisterForm";
 import {MessageForm} from "../form/MessageForm";
+import {MessageRequestForm} from "../form/MessageRequestForm";
 
 declare var Promise: any;
 //TODO: add es2015 to your --lib option in your TypeScript configuration file (tsconfig.json) to include the Promise constructor in your project.
@@ -103,14 +104,12 @@ export class ApiClient{
 
     public static async createComment(comment: CommentForm): Promise<any>{
         const token = localStorage.getItem('token');
-
         const response = await fetch('http://localhost:8080/newcomment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-
             body: JSON.stringify(comment)
 
         });
@@ -198,8 +197,6 @@ export class ApiClient{
 
     public static async getSearchResults(term):Promise<any[]>{
         const response = await fetch('http://localhost:8080/search/'+term);
-
-
             if (!response.ok) {
                 throw new Error('Failed to fetch search results');
 
@@ -326,5 +323,33 @@ export class ApiClient{
             throw new Error(error);
         }
     }
+
+    //likely correct
+    public static async getMessages(messageRequestForm: MessageRequestForm): Promise<MessageForm[]> {
+        const response = await fetch('http://localhost:8080/getMessages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(messageRequestForm)
+        });
+        if (response.ok) {
+            return await response.json(); //TODO: check what you get back
+        } else {
+            const errorResponse = await response.json();
+            const errorMessage = errorResponse?.error || 'Failed to fetch messages';
+            console.log("Cannot load messages!");
+            throw new Error(errorMessage);
+        }
+    }
+
+    //saveRoom
+
+    //searchRooms (findByDestinationContainingIgnoreCase)
+
+    // getUserRooms (by userId)
+
+    // AddUserToRoom(joinDestinatioform) - also make sure to do this when user makes a room
 
 }

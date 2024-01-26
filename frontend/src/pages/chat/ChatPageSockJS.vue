@@ -8,8 +8,8 @@
         <aside class="sidebar-left">
           <h2>Select chatroom</h2>
           <button @click="changeChatroom">🪐 Global chat</button>
+          <!-- TODO: load and create more buttons for rooms where user is joined in -->
           <button @click="createNewChatroom">➕ Create new chatroom</button>
-          <!-- frick i just realized i need to have people joinery thingy somehow. whereeeee -->
         </aside>
 
         <div class="chat-window">
@@ -17,7 +17,6 @@
         <!-- message container - where chat messages go -->
         <div id="chatcontainer" class="">
         </div>
-
         <div class="chat-messages">
           <div v-for="(message, index) in messages" :key="index" class="chat-message">
             <p class="message-header">{{ message.sender }} - {{ formatDate(message.timestamp) }}</p>
@@ -43,6 +42,7 @@ import ChatMessage from "@/pages/chat/ChatMessage.vue";
 import Footer from "@/pages/pageElements/Footer.vue";
 import SockJS from 'sockjs-client';
 import {ApiClient} from "@/client/ApiClient";
+import {MessageRequestForm} from "@/form/MessageRequestForm";
 
 export default {
   name: "ChatPageSockJS",
@@ -72,6 +72,7 @@ export default {
       this.username = null
     }
     this.connectOnLoad();
+    this.fetchMessages(); //add args here? YES, because you need to expand on fetchMessages to do more.
   },
   methods: {
     connectOnLoad() {
@@ -102,7 +103,7 @@ export default {
       this.stompClient.connect({}, (frame) => {
         this.connected = true;
 
-        //TODO: 11.1 make sure to subscribe to where user is (replace destination)
+        //TODONE?: 11.1 make sure to subscribe to where user is (replace destination)
         this.stompClient.subscribe("/topic/" + this.selectedChatroom, (message) => {
           console.log("Got a message from Rabbit: " + message.body);
           //const trimmed = message.body.trim();
@@ -157,9 +158,45 @@ export default {
         this.newMessage = '';
       }
     },
+    async fetchMessages() {
+      try {
+        const messageRequestForm = new MessageRequestForm();
+        messageRequestForm.destination = "globalChat"; //TODO: change to automatically go to where room button clicked
+        messageRequestForm.timestamp = Date.now().toString(); //before? i think so. BE says: findByDestinationAnd TimestampLessThan OrderByTimestampDesc
+        messageRequestForm.numberOfMessages = 256; //variable somehow
+
+        const messages = await ApiClient.getMessages(messageRequestForm);
+
+        this.messages = messages;
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    },
+    clearMessages(){
+      //call before showing new messages? or...
+      this.messages = [];
+    },
+    createRoom(destination) {
+      //check if such named thing exists...?
+      //MAKE SURE TO SHOW USER THE CREATED CHAT'S ID?... or not, they're automatically added.
+      
+    },
     formatDate(timestamp) {
       const date = new Date(parseInt(timestamp));
       return date.toLocaleString();
+    },
+  },
+  watch: {
+    messages: {
+      handler(messages) {
+        //TODO: i changed it, check you're not losing messages
+        const maxMessages = 256; //Set the maximum number of messages
+        if (messages.length > maxMessages) {
+          //Remove the oldest messages to keep the array within the limit
+          this.messages = messages.slice(-maxMessages);
+        }
+      },
+      deep: true,
     },
   },
 };
