@@ -15,21 +15,21 @@ public class Destination {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String destination;
+    private String Name;
 
     public Destination(String destination)
     {
-        this.destination = destination;
+        this.Name = destination;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getName() {
+        return Name;
     }
     public Long getId()
     {
         return this.id;
     }
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setName(String name) {
+        this.Name = name;
     }
 }
