@@ -3,12 +3,11 @@ package cz.osu.java.messboardapp.controller;
 import cz.osu.java.messboardapp.Configs.DynamicRoutingDataSource;
 import cz.osu.java.messboardapp.Form.*;
 import cz.osu.java.messboardapp.json.UserToken;
-import cz.osu.java.messboardapp.model.BoardComment;
-import cz.osu.java.messboardapp.model.BoardPost;
-import cz.osu.java.messboardapp.model.BoardUser;
-import cz.osu.java.messboardapp.model.ChatMessage;
+import cz.osu.java.messboardapp.model.*;
 import cz.osu.java.messboardapp.repository.AppUserRepository;
 import cz.osu.java.messboardapp.repository.ChatMessageRepository;
+import cz.osu.java.messboardapp.repository.DestinationRepository;
+import cz.osu.java.messboardapp.repository.UserDestinationRepository;
 import cz.osu.java.messboardapp.service.AuthService;
 import cz.osu.java.messboardapp.service.CommentService;
 import cz.osu.java.messboardapp.service.PostService;
@@ -42,19 +41,25 @@ public class MainController
 
     private final ChatMessageRepository chatMessageRepository;
 
+    private final DestinationRepository destinationRepository;
+
+    private final UserDestinationRepository userDestinationRepository;
+
     @PostConstruct
     public void init() {
         dynamicRoutingDataSource.setDataSource("mariadb");
     }
 
     public MainController(AppUserRepository userRepository, RegistrationService registrationService, AuthService authService, PostService postService, CommentService commentService,
-                          ChatMessageRepository chatMessageRepository) {
+                          ChatMessageRepository chatMessageRepository, DestinationRepository destinationRepository, UserDestinationRepository userDestinationRepository) {
         this.userRepository = userRepository;
         this.registrationService = registrationService;
         this.authService = authService;
         this.postService = postService;
         this.commentService = commentService;
         this.chatMessageRepository = chatMessageRepository;
+        this.destinationRepository = destinationRepository;
+        this.userDestinationRepository = userDestinationRepository;
     }
 
     //BoardPost control
@@ -215,6 +220,42 @@ public class MainController
         return resultMessages;
     }
 
+    @PostMapping("/saveRoom")
+    public String saveRoom(@RequestBody DestinationForm destinationForm)
+    {
+        Destination destination = new Destination(destinationForm.getDestination());
+        UserDestination userDestination = new UserDestination();
+        userDestination.setId(destinationForm.getUserID(), destination.getId());
+        destinationRepository.save(destination);
+        userDestinationRepository.save(userDestination);
+        return "Destination saved successfully. Destination linked to user.";
+    }
+
+    @GetMapping("/searchRooms")
+    public List<Destination> findRooms(@RequestBody String searchTerm){
+        return destinationRepository.findByDestinationContainingIgnoreCase(searchTerm);
+    }
+
+    @GetMapping("/getUserRooms")
+    public List<Destination> findUserRooms(@RequestBody Long userId)
+    {
+        List<Long> destinationIDs = userDestinationRepository.findDestinationIdsByUserId(userId);
+        List<Destination>destinations = new ArrayList<>();
+        for (Long id:destinationIDs) {
+            destinations.add(destinationRepository.findById(id));
+        }
+        return destinations;
+    }
+
+    @PostMapping("/AddUserToRoom")
+    public String addUserToRoom(@RequestBody JoinDestinationForm joinDestinationForm)
+    {
+        UserDestination userDestination = new UserDestination();
+        userDestination.setId(joinDestinationForm.getUserID(), joinDestinationForm.getDestinationId());
+        userDestinationRepository.save(userDestination);
+
+        return "User has been successfully linked to Destination.";
+    }
 
     //BoardUser control
     @PostMapping("/login")
