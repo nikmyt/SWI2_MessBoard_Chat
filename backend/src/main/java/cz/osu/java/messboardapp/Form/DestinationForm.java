@@ -28,7 +28,13 @@ public class DestinationForm {
         return userID;
     }
 
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
 
     @Override
     public String toString() {

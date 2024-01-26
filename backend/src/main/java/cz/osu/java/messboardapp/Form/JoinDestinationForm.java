@@ -30,6 +30,13 @@ public class JoinDestinationForm {
     }
 
 
+    public void setDestinationId(Long destinationId) {
+        this.destinationId = destinationId;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
 
     @Override
     public String toString() {

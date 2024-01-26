@@ -31,6 +31,26 @@ public class MessageForm {
 		}
 	}
 
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public void setExtra(String extra) {
+		this.extra = extra;
+	}
+
 	public String getDestination() {
 		return destination;
 	}

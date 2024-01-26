@@ -23,6 +23,19 @@ public class MessageRequestForm {
             e.printStackTrace();
         }
     }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setNumberOfMessages(int numberOfMessages) {
+        this.numberOfMessages = numberOfMessages;
+    }
+
     public String getDestination() {
         return destination;
     }
