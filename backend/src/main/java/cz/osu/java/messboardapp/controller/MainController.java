@@ -210,7 +210,7 @@ public class MainController
         return commentService.getCommentCountByUserId(bUser);
     }
 
-    @GetMapping("/getMessages")
+    @PostMapping("/getMessages")
     public List<ChatMessage> getCommentCount(@RequestBody MessageRequestForm messageRequestForm)
     {
         Pageable pageable = PageRequest.of(0, messageRequestForm.getNumberOfMessages());
@@ -231,12 +231,12 @@ public class MainController
         return "Destination saved successfully. Destination linked to user.";
     }
 
-    @GetMapping("/searchRooms")
+    @PostMapping("/searchRooms")
     public List<Destination> findRooms(@RequestBody String searchTerm){
         return destinationRepository.findByDestinationContainingIgnoreCase(searchTerm);
     }
 
-    @GetMapping("/getUserRooms")
+    @PostMapping("/getUserRooms")
     public List<Destination> findUserRooms(@RequestBody Long userId)
     {
         List<Long> destinationIDs = userDestinationRepository.findDestinationIdsByUserId(userId);
