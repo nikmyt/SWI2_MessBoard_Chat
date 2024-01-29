@@ -13,23 +13,23 @@ import lombok.NoArgsConstructor;
 public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long destinationId;
 
-    private String Name;
+    private String name;
 
     public Destination(String destination)
     {
-        this.Name = destination;
+        this.name = destination;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
-    public Long getId()
+    public Long getDestinationId()
     {
-        return this.id;
+        return this.destinationId;
     }
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 }

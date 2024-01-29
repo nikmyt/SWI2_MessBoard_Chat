@@ -14,7 +14,6 @@ import cz.osu.java.messboardapp.service.PostService;
 import cz.osu.java.messboardapp.service.RegistrationService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -225,7 +224,7 @@ public class MainController
     {
         Destination destination = new Destination(destinationForm.getDestination());
         UserDestination userDestination = new UserDestination();
-        userDestination.setId(destinationForm.getUserID(), destination.getId());
+        userDestination.setId(destinationForm.getUserID(), destination.getDestinationId());
         destinationRepository.save(destination);
         userDestinationRepository.save(userDestination);
         return "Destination saved successfully. Destination linked to user.";
@@ -233,7 +232,7 @@ public class MainController
 
     @PostMapping("/searchRooms")
     public List<Destination> findRooms(@RequestBody String searchTerm){
-        return destinationRepository.findByDestinationContainingIgnoreCase(searchTerm);
+        return destinationRepository.findByNameContainingIgnoreCase(searchTerm);
     }
 
     @PostMapping("/getUserRooms")
@@ -242,7 +241,7 @@ public class MainController
         List<Long> destinationIDs = userDestinationRepository.findDestinationIdsByUserId(userId);
         List<Destination>destinations = new ArrayList<>();
         for (Long id:destinationIDs) {
-            destinations.add(destinationRepository.findById(id));
+            destinations.add(destinationRepository.findByDestinationId(id));
         }
         return destinations;
     }
