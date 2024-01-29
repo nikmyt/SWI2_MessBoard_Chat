@@ -7,6 +7,10 @@ public class MessageRequestForm {
     private String destination;
     private String timestamp;
     private int numberOfMessages;
+
+    public MessageRequestForm() {
+    }
+
     public MessageRequestForm(String json) {
         System.out.println("json:" + json);
         try {

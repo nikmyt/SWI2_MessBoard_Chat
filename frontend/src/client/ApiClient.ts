@@ -339,7 +339,7 @@ export class ApiClient{
             body: JSON.stringify(messageRequestForm)
         });
         if (response.ok) {
-            return await response.json(); //TODO: check what you get back
+            return await response.json(); //TODONE: check what you get back: nothing.
         } else {
             console.log("Failed to fetch messages")
             const error = await response.text();
@@ -361,7 +361,7 @@ export class ApiClient{
         if (response.ok) {
             return await response.json();
         } else {
-            console.log("Failed to fetch messages")
+            console.log("Failed to save chatroom")
             const error = await response.text();
             throw new Error(error);
         }

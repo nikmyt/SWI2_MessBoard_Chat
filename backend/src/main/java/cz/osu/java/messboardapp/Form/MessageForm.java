@@ -10,6 +10,9 @@ public class MessageForm {
 	private String text;
 	private String extra;
 
+	public MessageForm() {
+	}
+
 	public MessageForm(String json) {
 		System.out.println("json:" + json);
 		try {

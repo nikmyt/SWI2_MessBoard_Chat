@@ -5,6 +5,10 @@ import org.json.JSONObject;
 public class DestinationForm {
     private String destination;
     private Long userID;
+
+    public DestinationForm() {
+    }
+
     public DestinationForm(String json) {
         System.out.println("json:" + json);
         try {

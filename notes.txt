@@ -147,3 +147,15 @@ kamil sez:
 	-saveRoom + addUserToRoom
 3) načtení všech roomek ve kterých je user do UI
 4) search bar na vyhledání roomky ve které user ještě není -> odešle na BE string roomky, vrátí to všechny roomky, jejichž název obsahuje ten string a ve kterých user ještě není
+
+29.1 chille tid (nö)
+1) check the mystery of what token contains
+2) create room button, it should also show rooms you have
+3) the if the "fuckinbutt"-on doesn't work
+3) something doesn't work but idk what. oh the fetching of the messages. i don't even know where they are.
+
+?) add other users to rooms
+?) remove users from rooms
+
+and that's it, right?
+???) moderator tools?
