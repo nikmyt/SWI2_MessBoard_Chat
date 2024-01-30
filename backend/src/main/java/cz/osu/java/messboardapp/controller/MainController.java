@@ -242,10 +242,12 @@ public class MainController
         List<Destination>destinations = new ArrayList<>();
 
         for (Long id:destinationIDs) {
-            //destinations.add(destinationRepository.findByDestinationId(id));
-            //will it? do anything?
             Destination destination = destinationRepository.findByDestinationId(id);
-            destinations.add(new Destination(destination.getDestinationId(), destination.getName()));
+            System.out.println("Found destination for user. Destination Id: " + destination.getDestinationId() + ". Destination name: " + destination.getName());
+            destinations.add(destination);
+            //will it? do anything? the bottom version does the same as the top version but with more steps. Returning to previous.
+            //Destination destination = destinationRepository.findByDestinationId(id);
+            //destinations.add(new Destination(destination.getDestinationId(), destination.getName()));
         }
 
         return destinations;
@@ -269,6 +271,14 @@ public class MainController
         userDestinationRepository.save(userDestination);
 
         return "User has been successfully linked to Destination.";
+    }
+
+    @PostMapping("/RemoveUserFromRoom")
+    public String removeUserFromRoom(@RequestBody JoinDestinationForm joinDestinationForm)
+    {
+        userDestinationRepository.delete(userDestinationRepository.findUserDestinationByIdUserIdAndIdDestinationId(joinDestinationForm.getUserID(), joinDestinationForm.getDestinationId()));
+
+        return "User has been successfully deleted from Destination.";
     }
 
     //BoardUser control

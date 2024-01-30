@@ -12,4 +12,7 @@ public interface UserDestinationRepository extends JpaRepository<UserDestination
     // Custom query method to find all destinationIds for a specific userId
     @Query("SELECT ud.id.destinationId FROM UserDestination ud WHERE ud.id.userId = :userId")
     List<Long> findDestinationIdsByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT ud FROM UserDestination ud WHERE ud.id.userId = :userId AND ud.id.destinationId = :destinationId")
+    UserDestination findUserDestinationByIdUserIdAndIdDestinationId(Long userId, Long destinationId);
 }
