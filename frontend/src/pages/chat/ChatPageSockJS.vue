@@ -72,7 +72,7 @@ export default {
       newMessage: '',
       connected: false,
       sockJS: null,
-      selectedChatroom: 'globalChat',
+      selectedChatroom: '1',
       newChatroomName: '',
       creatingChatroom: false,
       rooms: [],
@@ -155,7 +155,7 @@ export default {
       if (this.newMessage.trim() !== '') {
         var message = {
           //destination, timestamp, sender, text, extra
-          destination: "/topic/globalChat", //TODO: change to correct destination, fix username
+          destination: "/topic/" + this.selectedChatroom, //TODONE?: change to correct destination, fix username
           timestamp: Date.now().toString(),
           sender: this.username,
           text: this.newMessage,
@@ -178,7 +178,7 @@ export default {
     async fetchMessages() {
       try {
         const messageRequestForm = new MessageRequestForm();
-        messageRequestForm.destination = "/topic/globalChat"; //TODO: change to automatically go to where room button clicked
+        messageRequestForm.destination = "/topic/" + this.selectedChatroom; //TODONE?: change to automatically go to where room button clicked
         messageRequestForm.timestamp = Date.now().toString(); //before? i think so. BE says: findByDestinationAnd TimestampLessThan OrderByTimestampDesc
         messageRequestForm.numberOfMessages = 256; //variable somehow
 
@@ -217,6 +217,7 @@ export default {
         // Close the popup after creating the chatroom
         this.creatingChatroom = false;
         this.newChatroomName = ''; // Clear the input field
+        this.fetchUserRooms(); //get the roomses
       }
     },
     addUserToRoom(useroni){

@@ -149,13 +149,26 @@ kamil sez:
 4) search bar na vyhledání roomky ve které user ještě není -> odešle na BE string roomky, vrátí to všechny roomky, jejichž název obsahuje ten string a ve kterých user ještě není
 
 29.1 chille tid (nö)
-1) check the mystery of what token contains
-2) create room button, it should also show rooms you have
-3) the if the "fuckinbutt"-on doesn't work
-3) something doesn't work but idk what. oh the fetching of the messages. i don't even know where they are.
+1) check the mystery of what token contains - DONE
+2) create room button, it should also show rooms you have - DONE
+3) the if the "fuckinbutt"-on doesn't work - DONE whatever that means
+3) something doesn't work but idk what. oh the fetching of the messages. i don't even know where they are. - DONE
 
 ?) add other users to rooms
 ?) remove users from rooms
 
 and that's it, right?
 ???) moderator tools?
+
+wishes, from most important to least:
+-second backend, yeah yeah...
+-working chatrooms
+-adding ppl to chatrooms
+-delete, edit messages
+-better seamless way of loading messages (glhf)
+
+WAIT a damn second, how does the rabbit stuff work? can a topic straight up be "1"? check that.
+
+30.1 mystery day
+1) how do i get rooms betteredly. i need all their shit, not just a.
+1.B) when user actually clicks on the room it sends another command, to fetchMessages() again and un-re-subscribes to the new rooms uh... thingy.

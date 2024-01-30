@@ -240,10 +240,25 @@ public class MainController
     {
         List<Long> destinationIDs = userDestinationRepository.findDestinationIdsByUserId(userId);
         List<Destination>destinations = new ArrayList<>();
+
         for (Long id:destinationIDs) {
-            destinations.add(destinationRepository.findByDestinationId(id));
+            //destinations.add(destinationRepository.findByDestinationId(id));
+            //will it? do anything?
+            Destination destination = destinationRepository.findByDestinationId(id);
+            destinations.add(new Destination(destination.getDestinationId(), destination.getName()));
         }
+
         return destinations;
+        //needs to return more... i think... yes i need the name too
+    }
+
+    //please looks this over
+    @PostMapping("/getRoomInfo")
+    public List<Destination> getRoomInfo(@RequestBody Long roomId)
+    {
+        //what I want? who is in the room.
+        //also the name of the room...
+        return null;
     }
 
     @PostMapping("/AddUserToRoom")
