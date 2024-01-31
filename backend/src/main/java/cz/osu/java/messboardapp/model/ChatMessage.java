@@ -9,8 +9,8 @@ public class ChatMessage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; //damn. but this allows us to return n of messages
 	private String timestamp;
-	private String destination;
-	private String sender;
+	private Long destinationId;
+	private Long senderId;
 	private String text;
 	private String extra;
 
@@ -30,20 +30,20 @@ public class ChatMessage {
 		this.timestamp = timestamp;
 	}
 
-	public String getDestination() {
-		return destination;
+	public Long getDestination() {
+		return destinationId;
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
+	public void setDestination(Long destinationId) {
+		this.destinationId = destinationId;
 	}
 
-	public String getSender() {
-		return sender;
+	public Long getSenderId() {
+		return senderId;
 	}
 
-	public void setSender(String sender) {
-		this.sender = sender;
+	public void setSender(Long senderId) {
+		this.senderId = senderId;
 	}
 
 	public String getText() {

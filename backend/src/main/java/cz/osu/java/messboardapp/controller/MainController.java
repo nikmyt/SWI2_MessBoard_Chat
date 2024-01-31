@@ -85,6 +85,8 @@ public class MainController
         Iterable<BoardPost> posts = postService.findBoardPostByUserId(bUser);
         return posts;
     }
+
+
     @GetMapping("/postcount/{user_id}")
     public int getPostCount(@PathVariable("user_id") Integer id)
     {
@@ -165,6 +167,25 @@ public class MainController
             return null;
         }
     }
+    @PostMapping("/editDeleteMessage")
+    public String editDeleteMessage(@RequestBody EditDeleteMessageForm editDeleteMessageForm) {
+        ChatMessage chatMessage = chatMessageRepository.findChatMessageByDestinationIdAndSenderIdAndTimestamp(
+                editDeleteMessageForm.getDestinationId(),
+                editDeleteMessageForm.getSenderId(),
+                editDeleteMessageForm.getTimestamp()
+        );
+        if (editDeleteMessageForm.getTextToEdit()!=null)
+        {
+            chatMessage.setText(editDeleteMessageForm.getTextToEdit());
+            chatMessageRepository.save(chatMessage);
+            return "Chat message successfully edited.";
+        }else if(editDeleteMessageForm.getTextToEdit()==null){
+            chatMessageRepository.delete(chatMessage);
+            return "Chat message successfully deleted.";
+        }
+        return "Error. Message neither edited nor deleted.";
+    }
+
     @PostMapping("/newcomment")
     public void createcomment(@Valid @RequestBody CommentForm commentForm){
         BoardUser user = userRepository.findBoardUserByUserId(commentForm.getUserId());
@@ -213,8 +234,8 @@ public class MainController
     public List<ChatMessage> getCommentCount(@RequestBody MessageRequestForm messageRequestForm)
     {
         Pageable pageable = PageRequest.of(0, messageRequestForm.getNumberOfMessages());
-        Page<ChatMessage> messages = chatMessageRepository.findByDestinationAndTimestampLessThanOrderByTimestampDesc(
-                messageRequestForm.getDestination(), messageRequestForm.getTimestamp(), pageable);
+        Page<ChatMessage> messages = chatMessageRepository.findByDestinationIdAndTimestampLessThanOrderByTimestampDesc(
+                messageRequestForm.getDestinationId(), messageRequestForm.getTimestamp(), pageable);
         List<ChatMessage> resultMessages = messages.getContent();
         return resultMessages;
     }

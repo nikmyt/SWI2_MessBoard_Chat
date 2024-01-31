@@ -14,8 +14,8 @@ public class JoinDestinationForm {
         try {
             JSONObject jsonObject = new JSONObject(json);
 
-            String destinationString = jsonObject.getString("destination");
-            Long destinationId = Long.parseLong(destinationString);
+            String destinationIdString = jsonObject.getString("destination");
+            Long destinationId = Long.parseLong(destinationIdString);
             String userIDstring = jsonObject.getString("userID");
             Long userID = Long.parseLong(userIDstring);
 

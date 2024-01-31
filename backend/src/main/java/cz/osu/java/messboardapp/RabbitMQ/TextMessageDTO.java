@@ -4,18 +4,18 @@ import com.google.gson.Gson;
 
 public class TextMessageDTO {
     //new UNIVERSAL messageForm: destination, timestamp, sender, text, extra
-    private String destination;
+    private Long destinationId;
     private String timestamp;
-    private String sender;
+    private Long senderId;
     private String text;
     private String extra;
     public TextMessageDTO(){} //why
     public TextMessageDTO(String text){this.text = text;} //debuggy
-    public TextMessageDTO(String text, String sender){this.text = text; this.sender = sender;} //debuggy
-    public TextMessageDTO(String destination, String timestamp, String sender, String text, String extra) {
-        this.destination = destination;
+    public TextMessageDTO(String text, Long senderId){this.text = text; this.senderId = senderId;} //debuggy
+    public TextMessageDTO(Long destinationId, String timestamp, Long senderId, String text, String extra) {
+        this.destinationId = destinationId;
         this.timestamp = timestamp;
-        this.sender = sender;
+        this.senderId = senderId;
         this.text = text;
         this.extra = extra;
     }
@@ -28,12 +28,12 @@ public class TextMessageDTO {
         this.text = text;
     }
 
-    public String getDestination() {
-        return destination;
+    public Long getDestinationId() {
+        return destinationId;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setDestinationId(Long destinationId) {
+        this.destinationId = destinationId;
     }
 
     public String getTimestamp() {
@@ -44,12 +44,12 @@ public class TextMessageDTO {
         this.timestamp = timestamp;
     }
 
-    public String getSender() {
-        return sender;
+    public Long getSenderId() {
+        return senderId;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setSender(Long senderId) {
+        this.senderId = senderId;
     }
 
     public String getExtra() {
@@ -69,9 +69,9 @@ public class TextMessageDTO {
     @Override
     public String toString() {
         return "TextMessageDTO{" +
-                "destination='" + destination + '\'' +
+                "destinationId='" + destinationId + '\'' +
                 ", timestamp='" + timestamp + '\'' +
-                ", sender='" + sender + '\'' +
+                ", senderId='" + senderId + '\'' +
                 ", text='" + text + '\'' +
                 ", extra='" + extra + '\'' +
                 '}';

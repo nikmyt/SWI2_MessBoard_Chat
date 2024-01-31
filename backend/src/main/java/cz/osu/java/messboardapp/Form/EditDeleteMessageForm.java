@@ -2,33 +2,31 @@ package cz.osu.java.messboardapp.Form;
 
 import org.json.JSONObject;
 
-public class MessageRequestForm {
-
+public class EditDeleteMessageForm {
     private Long destinationId;
     private String timestamp;
-    private int numberOfMessages;
+    private Long senderId;
+    private String textToEdit;
 
-    public MessageRequestForm() {
-    }
-
-    public MessageRequestForm(String json) {
+    public EditDeleteMessageForm(String json) {
         System.out.println("json:" + json);
         try {
             JSONObject jsonObject = new JSONObject(json);
 
-            String destinationIdString = jsonObject.getString("destination");
-            Long destinationId = Long.parseLong(destinationIdString);
+            String destinationString = jsonObject.getString("destination");
+            Long destinationId = Long.parseLong(destinationString);
             String timestamp = jsonObject.getString("timestamp");
-            int numberOfMessages = jsonObject.getInt("numberOfMessages");
+            String senderString = jsonObject.getString("sender");
+            Long senderId = Long.parseLong(senderString);
+            String textToEdit = jsonObject.getString("textToEdit");
 
             this.destinationId = destinationId;
             this.timestamp = timestamp;
-            this.numberOfMessages = numberOfMessages;
+            this.senderId = senderId;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     public void setDestinationId(Long destinationId) {
         this.destinationId = destinationId;
     }
@@ -37,8 +35,12 @@ public class MessageRequestForm {
         this.timestamp = timestamp;
     }
 
-    public void setNumberOfMessages(int numberOfMessages) {
-        this.numberOfMessages = numberOfMessages;
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public void setTextToEdit(String textToEdit){
+        this.textToEdit = textToEdit;
     }
 
     public Long getDestinationId() {
@@ -49,8 +51,12 @@ public class MessageRequestForm {
         return timestamp;
     }
 
-    public int getNumberOfMessages() {
-        return numberOfMessages;
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public String getTextToEdit(){
+        return textToEdit;
     }
 
 
@@ -59,7 +65,8 @@ public class MessageRequestForm {
         return "MessageForm{" +
                 "destinationId='" + destinationId + '\'' +
                 ", timestamp='" + timestamp + '\'' +
-                ", number of messages='" + numberOfMessages + '\'' +
+                ", senderId='" + senderId + '\'' +
+                ", textToEdit='" + textToEdit + '\'' +
                 '}';
     }
 }

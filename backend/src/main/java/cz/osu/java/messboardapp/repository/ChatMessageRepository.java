@@ -19,11 +19,13 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
 	// worst case scenario you can just do chat messages today
 	//or any
 	//List<ChatMessage> findChatMessagesByTimestampAfter();
-	List<ChatMessage> findChatMessagesByDestination(String destination); //generic purpose
+	List<ChatMessage> findChatMessagesByDestinationId(Long destinationId); //generic purpose
 
 	List<ChatMessage> findChatMessagesByIdGreaterThan(int id); //alternative, just try n
 
-	Page<ChatMessage> findByDestinationAndTimestampLessThanOrderByTimestampDesc(
-			String destination, String timestamp, Pageable pageable);
+	Page<ChatMessage> findByDestinationIdAndTimestampLessThanOrderByTimestampDesc(
+			Long destinationId, String timestamp, Pageable pageable);
+
+	ChatMessage findChatMessageByDestinationIdAndSenderIdAndTimestamp(Long destinationId, Long senderId, String timestamp);
 
 }

@@ -44,15 +44,14 @@ public class WebSocketController {
     public ResponseEntity<Void> sendMessage(@Valid @RequestBody MessageForm messageForm) {
         System.out.println("Message received.");
         System.out.println("message: " + messageForm.toString());
-        System.out.println("raw: " + messageForm.getDestination());
+        System.out.println("raw: " + messageForm.getDestinationId());
         System.out.println("timestamp: " + messageForm.getTimestamp());
-        String gimmeDestination = messageForm.getDestination();
+        Long destinationId = messageForm.getDestinationId();
         //now we hinge on the fact that rabbit needs to be able to create new topics automatically
         //  "/topic/globalChat"
-        TextMessageDTO message = new TextMessageDTO(messageForm.getDestination(), messageForm.getTimestamp(), messageForm.getSender(), messageForm.getText(),messageForm.getExtra());
+        TextMessageDTO message = new TextMessageDTO(messageForm.getDestinationId(), messageForm.getTimestamp(), messageForm.getSenderId(), messageForm.getText(),messageForm.getExtra());
 
-        template.convertAndSend(gimmeDestination,
-                makeTheMessageSendable(message));
+        template.convertAndSend(String.valueOf(destinationId), makeTheMessageSendable(message));
         //extemely problematic but maybe we can sidestep the problem and send everything to 1 queue anyway.
         producer.sendMessageToQueue1(makeTheMessageSendable(message));
 
@@ -75,9 +74,9 @@ public class WebSocketController {
         //15.1 TODO: chatrepo is null for some reason
         //perhaps bc the db file doesn't exist
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setDestination(textMessageDTO.getDestination());
+        chatMessage.setDestination(textMessageDTO.getDestinationId());
         chatMessage.setTimestamp(textMessageDTO.getTimestamp());
-        chatMessage.setSender(textMessageDTO.getSender());
+        chatMessage.setSender(textMessageDTO.getSenderId());
         chatMessage.setText(textMessageDTO.getText());
         chatMessage.setExtra(textMessageDTO.getExtra());
 

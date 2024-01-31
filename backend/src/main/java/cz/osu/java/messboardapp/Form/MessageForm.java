@@ -4,9 +4,9 @@ import org.json.JSONObject;
 
 public class MessageForm {
 
-	private String destination;
+	private Long destinationId;
 	private String timestamp;
-	private String sender;
+	private Long senderId;
 	private String text;
 	private String extra;
 
@@ -18,15 +18,17 @@ public class MessageForm {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 
-			String destination = jsonObject.getString("destination");
+			String destinationIdString = jsonObject.getString("destination");
+			Long destinationId = Long.parseLong(destinationIdString);
 			String timestamp = jsonObject.getString("timestamp");
-			String sender = jsonObject.getString("sender");
+			String senderIdString = jsonObject.getString("sender");
+			Long senderId = Long.parseLong(senderIdString);
 			String text = jsonObject.getString("text");
 			String extra = jsonObject.getString("extra");
 
-			this.destination = destination;
+			this.destinationId = destinationId;
 			this.timestamp = timestamp;
-			this.sender = sender;
+			this.senderId = senderId;
 			this.text = text;
 			this.extra = extra;
 		} catch (Exception e) {
@@ -34,16 +36,16 @@ public class MessageForm {
 		}
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
+	public void setDestinationId(Long destinationId) {
+		this.destinationId = destinationId;
 	}
 
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 
-	public void setSender(String sender) {
-		this.sender = sender;
+	public void setSenderId(Long senderId) {
+		this.senderId = senderId;
 	}
 
 	public void setText(String text) {
@@ -54,16 +56,16 @@ public class MessageForm {
 		this.extra = extra;
 	}
 
-	public String getDestination() {
-		return destination;
+	public Long getDestinationId() {
+		return destinationId;
 	}
 
 	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public String getSender() {
-		return sender;
+	public Long getSenderId() {
+		return senderId;
 	}
 
 	public String getText() {
@@ -77,9 +79,9 @@ public class MessageForm {
 	@Override
 	public String toString() {
 		return "MessageForm{" +
-				"destination='" + destination + '\'' +
+				"destinationId='" + destinationId + '\'' +
 				", timestamp='" + timestamp + '\'' +
-				", sender='" + sender + '\'' +
+				", senderId='" + senderId + '\'' +
 				", text='" + text + '\'' +
 				", extra='" + extra + '\'' +
 				'}';
