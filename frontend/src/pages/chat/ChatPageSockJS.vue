@@ -193,8 +193,9 @@ export default {
       //call before showing new messages? or...
       this.messages = [];
     },
-    fetchUserRooms(){
-      this.rooms = ApiClient.getUserRooms(this.userID); //yes?
+    async fetchUserRooms(){
+      this.rooms = await ApiClient.getUserRooms(this.userID); //yes?
+      console.log("current fetched rooms are as follows: ", this.rooms);
       //wait what does this do
       //right, get a v-for up there in the buttons and link up logic to pretty buttons
     },
@@ -212,7 +213,7 @@ export default {
         };
 
         // Show success/failure to the user here
-        ApiClient.saveRoom(room);
+        console.log(ApiClient.saveRoom(room));
 
         // Close the popup after creating the chatroom
         this.creatingChatroom = false;

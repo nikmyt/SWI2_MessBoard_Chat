@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
     List<Destination> findByNameContainingIgnoreCase(String searchTerm);
     Destination findByDestinationId(Long destinationId);
+    Destination findTopByNameOrderByDestinationIdDesc(String name);
 }

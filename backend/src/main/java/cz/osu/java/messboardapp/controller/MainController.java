@@ -245,8 +245,11 @@ public class MainController
     {
         Destination destination = new Destination(destinationForm.getDestination());
         UserDestination userDestination = new UserDestination();
-        userDestination.setId(destinationForm.getUserID(), destination.getDestinationId());
         destinationRepository.save(destination);
+        destination = destinationRepository.findTopByNameOrderByDestinationIdDesc(destinationForm.getDestination());
+        System.out.println("New destinationId userId: " + destinationForm.getUserID());
+        System.out.println("New destinationId: " + destination.getDestinationId());
+        userDestination.setId(destinationForm.getUserID(), destination.getDestinationId());
         userDestinationRepository.save(userDestination);
         return "Destination saved successfully. Destination linked to user.";
     }
@@ -260,6 +263,9 @@ public class MainController
     public List<Destination> findUserRooms(@RequestBody Long userId)
     {
         List<Long> destinationIDs = userDestinationRepository.findDestinationIdsByUserId(userId);
+        for (Long id:destinationIDs) {
+            System.out.println(id);
+        }
         List<Destination>destinations = new ArrayList<>();
 
         for (Long id:destinationIDs) {

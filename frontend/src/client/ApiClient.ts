@@ -400,7 +400,7 @@ export class ApiClient{
         if (response.ok) {
             return await response.json();
         } else {
-            console.log("Failed to fetch messages")
+            console.log("Failed to search for rooms")
             const error = await response.text();
             throw new Error(error);
         }
@@ -417,9 +417,11 @@ export class ApiClient{
             body: JSON.stringify(userID)
         });
         if (response.ok) {
-            return await response.json();
+            const ret = await response.json();
+            console.log("response for fetching rooms: ", ret);
+            return ret;
         } else {
-            console.log("Failed to fetch messages")
+            console.log("Failed to get rooms")
             const error = await response.text();
             throw new Error(error);
         }
