@@ -26,7 +26,7 @@ public class RabbitMQConfig {
         rabbitTemplate.setMessageConverter(messageConverter());
         return rabbitTemplate;
     }
-
+    //static routing here
     public static final String TOPIC_EXCHANGE_NAME = "topic-exchange";
 
     public static final String BINDING_KEY_1 = "topic.key.*";

@@ -1,9 +1,19 @@
 package cz.osu.java.messboardapp.RabbitMQ;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class TextMessageDTO {
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Base64;
+
+
+public class TextMessageDTO implements Serializable {
     //new UNIVERSAL messageForm: destination, timestamp, sender, text, extra
+    private Long Id;
     private Long destinationId;
     private String timestamp;
     private Long senderId;
@@ -18,6 +28,14 @@ public class TextMessageDTO {
         this.senderId = senderId;
         this.text = text;
         this.extra = extra;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 
     public String getText(){
@@ -60,10 +78,18 @@ public class TextMessageDTO {
         this.extra = extra;
     }
 
-    public String toJson(){
-        Gson gson = new Gson();
-        String jsonified = gson.toJson(this);
+    public static String toJson(TextMessageDTO textMessageDTO){
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+
+        Gson gson = builder.create();
+        String jsonified = gson.toJson(textMessageDTO.getText());
         return jsonified;
+    }
+
+    public static TextMessageDTO fromJson(String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, TextMessageDTO.class);
     }
 
     @Override

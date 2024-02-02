@@ -46,30 +46,19 @@ public class WebSocketController {
         System.out.println("message: " + messageForm.toString());
         System.out.println("raw: " + messageForm.getDestinationId());
         System.out.println("timestamp: " + messageForm.getTimestamp());
-        Long destinationId = messageForm.getDestinationId();
-        //now we hinge on the fact that rabbit needs to be able to create new topics automatically
-        //  "/topic/globalChat"
         TextMessageDTO message = new TextMessageDTO(messageForm.getDestinationId(), messageForm.getTimestamp(), messageForm.getSenderId(), messageForm.getText(),messageForm.getExtra());
 
-        template.convertAndSend(String.valueOf(destinationId), makeTheMessageSendable(message));
+        message.setId(saveMessageToDisk(message)); //this could be fine unironically
+        //template.convertAndSend(String.valueOf(destinationId), makeTheMessageSendable(message));
         //extemely problematic but maybe we can sidestep the problem and send everything to 1 queue anyway.
-        producer.sendMessageToQueue1(makeTheMessageSendable(message));
+        producer.sendMessageToQueue1(message);
 
-        saveMessageToDisk(message); //this could be fine unironically
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    private String makeTheMessageSendable(TextMessageDTO message)
-    {
-        //String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
-        //String jsoned = "{\"content\": \"" + message.toJson() + "\"}";
-        String jsoned = message.toJson();
-        System.out.println(jsoned); //TODONE: does it look correct? YES!
-        return jsoned;
-    }
 
-    private void saveMessageToDisk(TextMessageDTO textMessageDTO) {
+    private Long saveMessageToDisk(TextMessageDTO textMessageDTO) {
         // Convert TextMessageDTO to ChatMessage entity
         //15.1 TODO: chatrepo is null for some reason
         //perhaps bc the db file doesn't exist
@@ -81,8 +70,9 @@ public class WebSocketController {
         chatMessage.setExtra(textMessageDTO.getExtra());
 
         System.out.println("saving message");
-        chatMessageRepository.save(chatMessage);
+        Long messageId = chatMessageRepository.save(chatMessage).getId();
         System.out.println("message saved");
+        return messageId;
     }
 
 

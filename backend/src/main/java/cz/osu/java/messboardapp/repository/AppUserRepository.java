@@ -17,6 +17,7 @@ public interface AppUserRepository extends CrudRepository<BoardUser, Integer>
 
 
     BoardUser findBoardUserByUserId(int userId);
+    BoardUser findBoardUserByUserId(Long userId);
 
 
 

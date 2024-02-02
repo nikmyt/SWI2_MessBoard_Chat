@@ -1,46 +1,46 @@
 <template>
   <div>
-      <header>
-        <TopBar />
-      </header>
+    <header>
+      <TopBar />
+    </header>
 
-      <div class="container">
-        <aside class="sidebar-left">
-          <h2>Select chatroom</h2>
-          <button @click="changeChatroom('globalChat')">🪐 Global chat</button>
-          <div>
-            <button v-for="room in rooms" :key="room.destinationId" @click="changeChatroom(room.destinationId)">
-              {{ room.name }}
-            </button>
-          </div>
-          <!-- TODONE?: load and create more buttons for rooms where user is joined in -->
-          <button @click="creatingChatroom = true">➕ Create new chatroom</button>
-        </aside>
-
-        <div v-if="creatingChatroom" class="chatroomPopup">
-          <input v-model="newChatroomName" @keyup.enter="createRoom" placeholder="Name your chatroom..." />
-          <button @click="createRoom">➕ Create</button>
+    <div class="container">
+      <aside class="sidebar-left">
+        <h2>Select chatroom</h2>
+        <button @click="changeChatroom('globalChat')">🪐 Global chat</button>
+        <div>
+          <button v-for="room in rooms" :key="room.destinationId" @click="changeChatroom(room.destinationId)">
+            {{ room.name }}
+          </button>
         </div>
+        <!-- TODONE?: load and create more buttons for rooms where user is joined in -->
+        <button @click="creatingChatroom = true">➕ Create new chatroom</button>
+      </aside>
 
-        <div class="chat-window">
-      <div class="container">
-        <!-- message container - where chat messages go -->
-        <div id="chatcontainer" class="">
-        </div>
-        <div class="chat-messages">
-          <div v-for="(message, index) in messages" :key="index" class="chat-message">
-            <p class="message-header">{{ message.sender }} - {{ formatDate(message.timestamp) }}</p>
-            <p class="message-text">{{ message.text }}</p>
-          </div>
-        </div>
-
+      <div v-if="creatingChatroom" class="chatroomPopup">
+        <input v-model="newChatroomName" @keyup.enter="createRoom" placeholder="Name your chatroom..." />
+        <button @click="createRoom">➕ Create</button>
       </div>
-      <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
-    </div>
-    <RightMenu />
-  </div>
 
-  <Footer />
+      <div class="chat-window">
+        <div class="container">
+          <!-- message container - where chat messages go -->
+          <div id="chatcontainer" class="">
+          </div>
+          <div ref="chatContainer" class="chat-messages">
+            <div v-for="(message, index) in messages" :key="message" class="chat-message">
+              <p class="message-header">{{ message.extra }} - {{ formatDate(message.timestamp) }}</p>
+              <p class="message-text">{{ message.text }}</p>
+            </div>
+          </div>
+
+        </div>
+        <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type a message..." />
+      </div>
+      <RightMenu />
+    </div>
+
+    <Footer />
   </div>
 </template>
 
@@ -88,8 +88,8 @@ export default {
     }
     this.connectOnLoad();
     //console.log("what is a token:" + localStorage.getItem("token")); //a token is userId
-    this.fetchMessages(); //TODO: add args here? YES, because you need to expand on fetchMessages to do more.
     this.fetchUserRooms();
+    this.fetchMessages(); //TODO: add args here? YES, because you need to expand on fetchMessages to do more.
   },
   methods: {
     connectOnLoad() {
@@ -102,40 +102,48 @@ export default {
       this.sockJS.onopen = () => {
         this.connected = true;
         console.log('Connected');
+      };
 
-        this.sockJS.onmessage = (message) => {
-          const receivedMessage = JSON.parse(message.data);
-          this.messages.push(receivedMessage);
-          console.log("got a message:" + JSON.parse(message.body).content);
-        };
+      this.sockJS.onmessage = (message) => {
+        const receivedMessage = JSON.parse(message.data);
+        this.messages.push(receivedMessage);
+        console.log("got a message:" + receivedMessage.content);
       };
 
       this.sockJS.onerror = (error) => {
         console.error('Error with WebSocket', error);
       };
 
-      const socket = new WebSocket('ws://localhost:8080/ws');
-      this.stompClient = Stomp.over(socket);
+      // Note: No need for a separate WebSocket connection, remove the following lines
+      // const socket = new WebSocket('ws://localhost:8080/ws');
+      // this.stompClient = Stomp.over(socket);
+
+      // Instead, you can use Stomp over the existing SockJS connection
+      this.stompClient = Stomp.over(this.sockJS);
 
       this.stompClient.connect({}, (frame) => {
         this.connected = true;
 
-        //TODONE?: 11.1 make sure to subscribe to where user is (replace destination)
-        this.stompClient.subscribe("/topic/" + this.selectedChatroom, (message) => {
+        // TODO: make sure to subscribe to where the user is (replace destination)
+        this.stompClient.subscribe('/topic/' + this.selectedChatroom, (message) => {
           console.log("Got a message from Rabbit: " + message.body);
-          //const trimmed = message.body.trim();
           const rawContent = JSON.parse(message.body.toString());
-          //console.log("destination: " + rawContent.destination);
           const receivedMessage = {
-            destination: rawContent.destination, //unused since subscribe is filtering it already
+            id: rawContent.id,
             timestamp: rawContent.timestamp,
-            sender: rawContent.sender,
+            senderId: rawContent.senderId,
+            destinationId: rawContent.destinationId,
             text: rawContent.text,
             extra: rawContent.extra
           };
-
+          console.log(this.messages.length);
           this.messages.push(receivedMessage);
+          console.log(this.messages.length);
+          console.log("Whole messages field:", this.messages)
           this.showMessage(receivedMessage);
+          this.$nextTick(() => {
+            this.scrollToBottom();
+          });
         });
       }, error => {
         console.error('Error with WebSocket', error);
@@ -155,13 +163,13 @@ export default {
       if (this.newMessage.trim() !== '') {
         var message = {
           //destination, timestamp, sender, text, extra
-          destination: "/topic/" + this.selectedChatroom, //TODONE?: change to correct destination, fix username
+          destination: this.selectedChatroom, //TODONE?: change to correct destination, fix username
           timestamp: Date.now().toString(),
-          sender: this.username,
+          sender: this.userID,
           text: this.newMessage,
           extra: "",
         };
-
+        console.log(message);
         console.log(JSON.stringify(message));
 
         ApiClient.sendMessage(JSON.stringify(message));
@@ -178,13 +186,16 @@ export default {
     async fetchMessages() {
       try {
         const messageRequestForm = new MessageRequestForm();
-        messageRequestForm.destination = "/topic/" + this.selectedChatroom; //TODONE?: change to automatically go to where room button clicked
+        messageRequestForm.destinationId = this.selectedChatroom; //TODO! change to automatically go to where room button clicked
         messageRequestForm.timestamp = Date.now().toString(); //before? i think so. BE says: findByDestinationAnd TimestampLessThan OrderByTimestampDesc
         messageRequestForm.numberOfMessages = 256; //variable somehow
 
         const messages = await ApiClient.getMessages(messageRequestForm);
 
         this.messages = messages;
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
@@ -230,10 +241,14 @@ export default {
       const date = new Date(parseInt(timestamp));
       return date.toLocaleString();
     },
+    scrollToBottom() {
+      this.$refs.chatContainer.scrollTop = this.$refs.chatContainer.scrollHeight;
+    },
   },
   watch: {
     messages: {
       handler(messages) {
+        this.scrollToBottom();
         //TODO: i changed it, check you're not losing messages
         const maxMessages = 256; //Set the maximum number of messages
         if (messages.length > maxMessages) {

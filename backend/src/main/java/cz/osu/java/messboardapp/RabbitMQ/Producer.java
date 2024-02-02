@@ -18,13 +18,20 @@ public class Producer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessageToQueue1(String messageContent){
-        rabbitTemplate.setMessageConverter(converter);
-        Message message = MessageBuilder.withBody(messageContent.getBytes()).build();
-        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY_1, message.getBody()); //im out of ideas. Actually this seems to have fixed the "required content" bug. lol. fixing by breaking
-        System.out.println("Message sent with Binding Key 1: " + messageContent);
+    public void sendMessageToQueue1(TextMessageDTO textMessageDTO){
+        //rabbitTemplate.setMessageConverter(converter);
+        //Message message = MessageBuilder.withBody(makeTheMessageSendable(textMessageDTO).getBytes()).build();
+        rabbitTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE_NAME, RabbitMQConfig.ROUTING_KEY_1, textMessageDTO); //im out of ideas. Actually this seems to have fixed the "required content" bug. lol. fixing by breaking
+        System.out.println("Message sent with routing key: " + textMessageDTO.getDestinationId());
     }
 
+    private String makeTheMessageSendable(TextMessageDTO textMessageDTO)
+    {
+        System.out.println("PreJsoned: " + textMessageDTO);
+        String jsoned = TextMessageDTO.toJson(textMessageDTO);
+        System.out.println("PostJsoned: " + jsoned); //TODONE: does it look correct? YES!
+        return jsoned;
+    }
     public void sendMessageToQueue2(String messageContent){
         rabbitTemplate.setMessageConverter(converter);
         Message message = MessageBuilder.withBody(messageContent.getBytes()).build();

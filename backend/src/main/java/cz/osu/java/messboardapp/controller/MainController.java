@@ -233,10 +233,20 @@ public class MainController
     @PostMapping("/getMessages")
     public List<ChatMessage> getCommentCount(@RequestBody MessageRequestForm messageRequestForm)
     {
+        System.out.println("request for messages");
+        System.out.println("requested destinationId: " + messageRequestForm.getDestinationId());
+        System.out.println("reqeuested timestamp: " + messageRequestForm.getTimestamp());
         Pageable pageable = PageRequest.of(0, messageRequestForm.getNumberOfMessages());
         Page<ChatMessage> messages = chatMessageRepository.findByDestinationIdAndTimestampLessThanOrderByTimestampDesc(
                 messageRequestForm.getDestinationId(), messageRequestForm.getTimestamp(), pageable);
-        List<ChatMessage> resultMessages = messages.getContent();
+        List<ChatMessage> resultMessages = new ArrayList<>(messages.getContent());
+        Collections.reverse(resultMessages);
+
+        for (ChatMessage message:resultMessages) {
+            message.setExtra(userRepository.findBoardUserByUserId(message.getSenderId()).getUsername());
+        }
+
+        System.out.println("get messages: " + resultMessages);
         return resultMessages;
     }
 

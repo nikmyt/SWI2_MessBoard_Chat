@@ -61,4 +61,16 @@ public class ChatMessage {
 	public void setExtra(String extra) {
 		this.extra = extra;
 	}
+
+	@Override
+	public String toString() {
+		return "MessageForm{" +
+				", id='" + id + '\'' +
+				", timestamp='" + timestamp + '\'' +
+				", destinationId='" + destinationId + '\'' +
+				", senderId='" + senderId + '\'' +
+				", text='" + text + '\'' +
+				", extra='" + extra + '\'' +
+				'}';
+	}
 }

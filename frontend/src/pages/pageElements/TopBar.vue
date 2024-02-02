@@ -21,13 +21,13 @@
   -->
 
   <div class="user-info">
-    <p class="login-text" v-if="isLoggedIn" >Logged in as {{ username }}</p>
-    <p class="login-text" v-else> Not logged in.</p>
     <button @click="login" v-if="!isLoggedIn">Login</button>
     <button @click="logout" v-if="isLoggedIn">Logout</button>
     <button @click="register" v-if="!isLoggedIn">Register</button>
     <!-- Should you be able to register when logged in? -->
   </div>
+  <p class="login-text" v-if="isLoggedIn"  style="padding-left: 10px;">Logged in as {{ username }}</p>
+  <p class="login-text" v-else  style="padding-left: 10px;">Not logged in.</p>
 </template>
 
 <script>
