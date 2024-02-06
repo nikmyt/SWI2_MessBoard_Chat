@@ -266,7 +266,11 @@ public class MainController
 
     @PostMapping("/searchRooms")
     public List<Destination> findRooms(@RequestBody String searchTerm){
-        return destinationRepository.findByNameContainingIgnoreCase(searchTerm);
+        searchTerm = searchTerm.substring(1, searchTerm.length()-1);
+        System.out.println("Requested searching for rooms. Search term is: " + searchTerm);
+        List <Destination> destinations = destinationRepository.findDestinationsByNameContainingIgnoreCase(searchTerm);
+        System.out.println("searching for rooms. Found: " + destinations);
+        return destinations;
     }
 
     @PostMapping("/getUserRooms")

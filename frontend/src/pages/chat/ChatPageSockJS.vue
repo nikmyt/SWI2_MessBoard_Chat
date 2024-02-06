@@ -7,7 +7,7 @@
     <div class="container">
       <aside class="sidebar-left">
         <h2>Select chatroom</h2>
-        <button @click="changeChatroom('globalChat')">🪐 Global chat</button>
+        <button @click="changeChatroom(0)">🪐 Global chat</button>
         <div>
           <button v-for="room in rooms" :key="room.destinationId" @click="changeChatroom(room.destinationId)">
             {{ room.name }}
@@ -15,11 +15,23 @@
         </div>
         <!-- TODONE?: load and create more buttons for rooms where user is joined in -->
         <button @click="creatingChatroom = true">➕ Create new chatroom</button>
+        <button @click="joiningChatroom = true">➕ Join a chatroom</button>
       </aside>
 
       <div v-if="creatingChatroom" class="chatroomPopup">
-        <input v-model="newChatroomName" @keyup.enter="createRoom" placeholder="Name your chatroom..." />
+        <input v-model="newChatroomName" @keyup.enter="createRoom" @keyup.esc="creatingChatroom=false" placeholder="Name your chatroom..." />
         <button @click="createRoom">➕ Create</button>
+      </div>
+
+      <div v-if="joiningChatroom" class="chatroomPopup">
+        <input v-model="joiningChatroomName" @keyup.enter="searchRooms" @keyup.esc="joiningChatroom=false" placeholder="Search for rooms..." />
+        <button @click="searchRooms">Search</button>
+        <br>
+        <button v-for="room in joiningRooms" :key="room.destinationId" @click="joinRoom(room.destinationId)">
+          <div>
+            {{ room.name }}
+          </div>
+        </button>
       </div>
 
       <div class="chat-window">
@@ -72,10 +84,14 @@ export default {
       newMessage: '',
       connected: false,
       sockJS: null,
-      selectedChatroom: '1',
+      selectedChatroom: '0',
       newChatroomName: '',
       creatingChatroom: false,
+      joiningChatroom: false,
+      joiningRooms: [],
+      joiningChatroomName: '',
       rooms: [],
+      subscription: null,
     };
   },
   mounted() {
@@ -125,7 +141,7 @@ export default {
         this.connected = true;
 
         // TODO: make sure to subscribe to where the user is (replace destination)
-        this.stompClient.subscribe('/topic/' + this.selectedChatroom, (message) => {
+        this.subscription = this.stompClient.subscribe('/topic/' + this.selectedChatroom, (message) => {
           console.log("Got a message from Rabbit: " + message.body);
           const rawContent = JSON.parse(message.body.toString());
           const receivedMessage = {
@@ -157,6 +173,7 @@ export default {
         this.sockJS.close();
       }
       this.connected = false;
+      this.subscription.unsubscribe();
       console.log('Disconnected');
     },
     sendMessage() {
@@ -210,10 +227,33 @@ export default {
       //wait what does this do
       //right, get a v-for up there in the buttons and link up logic to pretty buttons
     },
-    joinRoom(roomID){
-      //where tf do i get room id? oh from the rooms[].id
+    async searchRooms(){
+      if (this.joiningChatroomName.trim() !== '') {
+        console.log("searching for rooms");
+        this.joiningRooms = await ApiClient.searchRooms(this.joiningChatroomName);
+        console.log(this.joiningRooms);
+      }
     },
-    createRoom() {
+    joinRoom(destinationId){
+        const room = {
+          destinationId: destinationId,
+          userID: this.userID,
+        };
+
+        console.log(ApiClient.addUserToRoom(room));
+
+        this.joiningChatroom = false;
+        this.joiningChatroomName = '';
+        this.joiningRooms = [];
+        this.fetchUserRooms();
+    },
+    changeChatroom(destinationId){
+        this.selectedChatroom = destinationId;
+        this.fetchMessages();
+        this.disconnect();
+        this.connect();
+    },
+    async createRoom() {
       //check if such named thing exists...? naw, it's ok, it uses id's
       //MAKE SURE TO SHOW USER THE CREATED CHAT'S ID?... or not, they're automatically added.
       //1) saveRoom - yes, id is destination sender. destination is name

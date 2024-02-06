@@ -1,6 +1,7 @@
 package cz.osu.java.messboardapp.repository;
 
 import cz.osu.java.messboardapp.model.UserDestination;
+import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,5 @@ public interface UserDestinationRepository extends JpaRepository<UserDestination
 
     @Query("SELECT ud FROM UserDestination ud WHERE ud.id.userId = :userId AND ud.id.destinationId = :destinationId")
     UserDestination findUserDestinationByIdUserIdAndIdDestinationId(Long userId, Long destinationId);
+
 }
