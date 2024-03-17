@@ -42,10 +42,6 @@ public class WebSocketController {
 
     @PostMapping("/send")
     public ResponseEntity<Void> sendMessage(@Valid @RequestBody MessageForm messageForm) {
-        System.out.println("Message received.");
-        System.out.println("message: " + messageForm.toString());
-        System.out.println("raw: " + messageForm.getDestinationId());
-        System.out.println("timestamp: " + messageForm.getTimestamp());
         TextMessageDTO message = new TextMessageDTO(messageForm.getDestinationId(), messageForm.getTimestamp(), messageForm.getSenderId(), messageForm.getText(),messageForm.getExtra());
 
         message.setId(saveMessageToDisk(message)); //this could be fine unironically
@@ -69,18 +65,13 @@ public class WebSocketController {
         chatMessage.setText(textMessageDTO.getText());
         chatMessage.setExtra(textMessageDTO.getExtra());
 
-        System.out.println("saving message");
         Long messageId = chatMessageRepository.save(chatMessage).getId();
-        System.out.println("message saved");
         return messageId;
     }
 
 
     @MessageMapping("/sendMessage")
     public void receiveMessage(@Payload TextMessageDTO textMessageDTO) {
-        //unused?
-        System.out.println("Message sent.");
-        //producer.sendMessageToQueue2(textMessageDTO.getMessage());
     }
 
 

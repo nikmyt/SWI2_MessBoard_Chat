@@ -58,7 +58,6 @@ export default {
     async createPost() {
 
       if (this.newTitle, this.newText, this.newTag === ""){
-        console.log("Cannot create empty post!")
         return;
       } else {
         const post = {

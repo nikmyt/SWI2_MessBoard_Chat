@@ -34,8 +34,6 @@ public class Consumer {
     public void receiveFromQueue1(@Payload TextMessageDTO textMessageDTO, Channel channel) throws IOException {
         try{
             Long destinationId = textMessageDTO.getDestinationId();
-            System.out.println("Message received with routing key: " + destinationId);
-            System.out.println("Message received: " + textMessageDTO.getText());
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setId(textMessageDTO.getId());
             chatMessage.setText(textMessageDTO.getText());
@@ -43,7 +41,7 @@ public class Consumer {
             chatMessage.setSender(textMessageDTO.getSenderId());
             chatMessage.setExtra(appUserRepository.findBoardUserByUserId(chatMessage.getSenderId()).getUsername());
             chatMessage.setTimestamp(textMessageDTO.getTimestamp());
-            System.out.println(chatMessage);
+
             messagingTemplate.convertAndSend("/topic/" + destinationId, chatMessage);
             //messagingTemplate.convertAndSend(String.valueOf(destinationId), makeTheMessageSendable(message));
             //channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
@@ -55,13 +53,11 @@ public class Consumer {
 
     private String makeTheMessageSendable(String message)
     {
-        System.out.println("PreJsoned: " + message);
         GsonBuilder builder = new GsonBuilder();
         builder.setPrettyPrinting();
 
         Gson gson = builder.create();
         String jsonified = gson.toJson(message);
-        System.out.println("PostJsoned: " + jsonified); //TODONE: does it look correct? YES!
         return jsonified;
     }
     /*

@@ -122,8 +122,7 @@ export default {
 
       this.sockJS.onmessage = (message) => {
         const receivedMessage = JSON.parse(message.data);
-        this.messages.push(receivedMessage);
-        console.log("got a message:" + receivedMessage.content);
+        this.messages.push(receivedMessage);;
       };
 
       this.sockJS.onerror = (error) => {
@@ -142,7 +141,6 @@ export default {
 
         // TODO: make sure to subscribe to where the user is (replace destination)
         this.subscription = this.stompClient.subscribe('/topic/' + this.selectedChatroom, (message) => {
-          console.log("Got a message from Rabbit: " + message.body);
           const rawContent = JSON.parse(message.body.toString());
           const receivedMessage = {
             id: rawContent.id,
@@ -152,10 +150,7 @@ export default {
             text: rawContent.text,
             extra: rawContent.extra
           };
-          console.log(this.messages.length);
           this.messages.push(receivedMessage);
-          console.log(this.messages.length);
-          console.log("Whole messages field:", this.messages)
           this.showMessage(receivedMessage);
           this.$nextTick(() => {
             this.scrollToBottom();
@@ -186,16 +181,9 @@ export default {
           text: this.newMessage,
           extra: "",
         };
-        console.log(message);
-        console.log(JSON.stringify(message));
 
         ApiClient.sendMessage(JSON.stringify(message));
 
-        /*
-        var something = {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(message)}
-        console.log(something); //well this is what i sent. not useful
-        //this.sockJS.send(JSON.stringify(message));
-        */
 
         this.newMessage = '';
       }
@@ -203,7 +191,7 @@ export default {
     async fetchMessages() {
       try {
         const messageRequestForm = new MessageRequestForm();
-        messageRequestForm.destinationId = this.selectedChatroom; //TODO! change to automatically go to where room button clicked
+        messageRequestForm.destinationId = this.selectedChatroom;
         messageRequestForm.timestamp = Date.now().toString(); //before? i think so. BE says: findByDestinationAnd TimestampLessThan OrderByTimestampDesc
         messageRequestForm.numberOfMessages = 256; //variable somehow
 
@@ -223,29 +211,26 @@ export default {
     },
     async fetchUserRooms(){
       this.rooms = await ApiClient.getUserRooms(this.userID); //yes?
-      console.log("current fetched rooms are as follows: ", this.rooms);
       //wait what does this do
       //right, get a v-for up there in the buttons and link up logic to pretty buttons
     },
     async searchRooms(){
       if (this.joiningChatroomName.trim() !== '') {
-        console.log("searching for rooms");
         this.joiningRooms = await ApiClient.searchRooms(this.joiningChatroomName);
-        console.log(this.joiningRooms);
       }
     },
-    joinRoom(destinationId){
+    async joinRoom(destinationId){
         const room = {
           destinationId: destinationId,
           userID: this.userID,
         };
 
-        console.log(ApiClient.addUserToRoom(room));
+        let response = await ApiClient.addUserToRoom(room);
 
         this.joiningChatroom = false;
         this.joiningChatroomName = '';
         this.joiningRooms = [];
-        this.fetchUserRooms();
+        await this.fetchUserRooms();
     },
     changeChatroom(destinationId){
         this.selectedChatroom = destinationId;
@@ -264,18 +249,13 @@ export default {
         };
 
         // Show success/failure to the user here
-        console.log(ApiClient.saveRoom(room));
+        let response = await ApiClient.saveRoom(room);
 
         // Close the popup after creating the chatroom
         this.creatingChatroom = false;
         this.newChatroomName = ''; // Clear the input field
-        this.fetchUserRooms(); //get the roomses
+        await this.fetchUserRooms(); //get the roomses
       }
-    },
-    addUserToRoom(useroni){
-      //only available if you're the creator? or... anyone? how do we make sure not to have dupli adds?
-      //2?) AddUserToRoom(joinDestinatioform) - also make sure to do this when user makes a room
-
     },
     formatDate(timestamp) {
       const date = new Date(parseInt(timestamp));

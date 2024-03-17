@@ -86,7 +86,6 @@ export default {
 
       this.stompClient.connect({}, frame => {
         this.connected = true;
-        console.log('Connected:', frame);
 
         this.stompClient.subscribe('/topic/messages', message => {
           this.showMessage(JSON.parse(message.body).content);
@@ -101,7 +100,6 @@ export default {
 
       this.stompClient.connect({}, frame => {
         this.connected = true;
-        console.log('Connected:', frame);
 
         this.stompClient.subscribe('/topic/messages', message => {
           this.showMessage(JSON.parse(message.body).content);
@@ -115,7 +113,6 @@ export default {
         this.stompClient.disconnect();
       }
       this.connected = false;
-      console.log('Disconnected');
     },
     sendName() {
       this.stompClient.publish({

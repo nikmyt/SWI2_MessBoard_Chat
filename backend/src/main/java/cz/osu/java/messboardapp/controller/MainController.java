@@ -233,9 +233,6 @@ public class MainController
     @PostMapping("/getMessages")
     public List<ChatMessage> getCommentCount(@RequestBody MessageRequestForm messageRequestForm)
     {
-        System.out.println("request for messages");
-        System.out.println("requested destinationId: " + messageRequestForm.getDestinationId());
-        System.out.println("reqeuested timestamp: " + messageRequestForm.getTimestamp());
         Pageable pageable = PageRequest.of(0, messageRequestForm.getNumberOfMessages());
         Page<ChatMessage> messages = chatMessageRepository.findByDestinationIdAndTimestampLessThanOrderByTimestampDesc(
                 messageRequestForm.getDestinationId(), messageRequestForm.getTimestamp(), pageable);
@@ -246,9 +243,9 @@ public class MainController
             message.setExtra(userRepository.findBoardUserByUserId(message.getSenderId()).getUsername());
         }
 
-        System.out.println("get messages: " + resultMessages);
         return resultMessages;
     }
+
 
     @PostMapping("/saveRoom")
     public String saveRoom(@RequestBody DestinationForm destinationForm)
@@ -257,8 +254,6 @@ public class MainController
         UserDestination userDestination = new UserDestination();
         destinationRepository.save(destination);
         destination = destinationRepository.findTopByNameOrderByDestinationIdDesc(destinationForm.getDestination());
-        System.out.println("New destinationId userId: " + destinationForm.getUserID());
-        System.out.println("New destinationId: " + destination.getDestinationId());
         userDestination.setId(destinationForm.getUserID(), destination.getDestinationId());
         userDestinationRepository.save(userDestination);
         return "Destination saved successfully. Destination linked to user.";
@@ -267,9 +262,7 @@ public class MainController
     @PostMapping("/searchRooms")
     public List<Destination> findRooms(@RequestBody String searchTerm){
         searchTerm = searchTerm.substring(1, searchTerm.length()-1);
-        System.out.println("Requested searching for rooms. Search term is: " + searchTerm);
         List <Destination> destinations = destinationRepository.findDestinationsByNameContainingIgnoreCase(searchTerm);
-        System.out.println("searching for rooms. Found: " + destinations);
         return destinations;
     }
 
@@ -277,14 +270,10 @@ public class MainController
     public List<Destination> findUserRooms(@RequestBody Long userId)
     {
         List<Long> destinationIDs = userDestinationRepository.findDestinationIdsByUserId(userId);
-        for (Long id:destinationIDs) {
-            System.out.println(id);
-        }
         List<Destination>destinations = new ArrayList<>();
 
         for (Long id:destinationIDs) {
             Destination destination = destinationRepository.findByDestinationId(id);
-            System.out.println("Found destination for user. Destination Id: " + destination.getDestinationId() + ". Destination name: " + destination.getName());
             destinations.add(destination);
             //will it? do anything? the bottom version does the same as the top version but with more steps. Returning to previous.
             //Destination destination = destinationRepository.findByDestinationId(id);
@@ -330,7 +319,6 @@ public class MainController
         AuthService authService = new AuthService(userRepository);
 
         ResponseEntity<Object> responseEntity = authService.authenticate(authForm);
-
         return responseEntity;
     }
     @PostMapping("/register")

@@ -54,7 +54,6 @@ const routes = [
 
             ApiClient.getPost(postId).then((post) => {
                 const userId =JSON.stringify(post.user.userId);
-                    console.log("User id: " + userId + " token: " + token)
                     if (userId === token)
                     {
                         //TRY: == vs ===

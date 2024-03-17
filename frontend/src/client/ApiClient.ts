@@ -359,7 +359,7 @@ export class ApiClient{
             body: JSON.stringify(destinationForm)
         });
         if (response.ok) {
-            return await response.json();
+            return await response.text();
         } else {
             console.log("Failed to save chatroom")
             const error = await response.text();
@@ -379,7 +379,7 @@ export class ApiClient{
             body: JSON.stringify(joinDestinationForm)
         });
         if (response.ok) {
-            return await response.json();
+            return await response.text();
         } else {
             console.log("Failed to fetch messages")
             const error = await response.text();

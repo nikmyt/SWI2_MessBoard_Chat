@@ -62,9 +62,7 @@ export default {
     async performSearch() {
       try {
         const searchQuery = this.$route.params.searchQuery;
-        console.log('Search query:', searchQuery);
         this.searchResults = await ApiClient.getSearchResults(searchQuery);
-        console.log(this.searchResults);
       } catch (error) {
         console.error('Error fetching search results:', error);
       }

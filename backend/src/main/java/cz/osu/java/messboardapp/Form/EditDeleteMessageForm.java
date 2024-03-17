@@ -9,7 +9,6 @@ public class EditDeleteMessageForm {
     private String textToEdit;
 
     public EditDeleteMessageForm(String json) {
-        System.out.println("json:" + json);
         try {
             JSONObject jsonObject = new JSONObject(json);
 

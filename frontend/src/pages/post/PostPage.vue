@@ -80,7 +80,6 @@ export default {
       try {
         const comments = await ApiClient.getComments(this.post.postId);
         this.comments = comments;
-        console.log("Post ID: " + this.post.postId);
       } catch (error) {
         console.error(error);
       }
@@ -146,9 +145,7 @@ export default {
       if (!this.const || !this.post.user ) {
         return false;
       }
-      console.log('User ID:', this.post.user.userId);
       const parsedToken = parseInt(this.const, 10);
-      console.log('Parsed Token:', parsedToken);
 
       return this.post.user.userId === parsedToken;
     },

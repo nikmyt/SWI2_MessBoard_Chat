@@ -10,7 +10,6 @@ public class DestinationForm {
     }
 
     public DestinationForm(String json) {
-        System.out.println("json:" + json);
         try {
             JSONObject jsonObject = new JSONObject(json);
 

@@ -10,7 +10,6 @@ public class JoinDestinationForm {
     }
 
     public JoinDestinationForm(String json) {
-        System.out.println("json:" + json);
         try {
             JSONObject jsonObject = new JSONObject(json);
 

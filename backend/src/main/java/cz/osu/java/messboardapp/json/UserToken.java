@@ -9,4 +9,12 @@ public class UserToken
 {
     private Integer userId;
     private String username;
+
+    @Override
+    public String toString() {
+        return "MessageForm{" +
+                "userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }
